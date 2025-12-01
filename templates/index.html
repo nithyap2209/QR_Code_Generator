@@ -1,0 +1,2310 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-T45KC6TB');</script>
+    <!-- End Google Tag Manager -->
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Dada - Advanced QR Code Generator</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        },
+                        secondary: {
+                            50: '#f5f3ff',
+                            100: '#ede9fe',
+                            200: '#ddd6fe',
+                            300: '#c4b5fd',
+                            400: '#a78bfa',
+                            500: '#8b5cf6',
+                            600: '#7c3aed',
+                            700: '#6d28d9',
+                            800: '#5b21b6',
+                            900: '#4c1d95',
+                        },
+                        accent: {
+                            50: '#fffbeb',
+                            100: '#fef3c7',
+                            200: '#fde68a',
+                            300: '#fcd34d',
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                            700: '#b45309',
+                            800: '#92400e',
+                            900: '#78350f',
+                        }
+                    },
+                    fontFamily: {
+                        'sans': ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+                        'mono': ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', 'monospace'],
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+                        'card': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+                        'glow': '0 0 15px rgba(124, 58, 237, 0.4)',
+                        'glow-primary': '0 0 15px rgba(14, 165, 233, 0.4)'
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'gradient': 'gradient 8s ease infinite',
+                        'shift': 'shift 3s ease infinite alternate',
+                        'fade-in': 'fadeInUp 0.5s ease-out forwards',
+                        'bounce-slow': 'bounce 3s infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        gradient: {
+                            '0%': { backgroundPosition: '0% 50%' },
+                            '50%': { backgroundPosition: '100% 50%' },
+                            '100%': { backgroundPosition: '0% 50%' },
+                        },
+                        shift: {
+                            '0%': { transform: 'translateX(0)' },
+                            '100%': { transform: 'translateX(10px)' },
+                        },
+                        fadeInUp: {
+                            from: {
+                                opacity: 0,
+                                transform: 'translate3d(0, 20px, 0)'
+                            },
+                            to: {
+                                opacity: 1,
+                                transform: 'translate3d(0, 0, 0)'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- AOS CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
+    
+    <!-- Custom CSS -->
+    <style>
+        /* Base styles and resets */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+        
+        body {
+            scroll-behavior: smooth;
+            isolation: isolate;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+        
+        /* QR Code pattern background */
+        .qr-pattern {
+            background-color: #f8fafc;
+            background-image: 
+                radial-gradient(#e2e8f0 1.5px, transparent 1.5px),
+                radial-gradient(#e2e8f0 1.5px, transparent 1.5px);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
+            z-index: 10;
+        }
+        
+        /* Animated gradient background */
+        .gradient-bg {
+            background: linear-gradient(-45deg, #0ea5e9, #8b5cf6, #ec4899, #f97316);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+        
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        
+        /* QR code grid animation */
+        .qr-grid {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            grid-template-rows: repeat(10, 1fr);
+            gap: 4px;
+        }
+        
+        .qr-cell {
+            aspect-ratio: 1/1;
+            background-color: #cbd5e1;
+            transition: background-color 0.3s ease;
+            border-radius: 2px;
+        }
+        
+        .qr-cell.active {
+            background-color: #0f172a;
+        }
+        
+        /* Glassmorphic elements */
+        .glass {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+        }
+        
+        /* Menu and Nav animations */
+        .nav-item {
+            position: relative;
+            transition: color 0.2s ease;
+        }
+        
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: #8b5cf6;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-item:hover::after,
+        .nav-item.active::after {
+            width: 100%;
+        }
+        
+        /* Active nav item */
+        .nav-item.active {
+            color: #7c3aed; /* secondary-600 */
+        }
+        
+        /* Toast notifications system */
+        .toast-container {
+            position: fixed;
+            top: 1.25rem;
+            right: 1.25rem;
+            left: 1.25rem;
+            z-index: 1070;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            pointer-events: none;
+        }
+
+        @media (min-width: 640px) {
+            .toast-container {
+                left: auto;
+                right: 1.25rem;
+                max-width: 400px;
+            }
+        }
+
+        .toast {
+            position: relative;
+            width: 100%;
+            max-width: 100%;
+            padding: 0.875rem 1rem;
+            border-radius: 0.5rem;
+            transform: translateY(-100%);
+            opacity: 0;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            pointer-events: auto;
+            font-size: 0.875rem;
+        }
+
+        @media (min-width: 640px) {
+            .toast {
+                max-width: 350px;
+                padding: 1rem;
+                transform: translateX(100%);
+                font-size: 1rem;
+            }
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        @media (min-width: 640px) {
+            .toast.show {
+                transform: translateX(0);
+            }
+        }
+
+        .toast .close-btn {
+            margin-left: auto;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 1.5rem;
+            height: 1.5rem;
+            border-radius: 9999px;
+            flex-shrink: 0;
+        }
+
+        .toast .close-btn:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Improved dropdown menu styling */
+        .dropdown-container {
+            position: relative;
+            z-index: 100;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            right: 0;
+            top: 100%;
+            padding-top: 0.5rem;
+            z-index: 1050;
+            visibility: hidden;
+        }
+
+        .dropdown-menu-inner {
+            width: 12rem;
+            padding: 0.5rem 0;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e5e7eb;
+            transform-origin: top right;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        .dropdown-menu.visible {
+            visibility: visible;
+        }
+        
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            padding: 0.625rem 1rem;
+            color: #374151;
+            font-size: 0.875rem;
+            transition: background-color 0.15s ease, color 0.15s ease;
+        }
+        
+        .dropdown-item:hover {
+            background-color: #f3f4f6;
+            color: #1f2937;
+        }
+        
+        .dropdown-item.danger {
+            color: #ef4444;
+        }
+        
+        .dropdown-item.danger:hover {
+            background-color: #fee2e2;
+            color: #b91c1c;
+        }
+        
+        .dropdown-divider {
+            height: 1px;
+            margin: 0.375rem 0;
+            background-color: #e5e7eb;
+        }
+        
+        /* Header positioning */
+        .header {
+            position: relative;
+            z-index: 1000;
+            width: 100%;
+        }
+        
+        /* Main content */
+        .main-content {
+            position: relative;
+            z-index: 5;
+        }
+        
+        /* Footer styling */
+        .footer {
+            position: relative;
+            z-index: 10;
+        }
+        
+        /* Mobile menu */
+        .mobile-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            z-index: 990;
+            background-color: white;
+            border-bottom: 1px solid #e5e7eb;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transform: translateY(-10px);
+            opacity: 0;
+            visibility: hidden;
+            transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+        }
+        
+        .mobile-menu.visible {
+            transform: translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Button styles */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0.375rem;
+            padding: 0.5rem 1rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 100%;
+            transform: scale(0) translate(-50%, -50%);
+            transform-origin: top left;
+            opacity: 0;
+        }
+        
+        .btn:active::after {
+            animation: ripple 0.6s ease-out;
+        }
+        
+        @keyframes ripple {
+            0% {
+                transform: scale(0) translate(-50%, -50%);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(40) translate(-50%, -50%);
+                opacity: 0;
+            }
+        }
+        
+        .btn:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.5);
+        }
+        
+        .btn-primary {
+            background-color: #7c3aed;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #6d28d9;
+        }
+        
+        .btn-primary:active {
+            background-color: #5b21b6;
+        }
+        
+        .btn-outline {
+            border: 1px solid #e5e7eb;
+            background-color: transparent;
+            color: #374151;
+        }
+        
+        .btn-outline:hover {
+            background-color: #f9fafb;
+        }
+        
+        /* Avatar circle */
+        .avatar-circle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 9999px;
+            background-color: #ede9fe;
+            color: #7c3aed;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        /* Enhanced scrollbars for supported browsers */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: #cbd5e1 transparent;
+        }
+        
+        *::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        *::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        *::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 4px;
+        }
+        
+        /* Animations for page elements */
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        .slide-in {
+            animation: slideIn 0.5s ease forwards;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        /* Enhanced card styles */
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        /* Focus styles for accessibility */
+        a:focus, button:focus, [role="button"]:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.5);
+            border-radius: 0.25rem;
+        }
+
+        /* Keep scroll-to-top button circular on focus */
+        #scrollToTopBtn:focus {
+            border-radius: 9999px;
+        }
+        
+        /* Make sure elements have proper stacking context */
+        [x-cloak] {
+            display: none !important;
+        }
+        
+        @supports (backdrop-filter: blur(10px)) {
+            .glass {
+                backdrop-filter: blur(10px);
+            }
+        }
+        
+        /* Utility for focusing elements */
+        .focus-ring:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.5);
+            border-radius: 0.25rem;
+        }
+        
+        /* Enhanced button styles */
+        .btn-gradient {
+            background: linear-gradient(45deg, #7c3aed, #4f46e5);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-gradient:hover {
+            background: linear-gradient(45deg, #6d28d9, #4338ca);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+        }
+        
+        /* Pill badges */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.35em 0.65em;
+            font-size: 0.75em;
+            font-weight: 500;
+            border-radius: 9999px;
+            letter-spacing: 0.025em;
+        }
+        
+        .badge-primary {
+            background-color: #ede9fe;
+            color: #7c3aed;
+        }
+        
+        .badge-success {
+            background-color: #d1fae5;
+            color: #059669;
+        }
+        
+        .badge-warning {
+            background-color: #fef3c7;
+            color: #d97706;
+        }
+        
+        .badge-danger {
+            background-color: #fee2e2;
+            color: #dc2626;
+        }
+        
+        /* Feature highlight box */
+        .feature-box {
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .feature-box:hover {
+            border-color: #c4b5fd;
+            box-shadow: 0 10px 15px -3px rgba(124, 58, 237, 0.1), 0 4px 6px -2px rgba(124, 58, 237, 0.05);
+        }
+        
+        .feature-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 3rem;
+            height: 3rem;
+            border-radius: 9999px;
+            font-size: 1.25rem;
+            background: linear-gradient(45deg, #7c3aed, #4f46e5);
+            color: white;
+            margin-bottom: 1rem;
+        }
+        
+        /* Progress bar */
+        .progress {
+            height: 0.5rem;
+            width: 100%;
+            background-color: #e2e8f0;
+            border-radius: 9999px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background-color: #7c3aed;
+            border-radius: 9999px;
+            transition: width 0.5s ease;
+        }
+
+        /* Homepage specific styles */
+        /* Enhanced background patterns */
+        .qr-pattern {
+            background-image: url('data:image/svg+xml;utf8,<svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="10" height="10" fill="rgba(99, 102, 241, 0.05)"/></svg>');
+            opacity: 0.7;
+        }
+        
+        /* Improved gradient backgrounds */
+        .gradient-bg {
+            background: linear-gradient(135deg, #6366F1 0%, #3B82F6 100%);
+        }
+        
+        .gradient-subtle {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+        }
+        
+        /* Enhanced floating animation for QR code */
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+            transform-origin: center center;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(1deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+        
+        /* Improved QR scanning animation */
+        .animate-qr {
+            position: relative;
+            background-image: linear-gradient(45deg, #f3f4f6 25%, transparent 25%), 
+                              linear-gradient(-45deg, #f3f4f6 25%, transparent 25%), 
+                              linear-gradient(45deg, transparent 75%, #f3f4f6 75%), 
+                              linear-gradient(-45deg, transparent 75%, #f3f4f6 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+            animation: qrScan 3s linear infinite;
+        }
+
+        @keyframes qrScan {
+            0% {
+                background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+            }
+            100% {
+                background-position: 20px 0, 20px 10px, 30px -10px, 10px 0px;
+            }
+        }
+        
+        /* Better QR code container positioning */
+        .qr-container {
+            position: relative;
+            width: 100%;
+            max-width: 320px;
+            margin: 0 auto;
+            z-index: 5;
+        }
+        
+        /* Enhanced floating animation with proper overflow handling */
+        .animate-float {
+            position: relative;
+            overflow: visible;
+            z-index: 5;
+            max-width: 100%;
+            will-change: transform;
+        }
+
+        /* Optimized QR code animation container */
+        .animate-qr {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+            border-radius: inherit;
+        }
+
+        /* Improved QR icon positioning */
+        .qr-icon {
+            position: absolute;
+            right: -10px;
+            bottom: -10px;
+            z-index: 6;
+            transition: all 0.3s ease;
+        }
+        
+        .qr-container:hover .qr-icon {
+            transform: scale(1.1) rotate(10deg);
+        }
+
+        /* Enhanced wave divider between sections */
+        .wave-divider {
+            position: relative;
+            height: 5rem;
+            overflow: hidden;
+        }
+        
+        .wave-divider svg {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transform: translateY(50%);
+        }
+        
+        /* Feature card enhancements */
+        .feature-card {
+            transition: all 0.3s ease;
+            border-radius: 1rem;
+            overflow: hidden;
+            border: 1px solid rgba(229, 231, 235, 0.5);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .feature-icon {
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover .feature-icon {
+            transform: scale(1.1);
+        }
+        
+        /* QR type card enhancements */
+        .qr-type-card {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .qr-type-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(59, 130, 246, 0) 60%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .qr-type-card:hover::before {
+            opacity: 1;
+        }
+        
+        .qr-type-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        /* Enhanced responsive styles for all screen sizes */
+        @media (max-width: 1024px) {
+            .hero-content {
+                padding-bottom: 2rem;
+            }
+            
+            /* Reduce animation complexity for mid-sized devices */
+            .animate-float {
+                animation: simplefloat 4s ease-in-out infinite;
+            }
+            
+            @keyframes simplefloat {
+                0%, 100% { transform: translateY(0); }
+                50% { transform: translateY(-10px); }
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .qr-container {
+                max-width: 260px;
+                margin: 0 auto;
+            }
+            
+            /* Fix QR animation on mobile */
+            .animate-qr {
+                animation: qrScanMobile 3s linear infinite;
+            }
+            
+            @keyframes qrScanMobile {
+                0% { background-position: 0 0, 0 10px, 10px -10px, -10px 0px; }
+                100% { background-position: 15px 0, 15px 10px, 25px -10px, 5px 0px; }
+            }
+            
+            /* Fix QR icon positioning */
+            .qr-icon {
+                right: -5px;
+                bottom: -5px;
+                width: 64px !important;
+                height: 64px !important;
+            }
+            
+            /* Improve testimonial layout */
+            .testimonial-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            /* Adjust steps layout */
+            .steps-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .connection-line {
+                display: none;
+            }
+            
+            /* Optimize AOS for mobile */
+            [data-aos-delay] {
+                transition-delay: 0ms !important;
+            }
+            
+            /* Simplify QR grid */
+            #interactive-qr-grid {
+                gap: 3px;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            h1.hero-title {
+                font-size: 2.25rem;
+                line-height: 1.2;
+            }
+            
+            /* Simplify QR grid for better performance */
+            .qr-grid {
+                grid-template-columns: repeat(6, 1fr);
+                grid-template-rows: repeat(6, 1fr);
+                gap: 2px;
+            }
+            
+            /* Adjust type cards */
+            .qr-types-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            /* Stack feature cards */
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            /* Reduce animations for better performance */
+            .animate-float {
+                animation: none;
+                transform: none;
+            }
+            
+            .scan-line {
+                animation-duration: 3s;
+            }
+            
+            .qr-container:hover .qr-icon {
+                transform: none;
+            }
+            
+            /* Disable 3D effects on mobile */
+            .tilt-on-hover:hover {
+                transform: none;
+            }
+            
+            /* Reduce animated elements */
+            .feature-card:hover .feature-icon {
+                transform: none;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .qr-container {
+                max-width: 220px;
+            }
+            
+            .cta-container {
+                padding: 2rem 1rem;
+            }
+            
+            .qr-types-grid {
+                gap: 0.75rem;
+            }
+            
+            /* Further reduce animations */
+            .animate-qr {
+                background-size: 15px 15px;
+            }
+            
+            /* Simplify backgrounds */
+            .gradient-subtle {
+                background: rgba(124, 58, 237, 0.05);
+            }
+        }
+        
+        /* Scroll indicator animation */
+        .scroll-indicator {
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-20px); }
+            60% { transform: translateY(-10px); }
+        }
+        
+        /* QR scanning line animation */
+        .scan-line {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(124, 58, 237, 0) 0%, rgba(124, 58, 237, 0.8) 50%, rgba(124, 58, 237, 0) 100%);
+            width: 100%;
+            left: 0;
+            top: 0;
+            animation: scanMove 2s linear infinite;
+            z-index: 5;
+        }
+        
+        @keyframes scanMove {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(100%); }
+        }
+        
+        /* Interactive QR grid */
+        .qr-grid {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            grid-template-rows: repeat(10, 1fr);
+            gap: 4px;
+            height: 100%;
+            width: 100%;
+        }
+        
+        .qr-cell {
+            aspect-ratio: 1/1;
+            background-color: rgba(229, 231, 235, 0.5);
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+        
+        .qr-cell.active {
+            background-color: rgba(124, 58, 237, 0.8);
+        }
+        
+        /* Enhanced testimonial cards */
+        .testimonial-card {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            z-index: 1;
+        }
+        
+        .testimonial-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(124, 58, 237, 0.1) 0%, rgba(124, 58, 237, 0) 70%);
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .testimonial-card:hover::before {
+            opacity: 1;
+        }
+        
+        /* Custom step indicator styling */
+        .step-indicator {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .step-indicator::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 150%;
+            height: 150%;
+            background: radial-gradient(circle, rgba(124, 58, 237, 0.2) 0%, rgba(124, 58, 237, 0) 70%);
+            z-index: -1;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.8; }
+            70% { transform: translate(-50%, -50%) scale(1.2); opacity: 0; }
+            100% { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
+        }
+        
+        /* Custom badge styling */
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.025em;
+            text-transform: uppercase;
+        }
+        
+        .badge-primary {
+            background-color: rgba(124, 58, 237, 0.1);
+            color: rgb(124, 58, 237);
+        }
+        
+        /* 3D Tilt animation on hover */
+        .tilt-on-hover {
+            transition: transform 0.2s ease;
+            transform-style: preserve-3d;
+            will-change: transform;
+        }
+        
+        .tilt-on-hover:hover {
+            transform: perspective(1000px) rotateX(2deg) rotateY(2deg);
+        }
+    </style>
+</head>
+<body class="min-h-screen font-sans bg-gray-50 text-gray-800 flex flex-col">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T45KC6TB"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <!-- Toast notifications container -->
+    <div id="toast-container" class="toast-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="toast glass text-gray-800 shadow-lg rounded-lg flex items-center show" role="alert">
+                        {% if category == 'error' %}
+                            <i class="fa-solid fa-circle-exclamation text-red-500 mr-3"></i>
+                        {% elif category == 'success' %}
+                            <i class="fa-solid fa-circle-check text-green-500 mr-3"></i>
+                        {% else %}
+                            <i class="fa-solid fa-circle-info text-blue-500 mr-3"></i>
+                        {% endif %}
+                        <div>{{ message }}</div>
+                        <button onclick="this.parentElement.remove()" class="close-btn">
+                            <i class="fa-solid fa-xmark text-gray-500 hover:text-gray-700"></i>
+                        </button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <header class="header bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20">
+                <!-- Logo and Navigation (Left Side) -->
+                <div class="flex items-center">
+                    <!-- Logo -->
+                    <a href="{{ url_for('index') }}" class="flex items-center space-x-3 focus-ring rounded-md">
+                        <div class="flex items-center justify-center">
+                            {% if website_settings and website_settings.website_logo_file %}
+                                <img src="{{ url_for('static', filename='uploads/' + website_settings.website_logo_file) }}"
+                                    alt="{{ website_settings.website_name if website_settings and website_settings.website_name else 'QR Dada' }} Logo"
+                                    class="h-12 w-auto object-contain">
+                            {% else %}
+                                <img src="{{ url_for('static', filename='images/qr.png') }}"
+                                    alt="QR Dada Logo"
+                                    class="h-12 w-auto object-contain">
+                            {% endif %}
+                        </div>
+                    </a>
+                    <div class="hidden sm:ml-8 sm:flex sm:space-x-8">
+                        <a href="#features" class="nav-item py-2 px-1 text-gray-700 hover:text-secondary-700 font-medium focus-ring rounded-md transition-colors">Features</a>
+                        <a href="#how-it-works" class="nav-item py-2 px-1 text-gray-700 hover:text-secondary-700 font-medium focus-ring rounded-md transition-colors">How It Works</a>
+                        <a href="#qr-types" class="nav-item py-2 px-1 text-gray-700 hover:text-secondary-700 font-medium focus-ring rounded-md transition-colors">QR Types</a>
+                        <a href="{{ url_for('about') }}" target="_blank" class="nav-item py-2 px-1 text-gray-700 hover:text-secondary-700 font-medium focus-ring rounded-md transition-colors">About Us</a>
+                        <a href="{{ url_for('contact') }}" target="_blank" class="nav-item py-2 px-1 text-gray-700 hover:text-secondary-700 font-medium focus-ring rounded-md transition-colors">Contact Us</a>
+
+                        <!-- Our Services Dropdown -->
+                        <div class="relative" id="services-dropdown">
+                            <button id="services-dropdown-btn" class="nav-item py-2 px-1 text-gray-700 hover:text-secondary-700 font-medium focus-ring rounded-md transition-colors flex items-center space-x-1">
+                                <span>Our Services</span>
+                                <i class="fas fa-chevron-down text-xs" id="services-chevron" style="transition: transform 0.3s ease;"></i>
+                            </button>
+                            <div id="services-menu" class="hidden absolute left-0 top-full pt-2 w-64 z-50">
+                                <div class="bg-white rounded-lg shadow-xl border border-gray-200">
+                                <div class="py-2">
+                                    <a href="{{ url_for('service_qr_url') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-secondary-50 hover:text-secondary-700 transition-colors">
+                                        <i class="fas fa-link w-5"></i> QR Code for URL
+                                    </a>
+                                    <a href="{{ url_for('service_qr_email') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-secondary-50 hover:text-secondary-700 transition-colors">
+                                        <i class="fas fa-envelope w-5"></i> QR Code for Email
+                                    </a>
+                                    <a href="{{ url_for('service_qr_wifi') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-secondary-50 hover:text-secondary-700 transition-colors">
+                                        <i class="fas fa-wifi w-5"></i> QR Code for WiFi
+                                    </a>
+                                    <a href="{{ url_for('service_qr_sms') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-secondary-50 hover:text-secondary-700 transition-colors">
+                                        <i class="fas fa-comment w-5"></i> QR Code for SMS
+                                    </a>
+                                    <a href="{{ url_for('service_qr_event') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-secondary-50 hover:text-secondary-700 transition-colors">
+                                        <i class="fas fa-calendar w-5"></i> QR Code for Event
+                                    </a>
+                                    <a href="{{ url_for('service_qr_call') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-secondary-50 hover:text-secondary-700 transition-colors">
+                                        <i class="fas fa-phone w-5"></i> QR Code for Call
+                                    </a>
+                                    <a href="{{ url_for('service_qr_whatsapp') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-secondary-50 hover:text-secondary-700 transition-colors">
+                                        <i class="fab fa-whatsapp w-5"></i> QR Code for WhatsApp
+                                    </a>
+                                    <a href="{{ url_for('service_qr_vcard') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-secondary-50 hover:text-secondary-700 transition-colors">
+                                        <i class="fas fa-address-card w-5"></i> QR Code for vCard
+                                    </a>
+                                    <a href="{{ url_for('service_qr_text') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-secondary-50 hover:text-secondary-700 transition-colors">
+                                        <i class="fas fa-font w-5"></i> QR Code for Text
+                                    </a>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="{{ url_for('public_blogs') }}" class="nav-item py-2 px-1 text-gray-700 hover:text-secondary-700 font-medium focus-ring rounded-md transition-colors">Blog</a>
+                        <!-- <a href="{{ url_for('public_webstories') }}" class="nav-item py-2 px-1 text-gray-700 hover:text-secondary-700 font-medium focus-ring rounded-md transition-colors">Web Stories</a> -->
+                    </div>
+                </div>
+                
+                <!-- Right Side Actions -->
+                <div class="flex items-center space-x-4">
+                    <!-- User Menu or Auth Links -->
+                    {% if current_user.is_authenticated %}
+                        <!-- Desktop User Dropdown - Hidden on mobile -->
+                        <div class="dropdown-container hidden sm:block" id="user-dropdown">
+                            <button class="flex items-center space-x-2 rounded-full p-1 text-gray-800 hover:text-secondary-600 focus-ring" aria-expanded="false" aria-haspopup="true" aria-controls="user-dropdown-menu">
+                                <span class="avatar-circle h-10 w-10">
+                                    <span class="text-sm">{{ current_user.name[0].upper() }}</span>
+                                </span>
+                                <span class="hidden md:block font-medium text-sm">{{ current_user.name | title }}</span>
+                                <i class="fas fa-chevron-down text-xs"></i>
+                            </button>
+                            
+                            <!-- Dropdown Menu -->
+                            <div id="user-dropdown-menu" class="dropdown-menu" role="menu" aria-labelledby="user-dropdown-button">
+                                <div class="dropdown-menu-inner">
+                                    {% if request.path != url_for('dashboard') %}
+                                    <a href="{{ url_for('dashboard') }}" class="dropdown-item" role="menuitem">
+                                        <i class="fas fa-tachometer-alt w-5 mr-2"></i> Dashboard
+                                    </a>
+                                    {% endif %}
+                                    {% if request.path != url_for('subscription.user_subscriptions') %}
+                                    <a href="{{ url_for('subscription.user_subscriptions') }}" class="dropdown-item" role="menuitem">
+                                        <i class="fas fa-crown w-5 mr-2"></i> Subscription
+                                    </a>
+                                    {% endif %}
+                                    {% if request.path != url_for('profile') %}
+                                    <a href="{{ url_for('profile') }}" class="dropdown-item" role="menuitem">
+                                        <i class="fas fa-user w-5 mr-2"></i> Profile
+                                    </a>
+                                    {% endif %}
+                                    <div class="dropdown-divider"></div>
+                                    <a href="{{ url_for('logout') }}" class="dropdown-item danger" role="menuitem">
+                                        <i class="fas fa-sign-out-alt w-5 mr-2"></i> Logout
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <!-- Auth Links -->
+                        <!-- Login and Sign Up buttons visible only on desktop -->
+                        <div class="hidden sm:flex items-center space-x-2">
+                            <a href="{{ url_for('login') }}" class="btn btn-outline text-gray-700 hover:bg-gray-50 hover:text-secondary-700 focus:ring focus:ring-secondary-200">Login</a>
+                            <a href="{{ url_for('signup') }}" class="btn btn-primary bg-secondary-600 text-white hover:bg-secondary-700 focus:ring focus:ring-secondary-200">Sign Up</a>
+                        </div>
+                    {% endif %}
+                    
+                    <!-- Mobile Menu Button -->
+                    <button id="mobile-menu-button" class="sm:hidden p-2 rounded-md text-gray-800 hover:text-secondary-600 focus:ring focus:ring-secondary-200">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+
+        <!-- Mobile Menu -->
+        <div class="mobile-menu sm:hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="#features" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-secondary-700">
+                    <i class="fas fa-star w-5 mr-2"></i>Features
+                </a>
+                <a href="#how-it-works" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-secondary-700">
+                    <i class="fas fa-tasks w-5 mr-2"></i>How It Works
+                </a>
+                <a href="#qr-types" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-secondary-700">
+                    <i class="fas fa-qrcode w-5 mr-2"></i>QR Types
+                </a>
+                <a href="{{ url_for('about') }}" target="_blank" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-secondary-700">
+                    <i class="fas fa-info-circle w-5 mr-2"></i>About Us
+                </a>
+                <a href="{{ url_for('contact') }}" target="_blank" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-secondary-700">
+                    <i class="fas fa-envelope w-5 mr-2"></i>Contact Us
+                </a>
+
+                <!-- Mobile Services Dropdown -->
+                <div class="mobile-services-dropdown">
+                    <button id="mobile-services-btn" class="w-full flex items-center justify-between px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-secondary-700">
+                        <span><i class="fas fa-concierge-bell w-5 mr-2"></i>Our Services</span>
+                        <i class="fas fa-chevron-down text-xs transition-transform duration-300" id="mobile-services-chevron"></i>
+                    </button>
+                    <div id="mobile-services-menu" class="hidden pl-4 space-y-1 mt-1">
+                        <a href="{{ url_for('service_qr_url') }}" class="block px-3 py-2 rounded-md text-sm text-gray-600 hover:bg-gray-50 hover:text-secondary-700">
+                            <i class="fas fa-link w-4 mr-2"></i>QR Code for URL
+                        </a>
+                        <a href="{{ url_for('service_qr_email') }}" class="block px-3 py-2 rounded-md text-sm text-gray-600 hover:bg-gray-50 hover:text-secondary-700">
+                            <i class="fas fa-envelope w-4 mr-2"></i>QR Code for Email
+                        </a>
+                        <a href="{{ url_for('service_qr_wifi') }}" class="block px-3 py-2 rounded-md text-sm text-gray-600 hover:bg-gray-50 hover:text-secondary-700">
+                            <i class="fas fa-wifi w-4 mr-2"></i>QR Code for WiFi
+                        </a>
+                        <a href="{{ url_for('service_qr_sms') }}" class="block px-3 py-2 rounded-md text-sm text-gray-600 hover:bg-gray-50 hover:text-secondary-700">
+                            <i class="fas fa-comment w-4 mr-2"></i>QR Code for SMS
+                        </a>
+                        <a href="{{ url_for('service_qr_event') }}" class="block px-3 py-2 rounded-md text-sm text-gray-600 hover:bg-gray-50 hover:text-secondary-700">
+                            <i class="fas fa-calendar w-4 mr-2"></i>QR Code for Event
+                        </a>
+                        <a href="{{ url_for('service_qr_call') }}" class="block px-3 py-2 rounded-md text-sm text-gray-600 hover:bg-gray-50 hover:text-secondary-700">
+                            <i class="fas fa-phone w-4 mr-2"></i>QR Code for Call
+                        </a>
+                        <a href="{{ url_for('service_qr_whatsapp') }}" class="block px-3 py-2 rounded-md text-sm text-gray-600 hover:bg-gray-50 hover:text-secondary-700">
+                            <i class="fab fa-whatsapp w-4 mr-2"></i>QR Code for WhatsApp
+                        </a>
+                        <a href="{{ url_for('service_qr_vcard') }}" class="block px-3 py-2 rounded-md text-sm text-gray-600 hover:bg-gray-50 hover:text-secondary-700">
+                            <i class="fas fa-address-card w-4 mr-2"></i>QR Code for vCard
+                        </a>
+                        <a href="{{ url_for('service_qr_text') }}" class="block px-3 py-2 rounded-md text-sm text-gray-600 hover:bg-gray-50 hover:text-secondary-700">
+                            <i class="fas fa-font w-4 mr-2"></i>QR Code for Text
+                        </a>
+                    </div>
+                </div>
+
+                <a href="{{ url_for('public_blogs') }}" class="mobile-menu-item block py-3 px-4 text-gray-700 hover:bg-gray-100 rounded-lg font-medium transition-colors">
+                    <i class="fas fa-blog mr-3 text-primary"></i>Blog
+                </a>
+                <!-- <a href="{{ url_for('public_webstories') }}" class="mobile-menu-item block py-3 px-4 text-gray-700 hover:bg-gray-100 rounded-lg font-medium transition-colors">
+                    <i class="fas fa-blog mr-3 text-primary"></i>Web Stories
+                </a>
+                 -->
+                {% if current_user.is_authenticated %}
+                    <!-- User info section in mobile menu -->
+                    <div class="px-3 py-2 border-t border-gray-200 mt-2 pt-2">
+                        <div class="flex items-center space-x-3 mb-2">
+                            <span class="avatar-circle h-8 w-8">
+                                <span class="text-xs">{{ current_user.name[0].upper() }}</span>
+                            </span>
+                            <span class="font-medium text-gray-900">{{ current_user.name | title }}</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Navigation items for authenticated users -->
+                    <a href="{{ url_for('dashboard') }}" class="block px-3 py-2 rounded-md text-base font-medium {% if request.path == url_for('dashboard') %}bg-secondary-50 text-secondary-700{% else %}text-gray-700 hover:bg-gray-50 hover:text-secondary-700{% endif %}">
+                        <i class="fas fa-tachometer-alt w-5 mr-2"></i>Dashboard
+                    </a>
+                    <a href="{{ url_for('create_qr') }}" class="block px-3 py-2 rounded-md text-base font-medium {% if request.path == url_for('create_qr') %}bg-secondary-50 text-secondary-700{% else %}text-gray-700 hover:bg-gray-50 hover:text-secondary-700{% endif %}">
+                        <i class="fas fa-plus-circle w-5 mr-2"></i>Create QR
+                    </a>
+                    <a href="{{ url_for('user_analytics') }}" class="block px-3 py-2 rounded-md text-base font-medium {% if request.path == url_for('user_analytics') %}bg-secondary-50 text-secondary-700{% else %}text-gray-700 hover:bg-gray-50 hover:text-secondary-700{% endif %}">
+                        <i class="fas fa-chart-bar w-5 mr-2"></i>Analytics
+                    </a>
+                    <a href="{{ url_for('subscription.user_subscriptions') }}" class="block px-3 py-2 rounded-md text-base font-medium {% if request.path == url_for('subscription.user_subscriptions') %}bg-secondary-50 text-secondary-700{% else %}text-gray-700 hover:bg-gray-50 hover:text-secondary-700{% endif %}">
+                        <i class="fas fa-crown w-5 mr-2"></i>Subscription
+                    </a>
+                    <a href="{{ url_for('profile') }}" class="block px-3 py-2 rounded-md text-base font-medium {% if request.path == url_for('profile') %}bg-secondary-50 text-secondary-700{% else %}text-gray-700 hover:bg-gray-50 hover:text-secondary-700{% endif %}">
+                        <i class="fas fa-user w-5 mr-2"></i>Profile
+                    </a>
+                    
+                    <div class="border-t border-gray-200 my-2"></div>
+                    <a href="{{ url_for('logout') }}" class="block px-3 py-2 rounded-md text-base font-medium text-red-600 hover:bg-red-50 hover:text-red-700">
+                        <i class="fas fa-sign-out-alt w-5 mr-2"></i>Logout
+                    </a>
+                {% else %}
+                    <!-- Auth links for non-authenticated users in mobile menu -->
+                    <a href="{{ url_for('help_center') }}" class="block px-3 py-2 rounded-md text-base font-medium {% if request.path == url_for('help_center') %}bg-secondary-50 text-secondary-700{% else %}text-gray-700 hover:bg-gray-50 hover:text-secondary-700{% endif %}">
+                        <i class="fas fa-question-circle w-5 mr-2"></i>Help
+                    </a>
+                    <div class="border-t border-gray-200 my-2"></div>
+                    <a href="{{ url_for('login') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-secondary-700">Login</a>
+                    <a href="{{ url_for('signup') }}" class="block px-3 py-2 rounded-md text-base font-medium bg-secondary-600 text-white hover:bg-secondary-700">Sign Up</a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content flex-grow fade-in">
+        <!-- Hero Section -->
+        <section class="relative py-16 md:py-24 overflow-hidden">
+            <div class="absolute inset-0 z-0 qr-pattern"></div>
+            <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div class="hero-content space-y-8" data-aos="fade-right" data-aos-duration="1000">
+                        <div class="inline-block mb-2">
+                            <span class="badge badge-primary">The Ultimate QR Solution</span>
+                        </div>
+                        <h1 class="hero-title text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight">
+                            Stunning<span class="bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-secondary-600"> QR code Generator</span> 
+                        </h1>
+                        <p class="text-xl text-gray-600 leading-relaxed" data-aos="fade-up" data-aos-delay="100" data-aos-duration="1000">
+                             QR Dada gives you the power to design beautiful, customizable QR codes that capture attention and drive engagement using the best tools, similar to a QR code maker and online QR code generator.
+
+                        </p>
+                        <div class="flex flex-wrap gap-4 pt-2" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
+                            {% if current_user.is_authenticated %}
+                                <a href="{{ url_for('dashboard') }}" class="px-6 py-3 bg-secondary-600 hover:bg-secondary-700 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 flex items-center space-x-2 font-medium transform hover:-translate-y-1">
+                                    <i class="fas fa-tachometer-alt"></i>
+                                    <span>Go to Dashboard</span>
+                                </a>
+                                <a href="{{ url_for('create_qr') }}" class="px-6 py-3 bg-white hover:bg-gray-50 text-gray-800 border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 flex items-center space-x-2 font-medium transform hover:-translate-y-1">
+                                    <i class="fas fa-qrcode"></i>
+                                    <span>Create QR Code</span>
+                                </a>
+                            {% else %}
+                                <a href="{{ url_for('signup') }}" class="px-6 py-3 bg-secondary-600 hover:bg-secondary-700 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 flex items-center space-x-2 font-medium transform hover:-translate-y-1">
+                                    <i class="fas fa-user-plus"></i>
+                                    <span>Sign Up Free</span>
+                                </a>
+                                <a href="{{ url_for('login') }}" class="px-6 py-3 bg-white hover:bg-gray-50 text-gray-800 border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 flex items-center space-x-2 font-medium transform hover:-translate-y-1">
+                                    <i class="fas fa-sign-in-alt"></i>
+                                    <span>Login</span>
+                                </a>
+                            {% endif %}
+                        </div>
+                        <div class="hidden md:flex items-center pt-8" data-aos="fade-up" data-aos-delay="300">
+                            <span class="text-sm font-medium text-secondary-600" >Scroll to explore</span>
+                            <i class="fas fa-chevron-down ml-2 text-secondary-500 scroll-indicator"></i>
+                        </div>
+                    </div>
+                    <div class="flex justify-center" data-aos="zoom-in" data-aos-duration="1000">
+                        <div class="qr-container">
+                            <div class="animate-float">
+                                <div class="absolute inset-0 bg-gradient-to-br from-primary-500/20 to-secondary-600/20 rounded-3xl blur-xl"></div>
+                                <div class="relative bg-white shadow-xl rounded-3xl p-4 sm:p-6 h-64 w-64 sm:h-72 sm:w-72 md:h-80 md:w-80 flex items-center justify-center overflow-hidden">
+                                    <div class="animate-qr w-full h-full rounded-2xl">
+                                        <div id="interactive-qr-grid" class="qr-grid w-full h-full"></div>
+                                    </div>
+                                </div>
+                                <div class="qr-icon w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-gradient-to-br from-primary-500 to-secondary-600 rounded-2xl flex items-center justify-center text-white text-3xl sm:text-4xl shadow-lg">
+                                    <i class="fas fa-qrcode"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Animated stats row -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 mt-16 md:mt-24" data-aos="fade-up" data-aos-delay="400">
+                    <div class="bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-sm border border-gray-100">
+                        <div class="text-4xl font-bold text-secondary-600 mb-1">30K+</div>
+                        <div class="text-gray-600 text-sm">Active Users</div>
+                    </div>
+                    <div class="bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-sm border border-gray-100">
+                        <div class="text-4xl font-bold text-secondary-600 mb-1">5M+</div>
+                        <div class="text-gray-600 text-sm">QR Codes Created</div>
+                    </div>
+                    <div class="bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-sm border border-gray-100">
+                        <div class="text-4xl font-bold text-secondary-600 mb-1">98%</div>
+                        <div class="text-gray-600 text-sm">Customer Satisfaction</div>
+                    </div>
+                    <div class="bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-sm border border-gray-100">
+                        <div class="text-4xl font-bold text-secondary-600 mb-1">15+</div>
+                        <div class="text-gray-600 text-sm">QR Types</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Wave divider -->
+        <div class="wave-divider">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none">
+                <path fill="#ffffff" fill-opacity="1" d="M0,192L48,197.3C96,203,192,213,288,229.3C384,245,480,267,576,250.7C672,235,768,181,864,181.3C960,181,1056,235,1152,234.7C1248,235,1344,181,1392,154.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+            </svg>
+        </div>
+
+        <!-- Features Section -->
+        <section id="features" class="py-16 md:py-24 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16" data-aos="fade-up" data-aos-duration="1000">
+                    <span class="badge badge-primary mb-4">Powerful Features</span>
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Designed for the future</h2>
+                    <p class="text-xl text-gray-600 max-w-3xl mx-auto">Our advanced qr code generator online offers features you won't find anywhere else, making it perfect for anyone wanting to create qr code for business, marketing, or personal use.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 feature-grid">
+                    <!-- Feature 1 -->
+                    <div class="feature-card bg-gradient-subtle p-8 shadow-sm tilt-on-hover" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <div class="w-16 h-16 bg-primary-100 rounded-2xl text-primary-600 flex items-center justify-center mb-6 feature-icon">
+                            <i class="fas fa-paint-brush text-2xl text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">Custom Styling</h3>
+                        <p class="text-gray-600">Create unique QR codes with custom colors, shapes, and frames that match your brand identity perfectly—ideal if you're looking for a custom qr code or even a unique qr code generator.</p>
+                        <a href="{{ url_for('help_center') }}#customization" class="mt-4 text-primary-600 flex items-center font-medium group cursor-pointer focus:outline-none focus:ring-0">
+                            <span>Learn more</span>
+                            <i class="fas fa-arrow-right ml-2 transition-transform group-hover:translate-x-1"></i>
+                        </a>
+
+                    </div>
+                    
+                    <!-- Feature 2 -->
+                    <div class="feature-card bg-gradient-subtle p-8 shadow-sm tilt-on-hover" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
+                        <div class="w-16 h-16 bg-secondary-100 rounded-2xl text-secondary-600 flex items-center justify-center mb-6 feature-icon">
+                            <i class="fas fa-chart-line text-2xl text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">Advanced Analytics</h3>
+                        <p class="text-gray-600">Track scans, monitor user engagement, and optimize your QR code performance with detailed insights.</p>
+                        <a href="{{ url_for('help_center') }}#analytics" class="mt-4 text-primary-600 flex items-center font-medium group cursor-pointer focus:outline-none focus:ring-0">
+                            <span>Learn more</span>
+                            <i class="fas fa-arrow-right ml-2 transition-transform group-hover:translate-x-1"></i>
+                        </a>
+                    </div>
+                    
+                    <!-- Feature 3 -->
+                    <div class="feature-card bg-gradient-subtle p-8 shadow-sm tilt-on-hover" data-aos="fade-up" data-aos-duration="800" data-aos-delay="300">
+                        <div class="w-16 h-16 bg-green-100 rounded-2xl text-green-600 flex items-center justify-center mb-6 feature-icon">
+                            <i class="fas fa-magic text-2xl text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">Dynamic Content</h3>
+                        <p class="text-gray-600">Update your QR code content anytime without changing the code itself — perfect for evolving campaigns using a best qr code generator.</p>
+                        <a href="{{ url_for('help_center') }}#dynamic-qr" class="mt-4 text-primary-600 flex items-center font-medium group cursor-pointer focus:outline-none focus:ring-0">
+                            <span>Learn more</span>
+                            <i class="fas fa-arrow-right ml-2 transition-transform group-hover:translate-x-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Types Section with improved layout -->
+        <section id="qr-types" class="py-16 md:py-24 bg-gray-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16" data-aos="fade-up" data-aos-duration="1000">
+                    <span class="badge badge-primary mb-4">Versatile Solutions</span>
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Create QR codes for anything</h2>
+                    <p class="text-xl text-gray-600 max-w-3xl mx-auto">From simple links to complex data, QR Dada handles it all with style. It works seamlessly as a link to qr code generator, qr code generator for website, or even niche needs like a whatsapp qr code generator or location qr code generator.</p>
+                </div>
+                
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-6 qr-types-grid">
+                    <div class="qr-type-card bg-white rounded-xl p-5 shadow-sm" data-aos="flip-left" data-aos-duration="800" data-aos-delay="100">
+                        <div class="text-primary-500 text-3xl mb-3 transition-all duration-300 group-hover:scale-110"><i class="fas fa-link"></i></div>
+                        <h3 class="text-lg font-bold text-gray-900">URL</h3>
+                        <p class="text-gray-600 text-sm mt-1">Direct users to any website</p>
+                    </div>
+                    
+                    <div class="qr-type-card bg-white rounded-xl p-5 shadow-sm" data-aos="flip-left" data-aos-duration="800" data-aos-delay="150">
+                        <div class="text-primary-500 text-3xl mb-3"><i class="fas fa-envelope"></i></div>
+                        <h3 class="text-lg font-bold text-gray-900">Email</h3>
+                        <p class="text-gray-600 text-sm mt-1">Create email with pre-filled content</p>
+                    </div>
+                    
+                    <div class="qr-type-card bg-white rounded-xl p-5 shadow-sm" data-aos="flip-left" data-aos-duration="800" data-aos-delay="200">
+                        <div class="text-primary-500 text-3xl mb-3"><i class="fas fa-wifi"></i></div>
+                        <h3 class="text-lg font-bold text-gray-900">WiFi</h3>
+                        <p class="text-gray-600 text-sm mt-1">Connect to networks easily</p>
+                    </div>
+                    
+                    <div class="qr-type-card bg-white rounded-xl p-5 shadow-sm" data-aos="flip-left" data-aos-duration="800" data-aos-delay="250">
+                        <div class="text-primary-500 text-3xl mb-3"><i class="fas fa-phone"></i></div>
+                        <h3 class="text-lg font-bold text-gray-900">Call</h3>
+                        <p class="text-gray-600 text-sm mt-1">Dial phone numbers directly</p>
+                    </div>
+                    
+                    <div class="qr-type-card bg-white rounded-xl p-5 shadow-sm" data-aos="flip-left" data-aos-duration="800" data-aos-delay="300">
+                        <div class="text-primary-500 text-3xl mb-3"><i class="fas fa-comment"></i></div>
+                        <h3 class="text-lg font-bold text-gray-900">SMS</h3>
+                        <p class="text-gray-600 text-sm mt-1">Send text messages quickly</p>
+                    </div>
+                    
+                    <div class="qr-type-card bg-white rounded-xl p-5 shadow-sm" data-aos="flip-left" data-aos-duration="800" data-aos-delay="350">
+                        <div class="text-primary-500 text-3xl mb-3"><i class="fab fa-whatsapp"></i></div>
+                        <h3 class="text-lg font-bold text-gray-900">WhatsApp</h3>
+                        <p class="text-gray-600 text-sm mt-1">Start WhatsApp conversations</p>
+                    </div>
+                    
+                    <div class="qr-type-card bg-white rounded-xl p-5 shadow-sm" data-aos="flip-left" data-aos-duration="800" data-aos-delay="400">
+                        <div class="text-primary-500 text-3xl mb-3"><i class="fas fa-address-card"></i></div>
+                        <h3 class="text-lg font-bold text-gray-900">vCard</h3>
+                        <p class="text-gray-600 text-sm mt-1">Share contact information</p>
+                    </div>
+                    
+                    <div class="qr-type-card bg-white rounded-xl p-5 shadow-sm" data-aos="flip-left" data-aos-duration="800" data-aos-delay="450">
+                        <div class="text-primary-500 text-3xl mb-3"><i class="fas fa-calendar"></i></div>
+                        <h3 class="text-lg font-bold text-gray-900">Event</h3>
+                        <p class="text-gray-600 text-sm mt-1">Share event details & dates</p>
+                    </div>
+                </div>
+                
+                <!-- View all types button -->
+                <!-- <div class="text-center mt-10" data-aos="fade-up" data-aos-delay="500">
+                    <a href="{{ url_for('create_qr') }}" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-secondary-600 hover:bg-secondary-700 transition-all duration-200 transform hover:-translate-y-1">
+                        <span>View All QR Types</span>
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div> -->
+            </div>
+        </section>
+
+        <!-- Enhanced CTA Section -->
+        <section class="relative overflow-hidden">
+            <div class="absolute inset-0 gradient-bg"></div>
+            <div class="relative py-20 md:py-32 text-white" data-aos="fade" data-aos-duration="1500">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center cta-container">
+                    <!-- Floating elements for visual appeal -->
+                    <div class="absolute top-10 left-10 w-20 h-20 bg-white/10 rounded-full blur-2xl"></div>
+                    <div class="absolute bottom-10 right-10 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+                    
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6 leading-tight" data-aos="zoom-in" data-aos-duration="1000">
+                        Ready to create amazing QR codes?
+                    </h2>
+                    <p class="text-xl opacity-90 max-w-3xl mx-auto mb-10" data-aos="zoom-in" data-aos-delay="100" data-aos-duration="1000">
+                        Join thousands of users who are already using QR Dada to engage their audience with beautiful, functional QR codes, trusted as one of the best qr code generator solutions online.
+                    </p>
+                    <div class="flex flex-wrap justify-center gap-4" data-aos="zoom-in" data-aos-delay="200" data-aos-duration="1000">
+                        {% if current_user.is_authenticated %}
+                            <a href="{{ url_for('create_qr') }}" class="px-8 py-4 bg-white text-secondary-700 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 font-medium text-lg transform hover:-translate-y-1 hover:scale-105">
+                                Start Creating QR
+                            </a>
+                        {% else %}
+                            <a href="{{ url_for('signup') }}" class="px-8 py-4 bg-white text-secondary-700 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 font-medium text-lg transform hover:-translate-y-1 hover:scale-105">
+                                Start Creating QR
+                            </a>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Social proof section -->
+                    <div class="mt-16 text-center" data-aos="fade-up" data-aos-delay="300">
+                        <p class="text-white/80 mb-6 text-lg font-medium">
+                            Trusted by innovative companies worldwide
+                        </p>
+                        <div class="flex flex-wrap justify-center gap-10 items-center opacity-90">
+                            <div class="h-16 w-auto">
+                            <img src="{{ url_for('static', filename='images/Artboard 1.png') }}" alt="Brand 1" class="h-16 w-auto object-contain hover:scale-105 transition-transform duration-300">
+                            </div>
+                            <div class="h-16 w-auto">
+                            <img src="{{ url_for('static', filename='images/Artboard 2.png') }}" alt="Brand 2" class="h-16 w-auto object-contain hover:scale-105 transition-transform duration-300">
+                            </div>
+                            <div class="h-16 w-auto">
+                            <img src="{{ url_for('static', filename='images/Artboard 7.png') }}" alt="Brand 3" class="h-16 w-auto object-contain hover:scale-105 transition-transform duration-300">
+                            </div>
+                            <div class="h-16 w-auto">
+                            <img src="{{ url_for('static', filename='images/Artboard 4.png') }}" alt="Brand 4" class="h-16 w-auto object-contain hover:scale-105 transition-transform duration-300">
+                            </div>
+                        </div>
+                        </div>
+
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Improved How It Works -->
+        <section id="how-it-works" class="py-16 md:py-24 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16" data-aos="fade-up" data-aos-duration="1000">
+                    <span class="badge badge-primary mb-4">Simple Process</span>
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">How QR Dada Works</h2>
+                    <p class="text-xl text-gray-600 max-w-3xl mx-auto">Create and manage QR codes in just a few simple steps using our effortless online qr code generator.</p>
+                </div>
+                
+                <div class="relative">
+                    <!-- Connection Line -->
+                    <div class="absolute top-1/3 left-0 right-0 h-1 bg-secondary-100 hidden md:block connection-line" data-aos="fade-right" data-aos-duration="1500" data-aos-delay="500"></div>
+                    
+                    <!-- Steps -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-12 steps-container">
+                        <!-- Step 1 -->
+                        <div class="relative" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="100">
+                            <div class="relative z-10 flex justify-center mb-6">
+                                <div class="step-indicator w-16 h-16 flex items-center justify-center rounded-full bg-primary-600 text-white text-xl font-bold shadow-lg">1</div>
+                            </div>
+                            <div class="bg-white rounded-xl p-8 text-center shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                                <div class="w-16 h-16 mx-auto mb-4 text-primary-500 text-3xl">
+                                    <i class="fas fa-list-ol"></i>
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-900 mb-3">Choose QR Type</h3>
+                                <p class="text-gray-600">Select from URL, text, WiFi, contact, and many more content types for your QR code.</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 2 -->
+                        <div class="relative" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
+                            <div class="relative z-10 flex justify-center mb-6">
+                                <div class="step-indicator w-16 h-16 flex items-center justify-center rounded-full bg-primary-600 text-white text-xl font-bold shadow-lg">2</div>
+                            </div>
+                            <div class="bg-white rounded-xl p-8 text-center shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                                <div class="w-16 h-16 mx-auto mb-4 text-primary-500 text-3xl">
+                                    <i class="fas fa-palette"></i>
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-900 mb-3">Customize Design</h3>
+                                <p class="text-gray-600">Personalize colors, shapes, and add logos to make your QR code uniquely yours.</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 3 -->
+                        <div class="relative" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
+                            <div class="relative z-10 flex justify-center mb-6">
+                                <div class="step-indicator w-16 h-16 flex items-center justify-center rounded-full bg-primary-600 text-white text-xl font-bold shadow-lg">3</div>
+                            </div>
+                            <div class="bg-white rounded-xl p-8 text-center shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                                <div class="w-16 h-16 mx-auto mb-4 text-primary-500 text-3xl">
+                                    <i class="fas fa-download"></i>
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-900 mb-3">Download & Share</h3>
+                                <p class="text-gray-600">Get your QR code in multiple formats and track detailed performance analytics.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Improved Testimonials -->
+        <section id="testimonials" class="py-16 md:py-24 bg-gray-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16" data-aos="fade-up" data-aos-duration="1000">
+                    <span class="badge badge-primary mb-4">Customer Stories</span>
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">What Our Users Say</h2>
+                    <p class="text-xl text-gray-600 max-w-3xl mx-auto">Join thousands of satisfied users worldwide.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 testimonial-grid">
+                    <!-- Testimonial 1 -->
+                    <div class="testimonial-card bg-white rounded-xl p-8 shadow-md" data-aos="fade-right" data-aos-duration="1000" data-aos-delay="100">
+                        <div class="flex items-center mb-4">
+                            <div class="text-secondary-500">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 mb-6">“We used QR Dada to create a QR code for our bus ads. It looked bold, matched our design, and was easy for people to scan on the go. We noticed more visitors on our website soon after the campaign started.”</p>
+                        <div class="flex items-center mt-auto">
+                           <img src="static/images/Artboard 7.png" class="w-10 sm:w-12 h-10 sm:h-12 rounded-full mr-3 sm:mr-4" alt="Testimonial Author">
+                            <div class="ml-3">
+                                <h4 class="text-base font-bold text-gray-900">Komaki</h4>
+                                <p class="text-sm text-gray-500">Marketing Team</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Testimonial 2 -->
+                    <div class="testimonial-card bg-white rounded-xl p-8 shadow-md" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
+                        <div class="flex items-center mb-4">
+                            <div class="text-secondary-500">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 mb-6">“QR Dada made it very easy for students to access our application form. Instead of typing long links, they just scan the QR code and fill it out. It works smoothly and saves everyone time. We also like that we can track how many people scanned it.”</p>
+                        <div class="flex items-center mt-auto">
+                            <img src="static/images/Artboard 2.png" class="w-10 sm:w-12 h-10 sm:h-12 rounded-full mr-3 sm:mr-4" alt="Testimonial Author">
+                            <div class="ml-3">
+                                <h4 class="text-base font-bold text-gray-900">SRM</h4>
+                                <p class="text-sm text-gray-500"> Admissions Team</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Testimonial 3 -->
+                    <div class="testimonial-card bg-white rounded-xl p-8 shadow-md" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="300">
+                        <div class="flex items-center mb-4">
+                            <div class="text-secondary-500">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 mb-6">“We used QR Dada to create a QR code for our website link. It was quick, simple, and looked amazing with our logo and brand colors. People found it easy to scan, and we now use it on all our flyers and social media posts.”</p>
+                        <div class="flex items-center mt-auto">
+                            <img src="static/images/Artboard 4.png" class="w-10 sm:w-12 h-10 sm:h-12 rounded-full mr-3 sm:mr-4" alt="Testimonial Author">
+                            <div class="ml-3">
+                                <h4 class="text-base font-bold text-gray-900">SGR 777 </h4>
+                                <p class="text-sm text-gray-500">Marketing Team</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial navigation -->
+                <!-- <div class="flex justify-center mt-10 space-x-2" data-aos="fade-up" data-aos-delay="400">
+                    <button class="w-3 h-3 rounded-full bg-secondary-600"></button>
+                    <button class="w-3 h-3 rounded-full bg-gray-300"></button>
+                    <button class="w-3 h-3 rounded-full bg-gray-300"></button>
+                </div> -->
+            </div>
+        </section>
+
+        <!-- New FAQ Section -->
+        <section class="py-16 md:py-24 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16" data-aos="fade-up" data-aos-duration="1000">
+                    <span class="badge badge-primary mb-4">Common Questions</span>
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
+                    <p class="text-xl text-gray-600 max-w-3xl mx-auto">Everything you need to know about QR Dada.</p>
+                </div>
+                
+                <div class="max-w-4xl mx-auto" data-aos="fade-up" data-aos-delay="200">
+                    <div class="space-y-6">
+                        <!-- FAQ Item 1 -->
+                        <div class="bg-gray-50 rounded-xl p-6 shadow-sm">
+                            <div class="flex justify-between items-center cursor-pointer">
+                                <h3 class="text-lg font-bold text-gray-900">What's the difference between static and dynamic QR codes?</h3>
+                                <i class="fas fa-chevron-down text-gray-500"></i>
+                            </div>
+                            <div class="mt-4 text-gray-600">
+                                Static QR codes have fixed content that cannot be changed after creation. Dynamic QR codes can be edited anytime without changing the QR code itself, and they also provide scan tracking and analytics.
+
+                            </div>
+                        </div>
+                        
+                        <!-- FAQ Item 2 -->
+                        <div class="bg-gray-50 rounded-xl p-6 shadow-sm">
+                            <div class="flex justify-between items-center cursor-pointer">
+                                <h3 class="text-lg font-bold text-gray-900">Can I change my QR code after creating it?</h3>
+                                <i class="fas fa-chevron-down text-gray-500"></i>
+                            </div>
+                            <div class="mt-4 text-gray-600" style="display: none;">
+                                Yes! QR Dada offers dynamic QR codes that allow you to update the destination URL or content without needing to reprint or redistribute the QR code—perfect for those who want to create qr code once and update it anytime.
+                            </div>
+                        </div>
+                        
+                        <!-- FAQ Item 3 -->
+                        <div class="bg-gray-50 rounded-xl p-6 shadow-sm">
+                            <div class="flex justify-between items-center cursor-pointer">
+                                <h3 class="text-lg font-bold text-gray-900">What stats can I see for my QR codes?</h3>
+                                <i class="fas fa-chevron-down text-gray-500"></i>
+                            </div>
+                            <div class="mt-4 text-gray-600" style="display: none;">
+                                Our analytics dashboard shows scans over time, geographic locations, devices used, and user engagement metrics to help you measure campaign performance.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- <div class="text-center mt-10">
+                        <a href="#" class="text-secondary-600 font-medium flex items-center justify-center">
+                            <span>View all FAQs</span>
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div> -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+ 
+    <!-- Contact Footer -->
+    <footer class="bg-gray-900 text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Main Footer Content -->
+        <div class="py-16 md:py-20">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+            
+            <!-- Company Info -->
+            <div data-aos="fade-up" data-aos-duration="800">
+            <div class="flex items-center mb-6">
+                <div style="display: flex; align-items: center; justify-content: center;">
+                    <div style="background-color: white; padding: 8px 12px; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                        {% if website_settings and website_settings.website_logo_file %}
+                            <img src="{{ url_for('static', filename='uploads/' + website_settings.website_logo_file) }}"
+                                alt="{{ website_settings.website_name if website_settings and website_settings.website_name else 'QR Dada' }} Logo"
+                                style="height: 64px; width: auto; object-fit: contain;">
+                        {% else %}
+                            <img src="{{ url_for('static', filename='images/qr.png') }}"
+                                alt="QR Dada Logo"
+                                style="height: 64px; width: auto; object-fit: contain;">
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <p class="text-gray-300 mb-6 leading-relaxed">
+                Create stunning, customizable QR codes that capture attention and drive engagement. Your ultimate QR solution for modern businesses.
+            </p>
+            <div class="flex space-x-4">
+                <a href="#" class="w-10 h-10 bg-gray-800 hover:bg-primary-600 rounded-lg flex items-center justify-center transition group" aria-label="Twitter">
+                <i class="fab fa-twitter text-gray-300 group-hover:text-white"></i>
+                </a>
+                <a href="#" class="w-10 h-10 bg-gray-800 hover:bg-primary-600 rounded-lg flex items-center justify-center transition group" aria-label="Facebook">
+                <i class="fab fa-facebook-f text-gray-300 group-hover:text-white"></i>
+                </a>
+                <a href="#" class="w-10 h-10 bg-gray-800 hover:bg-primary-600 rounded-lg flex items-center justify-center transition group" aria-label="LinkedIn">
+                <i class="fab fa-linkedin-in text-gray-300 group-hover:text-white"></i>
+                </a>
+                <a href="#" class="w-10 h-10 bg-gray-800 hover:bg-primary-600 rounded-lg flex items-center justify-center transition group" aria-label="Instagram">
+                <i class="fab fa-instagram text-gray-300 group-hover:text-white"></i>
+                </a>
+            </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+            <h4 class="text-lg font-bold mb-6">Quick Links</h4>
+            <ul class="space-y-3">
+                {% if current_user.is_authenticated %}
+                    <li><a href="{{ url_for('dashboard') }}" class="footer-link">Dashboard</a></li>
+                    <li><a href="{{ url_for('create_qr') }}" class="footer-link">Create QR</a></li>
+                {% else %}
+                    <li><a href="{{url_for('signup')}}" class="footer-link">Sign Up</a></li>
+                    <li><a href="{{ url_for('login') }}" class="footer-link">Login</a></li>
+                {% endif %}
+                <li><a href="{{ url_for('public_blogs') }}" target="_blank" class="footer-link">Blog</a></li>
+                <li><a href="{{ url_for('public_webstories') }}" target="_blank" class="footer-link">Web Stories</a></li>
+                <li><a href="{{url_for('pricing')}}" target="_blank" class="footer-link">Pricing</a></li>
+            </ul>
+            </div>
+
+            <!-- Support -->
+            <div data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
+            <h4 class="text-lg font-bold mb-6">Support</h4>
+            <ul class="space-y-3">
+                <li><a href="{{ url_for('contact') }}" target="_blank" class="footer-link">Contact Us</a></li>
+                <li><a href="{{ url_for('help_center') }}" target="_blank" class="footer-link">Help center</a></li>
+                <li><a href="{{ url_for('about')}}" target="_blank" class="footer-link">About Us</a></li>
+               <!-- <li><a href="#" class="footer-link">System Status</a></li> --> 
+            </ul>
+            </div>
+
+            <!-- Contact & Newsletter -->
+            <div data-aos="fade-up" data-aos-duration="800" data-aos-delay="300">
+            <h4 class="text-lg font-bold mb-6">Get in Touch</h4>
+            
+            <!-- Contact Info -->
+            <div class="space-y-4 mb-8">
+                <div class="flex items-start space-x-3">
+                <div class="w-6 h-6 bg-primary-600 rounded-lg flex items-center justify-center mt-0.5">
+                    <i class="fas fa-envelope text-white text-xs"></i>
+                </div>
+                <div>
+                    <p class="text-gray-300 text-sm">Email</p>
+                    <a href="mailto:support@qrdada.com" class="text-white hover:text-primary-400 transition">support@qrdada.com</a>
+                </div>
+                </div>
+
+                <!-- <div class="flex items-start space-x-3">
+                <div class="w-6 h-6 bg-primary-600 rounded-lg flex items-center justify-center mt-0.5">
+                    <i class="fas fa-phone text-white text-xs"></i>
+                </div>
+                <div>
+                    <p class="text-gray-300 text-sm">Phone</p>
+                    <a href="tel:+1-555-123-4567" class="text-white hover:text-primary-400 transition">+1 (555) 123-4567</a>
+                </div>
+                </div> -->
+
+                <div class="flex items-start space-x-3">
+                <div class="w-6 h-6 bg-primary-600 rounded-lg flex items-center justify-center mt-0.5">
+                    <i class="fas fa-map-marker-alt text-white text-xs"></i>
+                </div>
+                <div>
+                    <p class="text-gray-300 text-sm">Address</p>
+                    <p class="text-white">Shyamala Towers, 3rd floor<br>
+                                                No. 136, Arcot Rd, Saligramam<br>
+                                                Chennai, Tamil Nadu 600092</p>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+
+        <!-- Bottom Footer -->
+        <div class="border-t border-gray-800 py-6">
+        <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            
+            <p class="text-gray-400 text-sm">&copy; 2025 QR Dada. All rights reserved.</p>
+
+            <div class="flex flex-wrap justify-center space-x-6 text-sm">
+            <a href="{{url_for('privacy')}}" target="_blank" class="text-gray-400 hover:text-white transition">Privacy</a>
+            <a href="{{ url_for('terms') }}" target="_blank" class="text-gray-400 hover:text-white transition">Terms</a>
+            <a href="{{ url_for('cookie_policy') }}" target="_blank" class="text-gray-400 hover:text-white transition">Cookies</a>   
+            <!-- <a href="#" class="text-gray-400 hover:text-white transition">Sitemap</a> -->
+            </div>
+
+            <div class="flex items-center space-x-4 text-xs text-gray-400">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-shield-alt text-green-500"></i>
+                <span>SSL Secured</span>
+            </div>
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-globe text-blue-500"></i>
+                <span>GDPR Compliant</span>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    </footer>
+
+
+
+
+
+    <!-- Scroll to Top Button -->
+    <button id="scrollToTopBtn" class="fixed bottom-8 right-8 z-50 w-12 h-12 bg-gradient-to-r from-primary-600 to-secondary-600 text-white rounded-full shadow-lg hover:shadow-xl transform hover:scale-110 transition-all duration-300 opacity-0 invisible flex items-center justify-center" title="Go to top">
+        <i class="fas fa-arrow-up text-lg"></i>
+    </button>
+
+    <!-- AOS Script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+
+    <!-- Common JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Enhanced toast notification system
+            const toasts = document.querySelectorAll('.toast');
+            toasts.forEach(toast => {
+                // Auto hide after 5 seconds
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    // Remove from DOM after animation completes
+                    setTimeout(() => toast.remove(), 500);
+                }, 5000);
+
+                // Add close button functionality
+                const closeButton = toast.querySelector('.close-btn');
+                if (closeButton) {
+                    closeButton.addEventListener('click', () => {
+                        toast.classList.remove('show');
+                        setTimeout(() => toast.remove(), 500);
+                    });
+                }
+            });
+
+            // User Dropdown (Hover + Click)
+            const userDropdown = document.getElementById('user-dropdown');
+            if (userDropdown) {
+                const dropdownButton = userDropdown.querySelector('button');
+                const dropdownMenu = document.getElementById('user-dropdown-menu');
+                const chevronIcon = dropdownButton.querySelector('i.fa-chevron-down');
+
+                function showUserDropdown() {
+                    dropdownMenu.classList.add('visible');
+                    dropdownButton.setAttribute('aria-expanded', 'true');
+                    if (chevronIcon) {
+                        chevronIcon.style.transform = 'rotate(180deg)';
+                    }
+                }
+
+                function hideUserDropdown() {
+                    dropdownMenu.classList.remove('visible');
+                    dropdownButton.setAttribute('aria-expanded', 'false');
+                    if (chevronIcon) {
+                        chevronIcon.style.transform = 'rotate(0deg)';
+                    }
+                }
+
+                // Show dropdown on hover
+                userDropdown.addEventListener('mouseenter', showUserDropdown);
+
+                // Hide dropdown when mouse leaves
+                userDropdown.addEventListener('mouseleave', hideUserDropdown);
+
+                // Toggle dropdown on click
+                dropdownButton.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    if (dropdownMenu.classList.contains('visible')) {
+                        hideUserDropdown();
+                    } else {
+                        showUserDropdown();
+                    }
+                });
+            }
+            
+    
+            // Mobile menu toggle with animation
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            mobileMenuButton.addEventListener('click', function() {
+                const expanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+                
+                if (expanded) {
+                    mobileMenu.classList.remove('visible');
+                    mobileMenuButton.setAttribute('aria-expanded', 'false');
+                } else {
+                    mobileMenu.classList.add('visible');
+                    mobileMenuButton.setAttribute('aria-expanded', 'true');
+                }
+            });
+            
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!mobileMenu.contains(event.target) && !mobileMenuButton.contains(event.target)) {
+                    mobileMenu.classList.remove('visible');
+                    mobileMenuButton.setAttribute('aria-expanded', 'false');
+                }
+            });
+
+            // Mobile services dropdown toggle
+            const mobileServicesBtn = document.getElementById('mobile-services-btn');
+            const mobileServicesMenu = document.getElementById('mobile-services-menu');
+            const mobileServicesChevron = document.getElementById('mobile-services-chevron');
+
+            if (mobileServicesBtn && mobileServicesMenu) {
+                mobileServicesBtn.addEventListener('click', function() {
+                    mobileServicesMenu.classList.toggle('hidden');
+                    if (mobileServicesChevron) {
+                        if (mobileServicesMenu.classList.contains('hidden')) {
+                            mobileServicesChevron.style.transform = 'rotate(0deg)';
+                        } else {
+                            mobileServicesChevron.style.transform = 'rotate(180deg)';
+                        }
+                    }
+                });
+            }
+
+            // Initialize AOS with improved settings
+            // Check for mobile device
+            const isMobile = window.innerWidth < 768;
+
+            // Configure AOS - Disable animations on desktop (width >= 768px)
+            AOS.init({
+                once: true,                            // Only animate once
+                mirror: false,                         // Disable mirror effect
+                duration: isMobile ? 800 : 1000,       // Shorter duration on mobile
+                easing: 'ease-out',                    // Less complex easing
+                delay: 0,                              // No delay
+                disable: function() {
+                    // Disable AOS on desktop (screen width >= 768px)
+                    return window.innerWidth >= 768;
+                },
+                throttleDelay: 99,                     // Reduce throttle delay
+                anchorPlacement: 'top-bottom'
+            });
+            
+            // Generate interactive QR grid with mobile optimizations
+            const qrGrid = document.getElementById('interactive-qr-grid');
+            if (qrGrid) {
+                // Clear existing content
+                qrGrid.innerHTML = '';
+                
+                // Configure grid size based on device
+                const gridSize = isMobile ? 6 : 10;
+                qrGrid.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
+                qrGrid.style.gridTemplateRows = `repeat(${gridSize}, 1fr)`;
+                
+                // Create QR pattern
+                for (let i = 0; i < gridSize; i++) {
+                    for (let j = 0; j < gridSize; j++) {
+                        const cell = document.createElement('div');
+                        cell.className = 'qr-cell';
+                        
+                        // Create fixed pattern (corners and center)
+                        if (
+                            // Top-left corner pattern
+                            (i < Math.ceil(gridSize * 0.3) && j < Math.ceil(gridSize * 0.3)) || 
+                            // Top-right corner pattern (if grid is big enough)
+                            (gridSize > 6 && i < Math.ceil(gridSize * 0.3) && j > gridSize - Math.ceil(gridSize * 0.3)) || 
+                            // Bottom-left corner pattern (if grid is big enough)
+                            (gridSize > 6 && i > gridSize - Math.ceil(gridSize * 0.3) && j < Math.ceil(gridSize * 0.3))
+                        ) {
+                            cell.classList.add('active');
+                        }
+                        
+                        qrGrid.appendChild(cell);
+                    }
+                }
+                
+                // Animate random cells - simplified for mobile
+                function animateRandomCells() {
+                    // Skip animation if not visible to save resources
+                    if (document.hidden) {
+                        setTimeout(animateRandomCells, 1500);
+                        return;
+                    }
+                    
+                    // Get non-active cells
+                    const inactiveCells = qrGrid.querySelectorAll('.qr-cell:not(.active)');
+                    if (inactiveCells.length === 0) return;
+                    
+                    // Select random cells to activate - fewer on mobile
+                    const cellsToActivate = isMobile ? 
+                        Math.floor(Math.random() * 3) + 2 : // 2-5 cells on mobile
+                        Math.floor(Math.random() * 8) + 5;  // 5-13 cells on desktop
+                    
+                    // Randomly select cells to animate
+                    const randomCells = Array.from(inactiveCells)
+                        .sort(() => 0.5 - Math.random())
+                        .slice(0, Math.min(cellsToActivate, inactiveCells.length));
+                    
+                    // Activate cells
+                    randomCells.forEach(cell => {
+                        cell.classList.add('active');
+                        
+                        // Deactivate after random time - shorter on mobile
+                        setTimeout(() => {
+                            if (cell) cell.classList.remove('active');
+                        }, isMobile ? (Math.random() * 1000 + 500) : (Math.random() * 2000 + 500));
+                    });
+                    
+                    // Schedule next animation - less frequent on mobile
+                    setTimeout(animateRandomCells, isMobile ? 1200 : 800);
+                }
+                
+                // Start animation with a small delay to allow page to settle
+                setTimeout(animateRandomCells, 500);
+            }
+            
+            // Optimize animations on smaller screens
+            if (isMobile) {
+                // Remove floating animations which can be jerky on mobile
+                document.querySelectorAll('.animate-float').forEach(el => {
+                    el.style.animation = 'none';
+                });
+                
+                // Adjust QR icon for better touch interaction
+                document.querySelectorAll('.qr-icon').forEach(el => {
+                    el.style.right = '-5px';
+                    el.style.bottom = '-5px';
+                });
+                
+                // Reduce animation complexity
+                document.querySelectorAll('.step-indicator::before').forEach(el => {
+                    el.style.animation = 'none';
+                });
+            }
+            
+            // Handle FAQ toggles
+            const faqItems = document.querySelectorAll('.bg-gray-50.rounded-xl');
+            faqItems.forEach(item => {
+                const header = item.querySelector('.flex.justify-between');
+                const content = item.querySelector('.mt-4');
+                const icon = item.querySelector('.fas.fa-chevron-down');
+                
+                // Initialize: show first item, hide others
+                if (item !== faqItems[0]) {
+                    content.style.display = 'none';
+                } else {
+                    icon.classList.add('transform', 'rotate-180');
+                }
+                
+                header.addEventListener('click', () => {
+                    // Toggle content visibility
+                    if (content.style.display === 'none') {
+                        content.style.display = 'block';
+                        icon.classList.add('transform', 'rotate-180');
+                    } else {
+                        content.style.display = 'none';
+                        icon.classList.remove('transform', 'rotate-180');
+                    }
+                });
+            });
+            
+            // Listen for orientation changes and adjust animations
+            window.addEventListener('orientationchange', function() {
+                // Refresh AOS on orientation change
+                setTimeout(function() {
+                    AOS.refresh();
+                }, 100);
+            });
+            
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
+                    // Skip empty hashes or non-section links
+                    if (href === '#' || href === '') return;
+                    
+                    const target = document.querySelector(href);
+                    if (target) {
+                        e.preventDefault();
+                        const headerOffset = 80; // Height of fixed header
+                        const elementPosition = target.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                        
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                        });
+                        
+                        // Close mobile menu if open
+                        const mobileMenu = document.getElementById('mobile-menu');
+                        const mobileMenuButton = document.getElementById('mobile-menu-button');
+                        if (mobileMenu && mobileMenu.classList.contains('visible')) {
+                            mobileMenu.classList.remove('visible');
+                            mobileMenuButton.setAttribute('aria-expanded', 'false');
+                        }
+                    }
+                });
+            });
+
+            // Services Dropdown Toggle (Hover + Click)
+            const servicesDropdownBtn = document.getElementById('services-dropdown-btn');
+            const servicesMenu = document.getElementById('services-menu');
+            const servicesDropdown = document.getElementById('services-dropdown');
+            const servicesChevron = document.getElementById('services-chevron');
+
+            if (servicesDropdown && servicesMenu) {
+                function showServicesDropdown() {
+                    servicesMenu.classList.remove('hidden');
+                    if (servicesChevron) {
+                        servicesChevron.style.transform = 'rotate(180deg)';
+                    }
+                }
+
+                function hideServicesDropdown() {
+                    servicesMenu.classList.add('hidden');
+                    if (servicesChevron) {
+                        servicesChevron.style.transform = 'rotate(0deg)';
+                    }
+                }
+
+                // Show dropdown on hover
+                servicesDropdown.addEventListener('mouseenter', showServicesDropdown);
+
+                // Hide dropdown when mouse leaves
+                servicesDropdown.addEventListener('mouseleave', hideServicesDropdown);
+
+                // Toggle dropdown on click
+                if (servicesDropdownBtn) {
+                    servicesDropdownBtn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        if (servicesMenu.classList.contains('hidden')) {
+                            showServicesDropdown();
+                        } else {
+                            hideServicesDropdown();
+                        }
+                    });
+                }
+            }
+        });
+
+        // Scroll to Top Button
+        const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+        if (scrollToTopBtn) {
+            // Show/hide button based on scroll position
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    scrollToTopBtn.classList.remove('opacity-0', 'invisible');
+                    scrollToTopBtn.classList.add('opacity-100', 'visible');
+                } else {
+                    scrollToTopBtn.classList.remove('opacity-100', 'visible');
+                    scrollToTopBtn.classList.add('opacity-0', 'invisible');
+                }
+            });
+
+            // Scroll to top on click
+            scrollToTopBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+    </script>
+
+</body>
+</html>

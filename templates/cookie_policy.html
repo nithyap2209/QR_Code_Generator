@@ -1,0 +1,293 @@
+{% extends "base2.html" %}
+
+{% block title %}Cookie Policy | QR Dada{% endblock %}
+
+{% block extra_head %}
+<meta name="description" content="Cookie Policy for QR Dada - Advanced QR Code Generator by Fourth Dimension Media Solutions">
+<style>
+    .section-title {
+        position: relative;
+        padding-bottom: 0.75rem;
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 4rem;
+        height: 3px;
+        background: linear-gradient(45deg, #7c3aed, #0ea5e9);
+        border-radius: 2px;
+    }
+
+    .info-box {
+        background: linear-gradient(135deg, rgba(124, 58, 237, 0.08), rgba(14, 165, 233, 0.05));
+        border: 1px solid rgba(124, 58, 237, 0.2);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .info-box::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: linear-gradient(180deg, #7c3aed, #0ea5e9);
+    }
+
+    .cookie-card { transition: all 0.3s ease; }
+    .cookie-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+
+    .alert-box { border-left: 4px solid; animation: slideIn 0.3s ease; }
+    .alert-success { background-color: rgba(16, 185, 129, 0.1); border-color: #10b981; }
+    .alert-warning { background-color: rgba(245, 158, 11, 0.1); border-color: #f59e0b; }
+    .alert-info { background-color: rgba(14, 165, 233, 0.1); border-color: #0ea5e9; }
+
+    @keyframes slideIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .browser-link { transition: all 0.3s ease; }
+    .browser-link:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(124, 58, 237, 0.2);
+    }
+
+    .btn-gradient {
+        background: linear-gradient(45deg, #7c3aed, #4f46e5);
+        color: white;
+        transition: all 0.3s ease;
+    }
+
+    .btn-gradient:hover {
+        background: linear-gradient(45deg, #6d28d9, #4338ca);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+        color: white;
+    }
+
+    @media (max-width: 640px) {
+        h1 { font-size: 2rem !important; }
+        h2 { font-size: 1.5rem !important; }
+        .p-8 { padding: 1.5rem; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="relative pt-4 pb-12 overflow-hidden bg-gradient-to-br from-primary-500 to-secondary-600">
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10">
+        <h1 class="text-4xl md:text-5xl font-bold text-white mb-6 animate-fade-in">
+            Cookie Policy
+        </h1>
+        <p class="text-xl text-white/90 max-w-4xl mx-auto animate-fade-in" style="animation-delay: 0.1s">
+            This Cookie Policy explains how QR Dada uses cookies and similar technologies to recognize you when you visit our website or use our platform.
+        </p>
+    </div>
+</section>
+
+<!-- Main Content -->
+<section class="py-16">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-white rounded-xl shadow-card overflow-hidden animate-fade-in">
+            <div class="p-8 md:p-12">
+
+                <!-- What are cookies -->
+                <div class="info-box rounded-xl p-6 mb-8">
+                    <h2 class="text-xl font-bold text-secondary-600 mb-4 flex items-center">
+                        <i class="fas fa-cookie-bite mr-3 text-2xl"></i>
+                        What Are Cookies?
+                    </h2>
+                    <p class="text-gray-700 leading-relaxed">
+                        Cookies are small text files stored in your browser when you use a website. They help us remember your login, maintain your session, and improve your experience on the platform.
+                    </p>
+                </div>
+
+                <h2 class="section-title text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                    <i class="fas fa-cogs mr-3 text-secondary-600"></i>
+                    How We Use Cookies
+                </h2>
+                <p class="text-gray-700 mb-6">
+                    QR Dada only uses <strong>first-party cookies</strong> for essential and basic performance purposes. These cookies help us:
+                </p>
+
+                <!-- Cookie purposes grid -->
+                <div class="grid md:grid-cols-2 gap-6 mb-8">
+                    <div class="cookie-card bg-white border border-gray-200 rounded-xl p-6 shadow-soft">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-gradient-to-r from-secondary-100 to-primary-100 rounded-full flex items-center justify-center mr-4">
+                                <i class="fas fa-sign-in-alt text-secondary-600"></i>
+                            </div>
+                            <h3 class="font-semibold text-gray-900">Keep You Logged In</h3>
+                        </div>
+                        <p class="text-gray-600 text-sm">Maintain your login session securely across the platform.</p>
+                    </div>
+
+                    <div class="cookie-card bg-white border border-gray-200 rounded-xl p-6 shadow-soft">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-gradient-to-r from-secondary-100 to-primary-100 rounded-full flex items-center justify-center mr-4">
+                                <i class="fas fa-shield-alt text-secondary-600"></i>
+                            </div>
+                            <h3 class="font-semibold text-gray-900">Secure Account Sessions</h3>
+                        </div>
+                        <p class="text-gray-600 text-sm">Protect your account with secure session management.</p>
+                    </div>
+
+                    <div class="cookie-card bg-white border border-gray-200 rounded-xl p-6 shadow-soft">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-gradient-to-r from-secondary-100 to-primary-100 rounded-full flex items-center justify-center mr-4">
+                                <i class="fas fa-cogs text-secondary-600"></i>
+                            </div>
+                            <h3 class="font-semibold text-gray-900">Enable Basic Site Functionality</h3>
+                        </div>
+                        <p class="text-gray-600 text-sm">Ensure core platform features work properly.</p>
+                    </div>
+
+                    <div class="cookie-card bg-white border border-gray-200 rounded-xl p-6 shadow-soft">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-gradient-to-r from-secondary-100 to-primary-100 rounded-full flex items-center justify-center mr-4">
+                                <i class="fas fa-credit-card text-secondary-600"></i>
+                            </div>
+                            <h3 class="font-semibold text-gray-900">Process Payments</h3>
+                        </div>
+                        <p class="text-gray-600 text-sm">Securely handle payments through Razorpay and Stripe.</p>
+                    </div>
+                </div>
+
+                <div class="alert-box alert-success rounded-xl p-6 mb-8 flex items-start">
+                    <i class="fas fa-check-circle text-green-600 text-xl mr-4 mt-1"></i>
+                    <div>
+                        <h3 class="font-semibold text-gray-900 mb-2">Privacy First</h3>
+                        <p class="text-gray-700">We do <strong>not</strong> use third-party cookies for advertising, retargeting, or external tracking.</p>
+                    </div>
+                </div>
+
+                <h2 class="section-title text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                    <i class="fas fa-list mr-3 text-secondary-600"></i>
+                    Types of Cookies We Use
+                </h2>
+
+                <div class="space-y-6 mb-8">
+                    <!-- Essential Cookies -->
+                    <div class="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl p-6">
+                        <h3 class="text-xl font-bold text-green-700 mb-3 flex items-center">
+                            <i class="fas fa-shield-alt mr-3"></i>
+                            Essential Cookies
+                        </h3>
+                        <p class="text-gray-700 mb-4">
+                            Required for the site to work. These handle login, session security, and payment functionality. Without these, you won't be able to use QR Dada's core features.
+                        </p>
+                        <div class="bg-white bg-opacity-60 rounded-lg p-4">
+                            <p class="text-sm text-gray-600"><strong>Examples:</strong> Session tokens, authentication cookies, security cookies</p>
+                        </div>
+                    </div>
+
+                    <!-- Functional Cookies -->
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-6">
+                        <h3 class="text-xl font-bold text-blue-700 mb-3 flex items-center">
+                            <i class="fas fa-sliders-h mr-3"></i>
+                            Functional Cookies
+                        </h3>
+                        <p class="text-gray-700 mb-4">
+                            Used to remember preferences (like language, theme) and improve user experience. These do not track or share data externally.
+                        </p>
+                        <div class="bg-white bg-opacity-60 rounded-lg p-4">
+                            <p class="text-sm text-gray-600"><strong>Examples:</strong> Theme preferences, language settings, dashboard layout</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 class="section-title text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                    <i class="fas fa-tasks mr-3 text-secondary-600"></i>
+                    Cookie Control
+                </h2>
+                <p class="text-gray-700 mb-6">
+                    You can manage or delete cookies through your browser settings at any time. Disabling essential cookies may affect how QR Dada functions, including login and QR creation.
+                </p>
+
+                <div class="alert-box alert-warning rounded-xl p-6 mb-8 flex items-start">
+                    <i class="fas fa-exclamation-triangle text-yellow-600 text-xl mr-4 mt-1"></i>
+                    <div>
+                        <h3 class="font-semibold text-gray-900 mb-2">Important Note</h3>
+                        <p class="text-gray-700">Disabling essential cookies may affect your ability to use some features of the QR Dada platform, such as logging in or saving settings.</p>
+                    </div>
+                </div>
+
+                <!-- Browser guides -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                    <a href="https://support.google.com/chrome/answer/95647" target="_blank" class="browser-link bg-gray-50 border border-gray-200 rounded-xl p-4 text-center hover:bg-gray-100 transition-colors">
+                        <i class="fab fa-chrome text-3xl text-blue-500 mb-2"></i>
+                        <p class="font-medium text-gray-900 text-sm">Chrome</p>
+                    </a>
+                    <a href="https://support.mozilla.org/en-US/kb/cookies-information-websites-store-on-your-computer" target="_blank" class="browser-link bg-gray-50 border border-gray-200 rounded-xl p-4 text-center hover:bg-gray-100 transition-colors">
+                        <i class="fab fa-firefox text-3xl text-orange-500 mb-2"></i>
+                        <p class="font-medium text-gray-900 text-sm">Firefox</p>
+                    </a>
+                    <a href="https://support.apple.com/en-us/HT201265" target="_blank" class="browser-link bg-gray-50 border border-gray-200 rounded-xl p-4 text-center hover:bg-gray-100 transition-colors">
+                        <i class="fab fa-safari text-3xl text-blue-400 mb-2"></i>
+                        <p class="font-medium text-gray-900 text-sm">Safari</p>
+                    </a>
+                    <a href="https://support.microsoft.com/en-us/help/17442/windows-internet-explorer-delete-manage-cookies" target="_blank" class="browser-link bg-gray-50 border border-gray-200 rounded-xl p-4 text-center hover:bg-gray-100 transition-colors">
+                        <i class="fab fa-edge text-3xl text-blue-600 mb-2"></i>
+                        <p class="font-medium text-gray-900 text-sm">Edge</p>
+                    </a>
+                </div>
+
+                <h2 class="section-title text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                    <i class="fas fa-ban mr-3 text-secondary-600"></i>
+                    No Third-Party Cookies
+                </h2>
+                <p class="text-gray-700 mb-8">
+                    QR Dada does not use any third-party advertising, marketing, or behavioral tracking cookies. All cookies are internal and used only to support your experience on our platform.
+                </p>
+
+                <h2 class="section-title text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                    <i class="fas fa-sync-alt mr-3 text-secondary-600"></i>
+                    Updates to This Policy
+                </h2>
+                <p class="text-gray-700 mb-8">
+                    We may update this Cookie Policy from time to time. Any changes will be reflected on this page, and we'll notify you if they affect your experience.
+                </p>
+
+                <div class="alert-box alert-info rounded-xl p-6 mb-8 flex items-start">
+                    <i class="fas fa-info-circle text-blue-600 text-xl mr-4 mt-1"></i>
+                    <div>
+                        <h3 class="font-semibold text-gray-900 mb-2">Changes to This Cookie Policy</h3>
+                        <p class="text-gray-700">We will notify you of any material changes by posting the new Cookie Policy on this page and updating the effective date.</p>
+                    </div>
+                </div>
+
+                <!-- Contact section -->
+                <div class="bg-gradient-to-r from-secondary-50 to-primary-50 rounded-xl p-8 mb-8">
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Contact Information</h3>
+                    <div class="text-gray-700 mb-6">
+                        <p class="mb-4">If you have any questions about our use of cookies or this policy, please contact:</p>
+                        <div class="mb-4">
+                            <p class="font-semibold">Fourth Dimension Media Solutions</p>
+                            <p class="font-semibold">QR Dada</p>
+                            <p>Email: support@qrdada.com</p>
+                        </div>
+                    </div>
+                    <a href="mailto:support@qrdada.com" class="btn-gradient inline-flex items-center px-6 py-3 rounded-lg font-semibold text-white">
+                        <i class="fas fa-envelope mr-2"></i>
+                        support@qrdada.com
+                    </a>
+                </div>
+
+                <!-- Last updated -->
+                <div class="text-center pt-8 border-t border-gray-200">
+                    <p class="text-gray-500 text-sm mb-4">Effective Date: July 16, 2025 | Last Updated: July 16, 2025</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

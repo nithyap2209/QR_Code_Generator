@@ -1,0 +1,239 @@
+{% extends 'base2.html' %}
+{% block title %}QR Code for SMS - Pre-filled Text Messages | QR Dada{% endblock %}
+{% block content %}
+<section class="bg-gradient-to-br from-primary-50 to-secondary-50 py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div class="inline-block p-4 bg-white rounded-full shadow-lg mb-6">
+            <i class="fas fa-comment text-5xl text-secondary-600"></i>
+        </div>
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">QR Code for SMS</h1>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+            Create QR codes that open SMS with a pre-filled number and message. Perfect for contests, voting, and customer engagement using a reliable sms qr code setup.
+
+        </p>
+        <a href="{{ url_for('create_qr') }}" class="bg-secondary-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-secondary-700 transition-colors shadow-lg inline-block">
+            Create SMS QR Code
+        </a>
+    </div>
+</section>
+
+<!-- What is SMS QR Code Section -->
+<section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid md:grid-cols-2 gap-12 items-center mb-16">
+            <div>
+                <h2 class="text-3xl font-bold text-gray-900 mb-6">What is an SMS QR Code?</h2>
+                <p class="text-lg text-gray-600 mb-4">
+                    An SMS QR Code automatically opens the messaging app with a pre-filled phone number and optional message text when scanned. Users can review and send the message with just one tap — ideal for anyone needing a simple QR code message solution or a smooth QR code generator for text message workflow.
+
+                </p>
+                <p class="text-lg text-gray-600 mb-4">
+                    SMS QR codes are ideal for marketing campaigns, customer feedback, event registrations, and any scenario where you want to make text messaging effortless for your audience using a helpful sms qr code generator.
+
+                </p>
+                <div class="bg-secondary-50 border-l-4 border-secondary-600 p-4 mt-6">
+                    <p class="text-sm text-gray-700">
+                        <i class="fas fa-lightbulb text-secondary-600 mr-2"></i>
+                        <strong>Pro Tip:</strong> Use keywords in pre-filled messages to track different campaigns and sources.
+                    </p>
+                </div>
+            </div>
+            <div class="bg-gray-100 rounded-lg p-8 text-center">
+                <img src="{{ url_for('static', filename='images/qr_sms.png') }}"
+                     alt="SMS QR Code Example"
+                     class="mx-auto mb-4 w-64 h-64 object-contain">
+                <p class="text-sm text-gray-600">Example: SMS QR Code<br> Perfect when generating a QR code text message format for quick interaction.
+</p>
+            </div>
+        </div>
+
+        <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Perfect for</h2>
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="bg-gray-50 p-6 rounded-lg hover:shadow-lg transition-shadow">
+                <i class="fas fa-poll text-3xl text-secondary-600 mb-4"></i>
+                <h3 class="text-xl font-semibold mb-2">Voting & Polls</h3>
+                <p class="text-gray-600">Enable easy SMS-based voting for contests, surveys, and polls with predefined responses powered by a qr code message generator.</p>
+            </div>
+            <div class="bg-gray-50 p-6 rounded-lg hover:shadow-lg transition-shadow">
+                <i class="fas fa-gift text-3xl text-secondary-600 mb-4"></i>
+                <h3 class="text-xl font-semibold mb-2">Promotions</h3>
+                <p class="text-gray-600">Allow customers to opt-in to promotions with a pre-filled SMS keyword.</p>
+            </div>
+            <div class="bg-gray-50 p-6 rounded-lg hover:shadow-lg transition-shadow">
+                <i class="fas fa-info-circle text-3xl text-secondary-600 mb-4"></i>
+                <h3 class="text-xl font-semibold mb-2">Information Requests</h3>
+                <p class="text-gray-600">Let users request info via SMS with predefined keywords for automated responses.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">How to Create an SMS QR Code</h2>
+        <div class="grid md:grid-cols-4 gap-8">
+            <div class="text-center">
+                <div class="w-16 h-16 bg-secondary-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                    1
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Enter Details</h3>
+                <p class="text-gray-600">Provide phone number and optional pre-filled message text — ideal for creating any qr code message format.</p>
+            </div>
+
+            <div class="text-center">
+                <div class="w-16 h-16 bg-secondary-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                    2
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Customize</h3>
+                <p class="text-gray-600">Add colors, logo, and customize the QR code design.</p>
+            </div>
+
+            <div class="text-center">
+                <div class="w-16 h-16 bg-secondary-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                    3
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Generate</h3>
+                <p class="text-gray-600"> Create your SMS QR code instantly using our advanced qr code generator for text message features.</p>
+            </div>
+
+            <div class="text-center">
+                <div class="w-16 h-16 bg-secondary-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                    4
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Share</h3>
+                <p class="text-gray-600">Download and use in your marketing campaigns.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Benefits Section -->
+<section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Benefits of SMS QR Codes</h2>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <div class="w-10 h-10 bg-secondary-600 text-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Quick Response</h3>
+                    <p class="text-gray-600">Users can send messages instantly without typing using qr code text message flows.</p>
+                </div>
+            </div>
+
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <div class="w-10 h-10 bg-secondary-600 text-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Campaign Tracking</h3>
+                    <p class="text-gray-600">Use keywords to track different marketing campaigns.</p>
+                </div>
+            </div>
+
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <div class="w-10 h-10 bg-secondary-600 text-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-users"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">High Engagement</h3>
+                    <p class="text-gray-600">SMS has 98% open rate, higher than email.</p>
+                </div>
+            </div>
+
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <div class="w-10 h-10 bg-secondary-600 text-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Universal</h3>
+                    <p class="text-gray-600">Works on all phones, not just smartphones.</p>
+                </div>
+            </div>
+
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <div class="w-10 h-10 bg-secondary-600 text-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Cost Effective</h3>
+                    <p class="text-gray-600">No data connection needed, just standard SMS.</p>
+                </div>
+            </div>
+
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <div class="w-10 h-10 bg-secondary-600 text-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Easy to Use</h3>
+                    <p class="text-gray-600">Simple one-tap experience for users.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="py-16 bg-gray-50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Frequently Asked Questions</h2>
+        <div class="space-y-4">
+            <div class="bg-white rounded-lg p-6 shadow-sm">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Can users edit the message before sending?</h3>
+                <p class="text-gray-600">
+                    Yes! The pre-filled message is editable. Users can modify, add to, or completely change the text before sending.
+                </p>
+            </div>
+
+            <div class="bg-white rounded-lg p-6 shadow-sm">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Will SMS QR codes work internationally?</h3>
+                <p class="text-gray-600">
+                    Yes, but remember to include country codes in the phone number (e.g., +1 for USA) for international compatibility.
+                </p>
+            </div>
+
+            <div class="bg-white rounded-lg p-6 shadow-sm">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Are there character limits for SMS messages?</h3>
+                <p class="text-gray-600">
+                    Standard SMS supports 160 characters. Messages longer than this may be split into multiple texts depending on the carrier.
+                </p>
+            </div>
+
+            <div class="bg-white rounded-lg p-6 shadow-sm">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Can I track who scanned and sent SMS?</h3>
+                <p class="text-gray-600">
+                    You can track incoming messages to your number. For scan analytics, use our dynamic QR codes with tracking features.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-16 bg-gradient-to-br from-secondary-600 to-primary-600 text-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl font-bold mb-6">Start Your SMS Campaign Today</h2>
+        <p class="text-xl mb-8 text-white/90">
+            Create SMS QR codes and boost engagement with effortless text messaging!
+        </p>
+        <a href="{{ url_for('create_qr') }}" class="bg-white text-secondary-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors shadow-lg inline-block">
+            Create SMS QR Code Now
+        </a>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,247 @@
+{% extends "base2.html" %}
+
+{% block title %}Contact Us | QR Dada{% endblock %}
+
+{% block extra_head %}
+<meta name="description" content="Contact QR Dada for support, questions, or feedback. Get in touch with our team for any assistance you need.">
+<style>
+    .contact-card { transition: all 0.3s ease; }
+    .contact-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    .form-input { transition: all 0.2s ease; }
+    .form-input:focus {
+        border-color: #7c3aed;
+        box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+        transform: translateY(-1px);
+    }
+
+    .alert { border-radius: 0.75rem; border-left: 4px solid; animation: slideIn 0.3s ease; }
+    .alert-success { background-color: rgba(16, 185, 129, 0.1); border-color: #10b981; color: #047857; }
+    .alert-danger { background-color: rgba(239, 68, 68, 0.1); border-color: #ef4444; color: #dc2626; }
+
+    @keyframes slideIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .contact-icon {
+        background: linear-gradient(45deg, #7c3aed, #4f46e5);
+        box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+    }
+
+    .social-link {
+        background: linear-gradient(45deg, #7c3aed, #4f46e5);
+        transition: all 0.3s ease;
+    }
+
+    .social-link:hover {
+        transform: translateY(-3px) scale(1.1);
+        box-shadow: 0 8px 25px rgba(124, 58, 237, 0.4);
+    }
+
+    .btn-gradient {
+        background: linear-gradient(45deg, #7c3aed, #4f46e5);
+        color: white;
+        transition: all 0.3s ease;
+    }
+
+    .btn-gradient:hover {
+        background: linear-gradient(45deg, #6d28d9, #4338ca);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+        color: white;
+    }
+
+    @media (max-width: 640px) {
+        h1 { font-size: 2rem !important; }
+        h2 { font-size: 1.5rem !important; }
+        .contact-card { padding: 1.5rem; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="relative pt-4 pb-12 overflow-hidden bg-gradient-to-br from-primary-500 to-secondary-600">
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10">
+        <h1 class="text-4xl md:text-5xl font-bold text-white mb-6 animate-fade-in">
+            Get In Touch
+        </h1>
+        <p class="text-xl text-white/90 max-w-3xl mx-auto animate-fade-in" style="animation-delay: 0.1s">
+            Have questions about QR Dada? Need support? We're here to help you create amazing QR codes and grow your business.
+        </p>
+    </div>
+</section>
+
+<!-- Main Content -->
+<section class="py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} p-4 mb-6 flex items-center" role="alert">
+                        {% if category == 'success' %}
+                            <i class="fas fa-check-circle mr-3"></i>
+                        {% else %}
+                            <i class="fas fa-exclamation-circle mr-3"></i>
+                        {% endif %}
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="grid lg:grid-cols-2 gap-12">
+            <!-- Contact Information -->
+            <div class="contact-card bg-white rounded-xl shadow-card p-8 animate-fade-in">
+                <h2 class="text-2xl font-bold mb-8 text-center bg-gradient-to-r from-secondary-600 to-primary-600 bg-clip-text text-transparent">
+                    Contact Information
+                </h2>
+
+                <div class="space-y-6">
+                    <div class="flex items-center p-4 bg-gradient-to-r from-secondary-50 to-primary-50 rounded-xl border-l-4 border-secondary-500">
+                        <div class="contact-icon w-12 h-12 rounded-full flex items-center justify-center mr-4">
+                            <i class="fas fa-map-marker-alt text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-900">Our Location</h3>
+                            <p class="text-gray-600">Shyamala Towers, 3rd floor<br>
+                                            No. 136, Arcot Rd, Saligramam<br>
+                                            Chennai, Tamil Nadu 600092</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center p-4 bg-gradient-to-r from-secondary-50 to-primary-50 rounded-xl border-l-4 border-secondary-500">
+                        <div class="contact-icon w-12 h-12 rounded-full flex items-center justify-center mr-4">
+                            <i class="fas fa-envelope text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-900">Email Us</h3>
+                            <p class="text-gray-600">support@qrdada.com</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center p-4 bg-gradient-to-r from-secondary-50 to-primary-50 rounded-xl border-l-4 border-secondary-500">
+                        <div class="contact-icon w-12 h-12 rounded-full flex items-center justify-center mr-4">
+                            <i class="fas fa-clock text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-900">Business Hours</h3>
+                            <p class="text-gray-600">Monday - Friday: 9:00 AM - 6:00 PM<br>Saturday: 10:00 AM - 4:00 PM<br>Sunday: Closed</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 text-center">
+                    <h3 class="text-lg font-semibold mb-4 text-gray-900">Follow Us</h3>
+                    <div class="flex justify-center space-x-4">
+                        <a href="#" class="social-link w-12 h-12 rounded-full flex items-center justify-center text-white" aria-label="Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="social-link w-12 h-12 rounded-full flex items-center justify-center text-white" aria-label="Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="social-link w-12 h-12 rounded-full flex items-center justify-center text-white" aria-label="LinkedIn">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="social-link w-12 h-12 rounded-full flex items-center justify-center text-white" aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Form -->
+            <div class="contact-card bg-white rounded-xl shadow-card p-8 animate-fade-in" style="animation-delay: 0.1s">
+                <h2 class="text-2xl font-bold mb-8 text-center bg-gradient-to-r from-secondary-600 to-primary-600 bg-clip-text text-transparent">
+                    Send us a Message
+                </h2>
+
+                <form method="POST" action="{{ url_for('contact') }}" id="contactForm">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}"/>
+
+                    <div class="mb-6">
+                        <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">
+                            <i class="fas fa-user mr-2 text-secondary-500"></i>Your Name *
+                        </label>
+                        <input type="text"
+                               id="name"
+                               name="name"
+                               class="form-input w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none"
+                               placeholder="Enter your full name"
+                               value="{{ name or '' }}"
+                               required>
+                    </div>
+
+                    <div class="mb-6">
+                        <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">
+                            <i class="fas fa-envelope mr-2 text-secondary-500"></i>Email Address *
+                        </label>
+                        <input type="email"
+                               id="email"
+                               name="email"
+                               class="form-input w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none"
+                               placeholder="Enter your email address"
+                               value="{{ email or '' }}"
+                               required>
+                    </div>
+
+                    <div class="mb-6">
+                        <label for="message" class="block text-sm font-semibold text-gray-700 mb-2">
+                            <i class="fas fa-comment mr-2 text-secondary-500"></i>Your Message *
+                        </label>
+                        <textarea id="message"
+                                  name="message"
+                                  rows="6"
+                                  class="form-input w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none resize-none"
+                                  placeholder="Tell us how we can help you..."
+                                  required>{{ message or '' }}</textarea>
+                        <div class="text-right text-sm text-gray-500 mt-1">
+                            <span id="charCount">0</span>/5000 characters
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-gradient w-full py-3 px-6 rounded-xl font-semibold text-white flex items-center justify-center space-x-2">
+                        <i class="fas fa-paper-plane"></i>
+                        <span>Send Message</span>
+                    </button>
+
+                    <p class="text-center text-sm text-gray-500 mt-4">
+                        <i class="fas fa-shield-alt mr-1 text-secondary-500"></i>
+                        We typically respond within 24 hours during business days.
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const messageField = document.getElementById('message');
+        const charCount = document.getElementById('charCount');
+
+        messageField.addEventListener('input', function() {
+            const length = this.value.length;
+            charCount.textContent = length;
+
+            if (length > 4500) {
+                charCount.style.color = '#ef4444';
+            } else if (length > 4000) {
+                charCount.style.color = '#f59e0b';
+            } else {
+                charCount.style.color = '#6b7280';
+            }
+        });
+
+        // Initialize character count
+        charCount.textContent = messageField.value.length;
+    });
+</script>
+{% endblock %}

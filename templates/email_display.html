@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send Email</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 30px;
+            text-align: center;
+            color: white;
+        }
+
+        .header-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        .email-info {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .info-row {
+            margin-bottom: 15px;
+        }
+
+        .info-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .info-value {
+            font-size: 1.1rem;
+            color: #212529;
+            word-break: break-word;
+            font-weight: 500;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #212529;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .email-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .email-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 25px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: #212529;
+        }
+
+        .email-btn:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .email-btn-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .email-btn-text {
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .default-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .default-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .note {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: #856404;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 30px 20px;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .content {
+                padding: 30px 20px;
+            }
+
+            .email-options {
+                grid-template-columns: 1fr;
+            }
+
+            .email-btn {
+                padding: 20px;
+            }
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #212529;
+            color: white;
+            padding: 16px 30px;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-icon">✉️</div>
+            <h1>Send Email</h1>
+            <p>Choose your preferred email service</p>
+        </div>
+
+        <div class="content">
+            <!-- Email Information -->
+            <div class="email-info">
+                <div class="info-row">
+                    <div class="info-label">To</div>
+                    <div class="info-value">{{ detail.email }}</div>
+                </div>
+                {% if detail.subject %}
+                <div class="info-row">
+                    <div class="info-label">Subject</div>
+                    <div class="info-value">{{ detail.subject }}</div>
+                </div>
+                {% endif %}
+                {% if detail.body %}
+                <div class="info-row">
+                    <div class="info-label">Message</div>
+                    <div class="info-value">{{ detail.body }}</div>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Email Options -->
+            <div class="section-title">Select Email Service</div>
+            <div class="email-options">
+                <a href="#" class="email-btn" id="gmailBtn">
+                    <div class="email-btn-icon">📧</div>
+                    <div class="email-btn-text">Gmail</div>
+                </a>
+                <a href="#" class="email-btn" id="outlookBtn">
+                    <div class="email-btn-icon">📨</div>
+                    <div class="email-btn-text">Outlook</div>
+                </a>
+                <a href="#" class="email-btn" id="yahooBtn">
+                    <div class="email-btn-icon">📬</div>
+                    <div class="email-btn-text">Yahoo Mail</div>
+                </a>
+                <a href="#" class="email-btn" id="copyBtn">
+                    <div class="email-btn-icon">📋</div>
+                    <div class="email-btn-text">Copy Details</div>
+                </a>
+            </div>
+
+            <!-- Default Mail Client -->
+            <a href="#" class="default-btn" id="defaultBtn">
+                <span>📮</span>
+                <span>Open Default Mail App</span>
+            </a>
+
+            <div class="note">
+                💡 <strong>Tip:</strong> On mobile devices, the email app will open automatically. On desktop, choose your preferred web mail service above.
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        const emailData = {
+            email: "{{ detail.email }}",
+            subject: "{{ detail.subject }}",
+            body: "{{ detail.body }}"
+        };
+
+        // Show toast notification
+        function showToast(message, duration = 3000) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, duration);
+        }
+
+        // Gmail
+        document.getElementById('gmailBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            const subject = encodeURIComponent(emailData.subject);
+            const body = encodeURIComponent(emailData.body);
+            const email = encodeURIComponent(emailData.email);
+            window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${subject}&body=${body}`, '_blank');
+            showToast('Opening Gmail...');
+        });
+
+        // Outlook
+        document.getElementById('outlookBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            const subject = encodeURIComponent(emailData.subject);
+            const body = encodeURIComponent(emailData.body);
+            const email = encodeURIComponent(emailData.email);
+            window.open(`https://outlook.live.com/mail/0/deeplink/compose?to=${email}&subject=${subject}&body=${body}`, '_blank');
+            showToast('Opening Outlook...');
+        });
+
+        // Yahoo Mail
+        document.getElementById('yahooBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            const subject = encodeURIComponent(emailData.subject);
+            const body = encodeURIComponent(emailData.body);
+            const email = encodeURIComponent(emailData.email);
+            window.open(`https://compose.mail.yahoo.com/?to=${email}&subject=${subject}&body=${body}`, '_blank');
+            showToast('Opening Yahoo Mail...');
+        });
+
+        // Copy Email - Copy full email details
+        document.getElementById('copyBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+
+            // Format full email details
+            let fullEmailText = '';
+            fullEmailText += 'To: ' + emailData.email + '\n';
+            if (emailData.subject) {
+                fullEmailText += 'Subject: ' + emailData.subject + '\n';
+            }
+            if (emailData.body) {
+                fullEmailText += 'Message: ' + emailData.body + '\n';
+            }
+
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(fullEmailText).then(() => {
+                    showToast('✓ Full email details copied to clipboard');
+                }).catch(err => {
+                    console.error('Copy failed:', err);
+                    showToast('Failed to copy email');
+                });
+            } else {
+                // Fallback
+                const textArea = document.createElement('textarea');
+                textArea.value = fullEmailText;
+                textArea.style.position = 'fixed';
+                textArea.style.opacity = '0';
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    showToast('✓ Full email details copied to clipboard');
+                } catch (err) {
+                    showToast('Failed to copy email');
+                }
+                document.body.removeChild(textArea);
+            }
+        });
+
+        // Default Mail Client (mailto:)
+        document.getElementById('defaultBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            const subject = encodeURIComponent(emailData.subject);
+            const body = encodeURIComponent(emailData.body);
+            window.location.href = `mailto:${emailData.email}?subject=${subject}&body=${body}`;
+        });
+
+        // Auto-redirect on mobile devices
+        function isMobileDevice() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        }
+
+        // Auto-open default mail app on mobile immediately
+        if (isMobileDevice()) {
+            // Redirect immediately to mailto on mobile
+            const subject = encodeURIComponent(emailData.subject);
+            const body = encodeURIComponent(emailData.body);
+            window.location.href = `mailto:${emailData.email}?subject=${subject}&body=${body}`;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,507 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Edit User Subscription{% endblock %}
+
+{% block page_title %}Edit User Subscription{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="header-container mb-4">
+        <h1>
+            <i class="fas fa-user-edit me-2 text-primary"></i>
+            Edit User Subscription
+        </h1>
+    </div>
+    
+    <div class="action-buttons mb-4">
+        <a href="{{ url_for('admin.admin_subscribed_users') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i>Back to User Subscriptions
+        </a>
+    </div>
+    
+    <div class="card">
+        <div class="card-header">
+            <i class="fas fa-pen-to-square me-2"></i> Subscription Details
+        </div>
+        <div class="card-body">
+            <form id="subscriptionForm" action="{{ url_for('admin.admin_edit_subscribed_user', id=subscribed_user.id) }}" method="POST">
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">User Information</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                <input type="text" class="form-control" value="{{ user.name }} ({{ user.company_email }})" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="subscription_id" class="form-label">Subscription Plan</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-tag"></i></span>
+                                <select class="form-select" id="subscription_id" name="subscription_id" required>
+                                    {% for subscription in subscriptions %}
+                                    <option value="{{ subscription.S_ID }}" {% if subscription.S_ID == subscribed_user.S_ID %}selected{% endif %}>
+                                        {{ subscription.plan }} - ₹{{ subscription.price }} ({{ subscription.days }} days)
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="start_date" class="form-label">Start Date</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                                <input type="date" class="form-control" id="start_date" name="start_date" value="{{ subscribed_user.start_date.strftime('%Y-%m-%d') if subscribed_user.start_date else '' }}" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="end_date" class="form-label">End Date</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-calendar-check"></i></span>
+                                <input type="date" class="form-control" id="end_date" name="end_date" value="{{ subscribed_user.end_date.strftime('%Y-%m-%d') if subscribed_user.end_date else '' }}" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label class="form-label">Analytics Limit Control</label>
+                            <div class="usage-control-group p-3 border rounded bg-light">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="fw-bold" id="analytics-display">{{ subscribed_user.analytics_used }} / {{ subscribed_user.effective_analytics_limit }}</span>
+                                    <div class="progress" style="width: 100px; height: 8px;">
+                                        <div class="progress-bar bg-info" role="progressbar"
+                                             style="width: {{ subscribed_user.analytics_percent }}%"
+                                             id="analytics-progress"></div>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center gap-2">
+                                    <input type="number" class="form-control form-control-sm" style="width: 60px;" id="analytics-count" value="1" min="1" title="Amount to add/subtract to limit">
+                                    <button type="button" class="btn btn-sm btn-success" onclick="incrementUsage('{{ subscribed_user.id }}', 'analytics', 'increment')" title="Add to analytics limit">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-danger" onclick="incrementUsage('{{ subscribed_user.id }}', 'analytics', 'decrement')" title="Subtract from analytics limit">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                </div>
+                                <small class="text-muted">Modify limit (Used: {{ subscribed_user.analytics_used }})</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label class="form-label">QR Code Limit Control</label>
+                            <div class="usage-control-group p-3 border rounded bg-light">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="fw-bold" id="qr-display">{{ subscribed_user.qr_generated }} / {{ subscribed_user.effective_qr_limit }}</span>
+                                    <div class="progress" style="width: 100px; height: 8px;">
+                                        <div class="progress-bar bg-primary" role="progressbar"
+                                             style="width: {{ subscribed_user.qr_percent }}%"
+                                             id="qr-progress"></div>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center gap-2">
+                                    <input type="number" class="form-control form-control-sm" style="width: 60px;" id="qr-count" value="1" min="1" title="Amount to add/subtract to limit">
+                                    <button type="button" class="btn btn-sm btn-success" onclick="incrementUsage('{{ subscribed_user.id }}', 'qr', 'increment')" title="Add to QR limit">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-danger" onclick="incrementUsage('{{ subscribed_user.id }}', 'qr', 'decrement')" title="Subtract from QR limit">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                </div>
+                                <small class="text-muted">Modify limit (Used: {{ subscribed_user.qr_generated }})</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label class="form-label">Scan Limit Control</label>
+                            <div class="usage-control-group p-3 border rounded bg-light">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="fw-bold" id="scans-display">{{ subscribed_user.scans_used or 0 }} / {{ subscribed_user.effective_scan_limit }}</span>
+                                    <div class="progress" style="width: 100px; height: 8px;">
+                                        <div class="progress-bar bg-warning" role="progressbar"
+                                             style="width: {{ subscribed_user.scan_percent }}%"
+                                             id="scans-progress"></div>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center gap-2">
+                                    <input type="number" class="form-control form-control-sm" style="width: 60px;" id="scans-count" value="1" min="1" title="Amount to add/subtract to limit">
+                                    <button type="button" class="btn btn-sm btn-success" onclick="incrementUsage('{{ subscribed_user.id }}', 'scans', 'increment')" title="Add to scan limit">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-danger" onclick="incrementUsage('{{ subscribed_user.id }}', 'scans', 'decrement')" title="Subtract from scan limit">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                </div>
+                                <small class="text-muted">Modify limit (Used: {{ subscribed_user.scans_used or 0 }})</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Subscription Status and Auto-renew checkboxes -->
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" id="is_active" name="is_active" {% if subscribed_user._is_active %}checked{% endif %}>
+                            <label class="form-check-label" for="is_active">
+                                <i class="fas fa-power-off me-2 text-success"></i>Subscription Active
+                            </label>
+                            <div class="form-text">Toggle to activate/deactivate this subscription</div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" id="auto_renew" name="auto_renew" {% if subscribed_user.is_auto_renew %}checked{% endif %}>
+                            <label class="form-check-label" for="auto_renew">
+                                <i class="fas fa-sync-alt me-2 text-primary"></i>Enable Auto-Renewal
+                            </label>
+                            <div class="form-text">Subscription will automatically renew when it expires</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ url_for('admin.admin_subscribed_users') }}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Back to List
+                            </a>
+                            <button type="submit" class="btn btn-primary" id="updateBtn">
+                                <i class="fas fa-save me-2"></i>Update Subscription
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Professional Confirmation Modal -->
+<div class="modal fade" id="confirmDeactivationModal" tabindex="-1" aria-labelledby="confirmDeactivationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-dark">
+                <h5 class="modal-title" id="confirmDeactivationModalLabel">
+                    <i class="fas fa-exclamation-triangle me-2"></i>Confirm Deactivation
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center mb-3">
+                    <i class="fas fa-power-off text-warning" style="font-size: 3rem;"></i>
+                </div>
+                <p class="text-center mb-0">
+                    <strong>You are about to deactivate this subscription.</strong>
+                </p>
+                <p class="text-center text-muted">
+                    The user will lose access to premium features. This action can be reversed later.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-2"></i>Cancel
+                </button>
+                <button type="button" class="btn btn-warning" id="confirmDeactivationBtn">
+                    <i class="fas fa-check me-2"></i>Yes, Deactivate
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Professional Success/Error Messages -->
+<div class="position-fixed top-0 end-0 p-3" style="z-index: 1050;">
+    <div id="alertContainer"></div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    let isFormSubmitting = false; // Flag to prevent double submission
+    
+    // Add animation to the card
+    const card = document.querySelector('.card');
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(20px)';
+    card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    
+    setTimeout(() => {
+        card.style.opacity = '1';
+        card.style.transform = 'translateY(0)';
+    }, 100);
+    
+    // Add select2 for better dropdowns if available
+    if (typeof $.fn.select2 !== 'undefined') {
+        $('#subscription_id').select2({
+            width: '100%'
+        });
+    }
+    
+    // Update the subscription details when plan changes
+    $('#subscription_id').on('change', function() {
+        const planName = $(this).find('option:selected').text();
+        showAlert('info', 'Plan Changed', `Subscription plan will be changed to ${planName}`);
+    });
+    
+    // Visual feedback for status toggles
+    $('#is_active').on('change', function() {
+        const label = $(this).next('label');
+        const icon = label.find('i');
+        
+        if (this.checked) {
+            icon.removeClass('text-danger').addClass('text-success');
+            label.find('.form-text').text('Subscription is currently active');
+        } else {
+            icon.removeClass('text-success').addClass('text-danger');
+            label.find('.form-text').text('Subscription is currently inactive');
+        }
+    });
+    
+    // Visual feedback for auto-renew toggle
+    $('#auto_renew').on('change', function() {
+        const label = $(this).next('label');
+        const formText = label.next('.form-text');
+        
+        if (this.checked) {
+            formText.text('Subscription will automatically renew when it expires');
+        } else {
+            formText.text('Subscription will not auto-renew and will expire normally');
+        }
+    });
+    
+    // Professional form validation and submission
+    $('#subscriptionForm').on('submit', function(e) {
+        e.preventDefault();
+        
+        // Prevent double submission
+        if (isFormSubmitting) {
+            return false;
+        }
+        
+        // Date validation
+        const startDate = new Date($('#start_date').val());
+        const endDate = new Date($('#end_date').val());
+        
+        if (endDate <= startDate) {
+            showAlert('danger', 'Invalid Dates', 'End date must be after start date.');
+            return false;
+        }
+        
+        // Check if making subscription inactive
+        const isActive = $('#is_active').is(':checked');
+        if (!isActive) {
+            // Show professional confirmation modal instead of browser confirm
+            $('#confirmDeactivationModal').modal('show');
+            return false;
+        } else {
+            // If activating, submit directly
+            submitForm();
+        }
+    });
+    
+    // Handle deactivation confirmation
+    $('#confirmDeactivationBtn').on('click', function() {
+        $('#confirmDeactivationModal').modal('hide');
+        submitForm();
+    });
+    
+    // Function to submit form with loading state
+    function submitForm() {
+        if (isFormSubmitting) {
+            return; // Prevent double submission
+        }
+        
+        isFormSubmitting = true;
+        const form = document.getElementById('subscriptionForm');
+        const updateBtn = document.getElementById('updateBtn');
+        
+        // Show loading state with single spinner
+        updateBtn.disabled = true;
+        updateBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Updating...';
+        
+        // Create FormData object
+        const formData = new FormData(form);
+        
+        // Submit form via fetch with proper error handling
+        fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.text();
+        })
+        .then(data => {
+            // Check if response contains success indicators
+            if (data.includes('success') || data.includes('updated successfully')) {
+                updateBtn.innerHTML = '<i class="fas fa-check me-2"></i>Updated Successfully!';
+                updateBtn.classList.remove('btn-primary');
+                updateBtn.classList.add('btn-success');
+                
+                showAlert('success', 'Success!', 'Subscription updated successfully!');
+                setTimeout(() => {
+                    window.location.href = "{{ url_for('admin.admin_subscribed_users') }}";
+                }, 1500);
+            } else if (data.includes('error') || data.includes('Error')) {
+                // Extract error message if possible
+                const errorMatch = data.match(/error['"]*:\s*['"]([^'"]+)['"]/i);
+                const errorMsg = errorMatch ? errorMatch[1] : 'An error occurred while updating the subscription.';
+                showAlert('danger', 'Update Failed', errorMsg);
+                resetButton();
+            } else {
+                // Fallback - redirect to check current state
+                updateBtn.innerHTML = '<i class="fas fa-check me-2"></i>Processing...';
+                showAlert('success', 'Processing...', 'Please wait while we process your request.');
+                setTimeout(() => {
+                    window.location.href = "{{ url_for('admin.admin_subscribed_users') }}";
+                }, 2000);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showAlert('danger', 'Connection Error', 'Failed to update subscription. Please check your connection and try again.');
+            resetButton();
+        });
+    }
+    
+    // Function to reset button state
+    function resetButton() {
+        isFormSubmitting = false;
+        const updateBtn = document.getElementById('updateBtn');
+        
+        updateBtn.disabled = false;
+        updateBtn.innerHTML = '<i class="fas fa-save me-2"></i>Update Subscription';
+        updateBtn.classList.remove('btn-success');
+        updateBtn.classList.add('btn-primary');
+    }
+    
+    // Professional alert function
+    function showAlert(type, title, message) {
+        const alertContainer = document.getElementById('alertContainer');
+        const alertId = 'alert-' + Date.now();
+        
+        const alertHTML = `
+            <div class="alert alert-${type} alert-dismissible fade show" role="alert" id="${alertId}">
+                <div class="d-flex align-items-center">
+                    <i class="fas ${getAlertIcon(type)} me-2"></i>
+                    <div>
+                        <strong>${title}</strong>
+                        <div class="small">${message}</div>
+                    </div>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        `;
+        
+        alertContainer.insertAdjacentHTML('beforeend', alertHTML);
+        
+        // Auto-remove after 5 seconds
+        setTimeout(() => {
+            const alertElement = document.getElementById(alertId);
+            if (alertElement) {
+                alertElement.remove();
+            }
+        }, 5000);
+    }
+    
+    // Helper function to get appropriate icon for alert type
+    function getAlertIcon(type) {
+        switch(type) {
+            case 'success': return 'fa-check-circle';
+            case 'danger': return 'fa-exclamation-triangle';
+            case 'warning': return 'fa-exclamation-triangle';
+            case 'info': return 'fa-info-circle';
+            default: return 'fa-info-circle';
+        }
+    }
+
+    // Function to increment/decrement usage in edit form
+    window.incrementUsage = function(userId, usageType, action) {
+        const countInput = document.getElementById(`${usageType}-count`);
+        const count = parseInt(countInput.value);
+
+        if (count <= 0) {
+            showAlert('warning', 'Invalid Input', 'Count must be positive!');
+            return;
+        }
+
+        const endpoint = `/admin/subscribed-users/${action}-${usageType}/${userId}`;
+
+        // Disable buttons during request
+        const buttons = document.querySelectorAll(`button[onclick*="${userId}"][onclick*="${usageType}"]`);
+        buttons.forEach(btn => btn.disabled = true);
+
+        fetch(endpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ count: count })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Update display elements
+                const displayElement = document.getElementById(`${usageType}-display`);
+                const progressElement = document.getElementById(`${usageType}-progress`);
+
+                if (displayElement) {
+                    displayElement.textContent = `${data.used} / ${data.limit}`;
+                }
+
+                if (progressElement) {
+                    progressElement.style.width = `${data.percentage}%`;
+                    progressElement.setAttribute('aria-valuenow', data.percentage);
+
+                    // Update progress bar color based on percentage
+                    const colorClass = data.percentage > 90 ? 'bg-danger' :
+                                     (usageType === 'analytics' ? 'bg-info' :
+                                      (usageType === 'qr' ? 'bg-primary' : 'bg-warning'));
+                    progressElement.className = `progress-bar ${colorClass}`;
+                }
+
+                const actionText = action === 'increment' ? 'increased' : 'decreased';
+                showAlert('success', 'Success', `${usageType.charAt(0).toUpperCase() + usageType.slice(1)} limit ${actionText} successfully!`);
+            } else {
+                showAlert('danger', 'Error', data.error);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showAlert('danger', 'Error', 'An error occurred while updating the usage count.');
+        })
+        .finally(() => {
+            // Re-enable buttons
+            buttons.forEach(btn => btn.disabled = false);
+        });
+    };
+});
+</script>
+{% endblock %}
+</document_content>

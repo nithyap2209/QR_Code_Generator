@@ -1,0 +1,319 @@
+{% extends 'base2.html' %}
+
+{% block title %}QR Code for Text - Create Text QR Codes | QR Dada{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="bg-gradient-to-br from-primary-50 to-secondary-50 py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center">
+            <div class="inline-block p-4 bg-white rounded-full shadow-lg mb-6">
+                <i class="fas fa-font text-5xl text-secondary-600"></i>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                QR Code for Text
+            </h1>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+                Convert any text message into a scannable QR code. Perfect for sharing notes, quotes, instructions, or any written content instantly.
+            </p>
+            <div class="flex gap-4 justify-center">
+                <a href="{{ url_for('create_qr') }}" class="bg-secondary-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-secondary-700 transition-colors shadow-lg">
+                    Create Text QR Code
+                </a>
+                <a href="#how-it-works" class="bg-white text-secondary-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors border-2 border-secondary-600">
+                    Learn More
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- What is Text QR Code Section -->
+<section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+                <h2 class="text-3xl font-bold text-gray-900 mb-6">What is a Text QR Code?</h2>
+                <p class="text-lg text-gray-600 mb-4">
+                    A Text QR Code is a quick response code that contains plain text information, functioning similarly to a simple qr code for text when sharing written data. When scanned with a smartphone, it instantly displays the encoded text message without requiring any internet connection.
+
+                </p>
+                <p class="text-lg text-gray-600 mb-4">
+                    Text QR codes are one of the most versatile types of QR codes, allowing you to share up to several hundred characters of text information in a compact, scannable format.
+                </p>
+                <div class="bg-secondary-50 border-l-4 border-secondary-600 p-4 mt-6">
+                    <p class="text-sm text-gray-700">
+                        <i class="fas fa-lightbulb text-secondary-600 mr-2"></i>
+                        <strong>Pro Tip:</strong> Keep your text concise for better scanability. Shorter text generates smaller, easier-to-scan QR codes.
+                    </p>
+                </div>
+            </div>
+            <div class="bg-gray-100 rounded-lg p-8 text-center">
+                <img src="{{ url_for('static', filename='images/qr_text.png') }}"
+                     alt="Text QR Code Example"
+                     class="mx-auto mb-4 w-64 h-64 object-contain">
+                <p class="text-sm text-gray-600">Example: Text QR Code</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Use Cases Section -->
+<section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Popular Use Cases</h2>
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+                <div class="w-12 h-12 bg-secondary-100 rounded-lg flex items-center justify-center mb-4">
+                    <i class="fas fa-quote-right text-secondary-600 text-xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-3">Quotes & Messages</h3>
+                <p class="text-gray-600">
+                    Share inspirational quotes, welcome messages, or important announcements at events, presentations, or exhibitions, often created through a text to qr code generator.
+
+                </p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+                <div class="w-12 h-12 bg-secondary-100 rounded-lg flex items-center justify-center mb-4">
+                    <i class="fas fa-clipboard-list text-secondary-600 text-xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-3">Instructions</h3>
+                <p class="text-gray-600">
+                     Provide quick access to setup instructions, safety guidelines, or step-by-step directions without internet using a qr code generator for text.
+
+                </p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+                <div class="w-12 h-12 bg-secondary-100 rounded-lg flex items-center justify-center mb-4">
+                    <i class="fas fa-key text-secondary-600 text-xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-3">WiFi Passwords</h3>
+                <p class="text-gray-600">
+                    Share WiFi credentials, license keys, or temporary passwords securely without typing them out using any modern qr code generator with text.
+                </p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+                <div class="w-12 h-12 bg-secondary-100 rounded-lg flex items-center justify-center mb-4">
+                    <i class="fas fa-map-marker-alt text-secondary-600 text-xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-3">Addresses</h3>
+                <p class="text-gray-600">
+                    Share complete addresses, coordinates, or location details that users can quickly copy and paste.
+
+                </p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+                <div class="w-12 h-12 bg-secondary-100 rounded-lg flex items-center justify-center mb-4">
+                    <i class="fas fa-gift text-secondary-600 text-xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-3">Promotional Codes</h3>
+                <p class="text-gray-600">
+                    Distribute coupon codes, discount vouchers, or promotional offers in print materials and packaging.
+
+                </p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+                <div class="w-12 h-12 bg-secondary-100 rounded-lg flex items-center justify-center mb-4">
+                    <i class="fas fa-info-circle text-secondary-600 text-xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-3">Product Information</h3>
+                <p class="text-gray-600">
+                    Display product specifications, ingredients, care instructions, or manufacturing details on packaging.
+
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section id="how-it-works" class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">How to Create a Text QR Code</h2>
+        <div class="grid md:grid-cols-4 gap-8">
+            <div class="text-center">
+                <div class="w-16 h-16 bg-secondary-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                    1
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Enter Your Text</h3>
+                <p class="text-gray-600">Type or paste the text message you want to encode in the QR code.</p>
+            </div>
+
+            <div class="text-center">
+                <div class="w-16 h-16 bg-secondary-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                    2
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Customize Design</h3>
+                <p class="text-gray-600">Choose colors, add your logo, and customize the QR code appearance.</p>
+            </div>
+
+            <div class="text-center">
+                <div class="w-16 h-16 bg-secondary-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                    3
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Generate QR Code</h3>
+                <p class="text-gray-600">Click generate and get your custom text QR code instantly.</p>
+            </div>
+
+            <div class="text-center">
+                <div class="w-16 h-16 bg-secondary-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                    4
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Download & Use</h3>
+                <p class="text-gray-600">Download in high quality and use it anywhere you need.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Benefits Section -->
+<section class="py-16 bg-secondary-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Benefits of Text QR Codes</h2>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <div class="w-10 h-10 bg-secondary-600 text-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-wifi-slash"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">No Internet Required</h3>
+                    <p class="text-gray-600">Text QR codes work completely offline after scanning.</p>
+                </div>
+            </div>
+
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <div class="w-10 h-10 bg-secondary-600 text-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Instant Access</h3>
+                    <p class="text-gray-600">Information appears immediately after scanning.</p>
+                </div>
+            </div>
+
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <div class="w-10 h-10 bg-secondary-600 text-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-copy"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Easy to Copy</h3>
+                    <p class="text-gray-600">Users can quickly copy text for use in other applications.</p>
+                </div>
+            </div>
+
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <div class="w-10 h-10 bg-secondary-600 text-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Universal Compatibility</h3>
+                    <p class="text-gray-600">Works with all QR code scanners and smartphones.</p>
+                </div>
+            </div>
+
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <div class="w-10 h-10 bg-secondary-600 text-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-print"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Print Friendly</h3>
+                    <p class="text-gray-600">Perfect for business cards, flyers, and posters.</p>
+                </div>
+            </div>
+
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <div class="w-10 h-10 bg-secondary-600 text-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Secure</h3>
+                    <p class="text-gray-600">Data is embedded directly, no external database needed.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="py-16 bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Frequently Asked Questions</h2>
+        <div class="space-y-4">
+            <div class="bg-gray-50 rounded-lg p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">How much text can I put in a QR code?</h3>
+                <p class="text-gray-600">
+                    You can encode up to approximately 2,953 bytes (roughly 2,900 characters) in a QR code. However, for better scanability, we recommend keeping your text under 300 characters.
+                </p>
+            </div>
+
+            <div class="bg-gray-50 rounded-lg p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Can I edit the text after creating the QR code?</h3>
+                <p class="text-gray-600">
+                    Static text QR codes cannot be edited once created. If you need to change the content, you'll need to generate a new QR code. For editable content, consider using our dynamic QR codes with a redirect URL.
+
+                </p>
+            </div>
+
+            <div class="bg-gray-50 rounded-lg p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Do text QR codes expire?</h3>
+                <p class="text-gray-600">
+                    No! Static text QR codes never expire and will work indefinitely without requiring any subscription or server connection.
+
+                </p>
+            </div>
+
+            <div class="bg-gray-50 rounded-lg p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Can I track scans of text QR codes?</h3>
+                <p class="text-gray-600">
+                    Static text QR codes don't support tracking. If you need analytics and scan tracking, upgrade to our dynamic QR code solution which includes detailed analytics.
+
+                </p>
+            </div>
+
+            <div class="bg-gray-50 rounded-lg p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">What format should I download my text QR code in?</h3>
+                <p class="text-gray-600">
+                    We offer multiple formats: PNG (best for digital use), SVG (best for print and scaling), and PDF (best for professional printing). Choose based on your use case.
+
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-16 bg-gradient-to-br from-secondary-600 to-primary-600 text-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl font-bold mb-6">Ready to Create Your Text QR Code?</h2>
+        <p class="text-xl mb-8 text-white/90">
+            Start creating professional text QR codes in seconds. No registration required for basic features!
+        </p>
+        <div class="flex gap-4 justify-center flex-wrap">
+            <a href="{{ url_for('create_qr') }}" class="bg-white text-secondary-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors shadow-lg">
+                Create QR Code Now
+            </a>
+            <a href="{{ url_for('register') }}" class="bg-transparent border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white/10 transition-colors">
+                Sign Up for Free
+            </a>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

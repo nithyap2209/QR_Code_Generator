@@ -1,0 +1,252 @@
+{% extends "base2.html" %}
+
+{% block title %}About Us | QR Dada{% endblock %}
+
+{% block extra_head %}
+<meta name="description" content="Learn about QR DADA - A QR generation tool built for brands that care about design. Discover our story, vision, and what makes us different.">
+<style>
+    .about-card { transition: all 0.3s ease; }
+    .about-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    @keyframes slideIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .animate-slide-in { animation: slideIn 0.6s ease-out forwards; }
+
+    .feature-icon { transition: all 0.3s ease; }
+    .feature-card:hover .feature-icon {
+        transform: scale(1.1);
+        color: #7c3aed;
+    }
+
+    .btn-gradient {
+        background: linear-gradient(45deg, #7c3aed, #4f46e5);
+        color: white;
+        transition: all 0.3s ease;
+    }
+
+    .btn-gradient:hover {
+        background: linear-gradient(45deg, #6d28d9, #4338ca);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+        color: white;
+    }
+
+    @media (max-width: 640px) {
+        h1 { font-size: 2rem !important; }
+        h2 { font-size: 1.75rem !important; }
+        .feature-card { padding: 1.5rem; }
+        .feature-icon { width: 3rem; height: 3rem; }
+        .about-card { padding: 1.5rem; }
+    }
+
+    @media (max-width: 480px) {
+        .grid-cols-1 { gap: 1rem; }
+        .py-16 { padding-top: 3rem; padding-bottom: 3rem; }
+        .px-4 { padding-left: 1rem; padding-right: 1rem; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="relative pt-4 pb-12 overflow-hidden bg-gradient-to-br from-primary-500 to-secondary-600">
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10">
+        <h1 class="text-4xl md:text-5xl font-bold text-white mb-6 animate-fade-in">
+            About QR DADA
+        </h1>
+        <p class="text-xl text-white/90 max-w-4xl mx-auto animate-fade-in" style="animation-delay: 0.1s">
+            Built for Brands That Care About Design
+        </p>
+    </div>
+</section>
+
+<!-- Main Content -->
+<section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Introduction -->
+        <div class="max-w-4xl mx-auto mb-20">
+            <div class="bg-gradient-to-br from-primary-50 to-secondary-50 rounded-2xl p-8 md:p-12 shadow-card">
+                <p class="text-lg md:text-xl text-gray-700 leading-relaxed mb-6">
+                    QR DADA is a QR generation tool made for businesses, designers, and marketers who want their QR codes to look professional and perform reliably. It combines thoughtful design options with dependable technology, helping teams create QR codes that fit perfectly into their brand identity.
+                </p>
+                <p class="text-lg md:text-xl text-gray-700 leading-relaxed">
+                    Every QR made with QR DADA is clear, consistent, and built to work in real-world situations—from print ads and packaging to digital campaigns.
+                </p>
+            </div>
+        </div>
+
+        <!-- Our Story -->
+        <div class="mb-20">
+            <div class="flex items-center justify-center mb-8">
+                <div class="w-12 h-1 bg-gradient-to-r from-primary-600 to-secondary-600 rounded-full mr-4"></div>
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Our Story</h2>
+                <div class="w-12 h-1 bg-gradient-to-r from-secondary-600 to-primary-600 rounded-full ml-4"></div>
+            </div>
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-white rounded-2xl p-8 md:p-12 shadow-card border border-gray-100">
+                    <p class="text-lg text-gray-700 leading-relaxed mb-6">
+                        QR DADA started as an internal need. While working on client campaigns, we realized most QR generators focused only on function, not presentation. The results often looked generic and didn't represent the brand behind them.
+                    </p>
+                    <p class="text-lg text-gray-700 leading-relaxed mb-6">
+                        We built QR DADA to change that. A tool that gives you design control, accurate tracking, and the flexibility to update your links anytime, without starting over.
+                    </p>
+                    <p class="text-lg text-gray-700 leading-relaxed">
+                        What began as a side project quickly became a complete QR platform trusted by businesses that care about how their communication looks and works.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- What QR DADA Offers -->
+        <div class="mb-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">What QR DADA Offers</h2>
+                <p class="text-xl text-gray-600">Everything you need to create professional QR codes</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="about-card feature-card bg-white rounded-xl p-8 shadow-card border border-gray-100">
+                    <div class="w-16 h-16 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center mb-6 feature-icon">
+                        <i class="fas fa-palette text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Custom Design Options</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Choose colors, shapes, logos, and layouts that match your brand.
+                    </p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="about-card feature-card bg-white rounded-xl p-8 shadow-card border border-gray-100">
+                    <div class="w-16 h-16 bg-gradient-to-br from-secondary-500 to-secondary-600 rounded-xl flex items-center justify-center mb-6 feature-icon">
+                        <i class="fas fa-sync-alt text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Dynamic QR Codes</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Update your links or destinations anytime without reprinting materials.
+                    </p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="about-card feature-card bg-white rounded-xl p-8 shadow-card border border-gray-100">
+                    <div class="w-16 h-16 bg-gradient-to-br from-accent-500 to-accent-600 rounded-xl flex items-center justify-center mb-6 feature-icon">
+                        <i class="fas fa-chart-line text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Performance Insights</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Understand when, where, and how your codes are scanned.
+                    </p>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="about-card feature-card bg-white rounded-xl p-8 shadow-card border border-gray-100">
+                    <div class="w-16 h-16 bg-gradient-to-br from-pink-500 to-pink-600 rounded-xl flex items-center justify-center mb-6 feature-icon">
+                        <i class="fas fa-layer-group text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Ready Templates</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Professionally designed starting points for events, packaging, or marketing use.
+                    </p>
+                </div>
+
+                <!-- Feature 5 -->
+                <div class="about-card feature-card bg-white rounded-xl p-8 shadow-card border border-gray-100">
+                    <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center mb-6 feature-icon">
+                        <i class="fas fa-check-circle text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Reliable Output</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        All QRs are tested for accuracy and scannability before download.
+                    </p>
+                </div>
+
+                <!-- Feature 6 -->
+                <div class="about-card feature-card bg-white rounded-xl p-8 shadow-card border border-gray-100">
+                    <div class="w-16 h-16 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl flex items-center justify-center mb-6 feature-icon">
+                        <i class="fas fa-shield-alt text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Complete Control</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Giving users clarity, control, and confidence in every step of their QR creation process.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Who Uses It -->
+        <div class="mb-20">
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-gradient-to-br from-secondary-50 to-primary-50 rounded-2xl p-8 md:p-12 shadow-card">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center mr-4 shadow-soft">
+                            <i class="fas fa-users text-secondary-600 text-2xl"></i>
+                        </div>
+                        <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Who Uses It</h2>
+                    </div>
+                    <p class="text-lg text-gray-700 leading-relaxed">
+                        QR DADA is used by teams across industries—education, retail, automotive, hospitality, and more. From small businesses promoting local offers to enterprises managing nationwide campaigns, users trust QR DADA to deliver codes that reflect their brand's quality.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Our Approach & Vision -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
+            <!-- Our Approach -->
+            <div class="about-card bg-white rounded-2xl p-8 md:p-10 shadow-card border border-gray-100">
+                <div class="flex items-center mb-6">
+                    <div class="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center mr-4">
+                        <i class="fas fa-compass text-white text-xl"></i>
+                    </div>
+                    <h2 class="text-2xl md:text-3xl font-bold text-gray-900">Our Approach</h2>
+                </div>
+                <p class="text-lg text-gray-700 leading-relaxed mb-4">
+                    We believe design should make technology easy to use and pleasant to look at. That principle shapes everything we build, from how the dashboard works to how each QR appears once it's live.
+                </p>
+                <p class="text-lg text-gray-700 leading-relaxed font-semibold">
+                    Our goal is not to make the most complex QR tool, but the most dependable one.
+                </p>
+            </div>
+
+            <!-- Our Vision -->
+            <div class="about-card bg-white rounded-2xl p-8 md:p-10 shadow-card border border-gray-100">
+                <div class="flex items-center mb-6">
+                    <div class="w-12 h-12 bg-gradient-to-br from-secondary-500 to-secondary-600 rounded-xl flex items-center justify-center mr-4">
+                        <i class="fas fa-eye text-white text-xl"></i>
+                    </div>
+                    <h2 class="text-2xl md:text-3xl font-bold text-gray-900">Our Vision</h2>
+                </div>
+                <p class="text-lg text-gray-700 leading-relaxed mb-4">
+                    To make QR creation a thoughtful process, where brands can maintain visual consistency, track performance, and update content effortlessly.
+                </p>
+                <p class="text-lg text-gray-700 leading-relaxed font-semibold">
+                    QR DADA stands for clarity, usability, and trust. Every scan should work the first time, every time.
+                </p>
+            </div>
+        </div>
+
+        <!-- CTA Section -->
+        <div class="text-center">
+            <div class="bg-gradient-to-r from-primary-600 to-secondary-600 rounded-2xl p-12 shadow-glow">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
+                    Ready to Create Professional QR Codes?
+                </h2>
+                <p class="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+                    Join thousands of businesses that trust QR DADA for their QR code needs.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="{{ url_for('contact') }}" class="bg-transparent border-2 border-white text-white px-8 py-4 rounded-xl font-semibold hover:bg-white hover:text-primary-600 transition inline-flex items-center justify-center">
+                        <i class="fas fa-envelope mr-2"></i>
+                        Contact Us
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

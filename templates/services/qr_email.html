@@ -1,0 +1,239 @@
+{% extends 'base2.html' %}
+{% block title %}QR Code for Email - Instant Email QR Codes | QR Dada{% endblock %}
+{% block content %}
+<section class="bg-gradient-to-br from-primary-50 to-secondary-50 py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div class="inline-block p-4 bg-white rounded-full shadow-lg mb-6">
+            <i class="fas fa-envelope text-5xl text-secondary-600"></i>
+        </div>
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">QR Code for Email</h1>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+             Create QR codes that open a pre-filled email with recipient, subject, and message. Perfect for customer support, feedback forms, and contact requests using our smart QR code generator and email tools.
+
+        </p>
+        <a href="{{ url_for('create_qr') }}" class="bg-secondary-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-secondary-700 transition-colors shadow-lg inline-block">
+            Create Email QR Code
+        </a>
+    </div>
+</section>
+
+<!-- What is Email QR Code Section -->
+<section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid md:grid-cols-2 gap-12 items-center mb-16">
+            <div>
+                <h2 class="text-3xl font-bold text-gray-900 mb-6">What is an Email QR Code?</h2>
+                <p class="text-lg text-gray-600 mb-4">
+                    An Email QR Code is a specialized QR code that, when scanned, automatically opens the user's email application with pre-filled recipient address, subject line, and message body, ideal when you need a quick email-to-QR code solution or a simple QR code for email setup. This eliminates typing and makes communication instant.
+
+                </p>
+                <p class="text-lg text-gray-600 mb-4">
+                    Email QR codes are perfect for businesses looking to streamline customer communication, collect feedback, or provide easy contact methods without manual data entry using a professional email QR code generator.
+
+                </p>
+                <div class="bg-secondary-50 border-l-4 border-secondary-600 p-4 mt-6">
+                    <p class="text-sm text-gray-700">
+                        <i class="fas fa-lightbulb text-secondary-600 mr-2"></i>
+                        <strong>Pro Tip:</strong> Pre-fill the subject line to help organize incoming emails and improve response rates.
+                    </p>
+                </div>
+            </div>
+            <div class="bg-gray-100 rounded-lg p-8 text-center">
+                <img src="{{ url_for('static', filename='images/qr_email.png') }}"
+                     alt="Email QR Code Example"
+                     class="mx-auto mb-4 w-64 h-64 object-contain">
+                <p class="text-sm text-gray-600">Example: Email QR Code <br> Perfect for anyone wanting an email QR code or an email ID QR code for instant communication.</p>
+            </div>
+        </div>
+
+        <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Perfect for</h2>
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="bg-gray-50 p-6 rounded-lg hover:shadow-lg transition-shadow">
+                <i class="fas fa-headset text-3xl text-secondary-600 mb-4"></i>
+                <h3 class="text-xl font-semibold mb-2">Customer Support</h3>
+                <p class="text-gray-600">Make it easy for customers to reach your support team with pre-filled emails through a seamless QR code generator for an email experience.</p>
+            </div>
+            <div class="bg-gray-50 p-6 rounded-lg hover:shadow-lg transition-shadow">
+                <i class="fas fa-comments text-3xl text-secondary-600 mb-4"></i>
+                <h3 class="text-xl font-semibold mb-2">Feedback Collection</h3>
+                <p class="text-gray-600">Gather customer feedback by providing a quick way to send structured emails.</p>
+            </div>
+            <div class="bg-gray-50 p-6 rounded-lg hover:shadow-lg transition-shadow">
+                <i class="fas fa-briefcase text-3xl text-secondary-600 mb-4"></i>
+                <h3 class="text-xl font-semibold mb-2">Business Cards</h3>
+                <p class="text-gray-600">Add to business cards for instant email contact using a clean QR code for email address setup.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">How to Create an Email QR Code</h2>
+        <div class="grid md:grid-cols-4 gap-8">
+            <div class="text-center">
+                <div class="w-16 h-16 bg-secondary-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                    1
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Enter Email Details</h3>
+                <p class="text-gray-600"> Provide recipient email, subject, and optional message content. The simplest way to create QR code email formats that work everywhere.</p>
+            </div>
+
+            <div class="text-center">
+                <div class="w-16 h-16 bg-secondary-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                    2
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Customize Design</h3>
+                <p class="text-gray-600">Add colors, logos, and personalize the QR code design.</p>
+            </div>
+
+            <div class="text-center">
+                <div class="w-16 h-16 bg-secondary-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                    3
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Generate QR Code</h3>
+                <p class="text-gray-600">Create your custom email QR code instantly using our advanced QR code generator for email feature.</p>
+            </div>
+
+            <div class="text-center">
+                <div class="w-16 h-16 bg-secondary-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                    4
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Download & Use</h3>
+                <p class="text-gray-600">Download and place on marketing materials or products.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Benefits Section -->
+<section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Benefits of Email QR Codes</h2>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <div class="w-10 h-10 bg-secondary-600 text-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Instant Communication</h3>
+                    <p class="text-gray-600">Users can contact you in seconds without typing, using email QR code, Gmail-supported formats.</p>
+                </div>
+            </div>
+
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <div class="w-10 h-10 bg-secondary-600 text-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-check-double"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Error-Free</h3>
+                    <p class="text-gray-600">No typos in email addresses or subject lines.</p>
+                </div>
+            </div>
+
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <div class="w-10 h-10 bg-secondary-600 text-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-sort-amount-down"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Organized Inbox</h3>
+                    <p class="text-gray-600">Pre-filled subjects help categorize incoming messages.</p>
+                </div>
+            </div>
+
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <div class="w-10 h-10 bg-secondary-600 text-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Mobile Friendly</h3>
+                    <p class="text-gray-600">Works with all email apps on smartphones and tablets.</p>
+                </div>
+            </div>
+
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <div class="w-10 h-10 bg-secondary-600 text-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Higher Response Rate</h3>
+                    <p class="text-gray-600">Convenience leads to more customer interactions.</p>
+                </div>
+            </div>
+
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <div class="w-10 h-10 bg-secondary-600 text-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-print"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Print Ready</h3>
+                    <p class="text-gray-600">Perfect for flyers, posters, and packaging.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="py-16 bg-gray-50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Frequently Asked Questions</h2>
+        <div class="space-y-4">
+            <div class="bg-white rounded-lg p-6 shadow-sm">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Will email QR codes work on all devices?</h3>
+                <p class="text-gray-600">
+                    Yes! Email QR codes work on all smartphones and devices that have an email application installed (Gmail, Outlook, Apple Mail, etc.). They are fully compatible when learning how to scan an email QR code on any platform.
+                </p>
+            </div>
+
+            <div class="bg-white rounded-lg p-6 shadow-sm">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Can users edit the pre-filled message before sending?</h3>
+                <p class="text-gray-600">
+                    Absolutely! The pre-filled content serves as a template. Users can edit, add, or remove any content before sending the email.
+                </p>
+            </div>
+
+            <div class="bg-white rounded-lg p-6 shadow-sm">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">How do I know if someone scanned my email QR code?</h3>
+                <p class="text-gray-600">
+                    You'll receive the email when someone scans and sends it. For scan analytics without email sending, use our dynamic QR codes with tracking.
+                </p>
+            </div>
+
+            <div class="bg-white rounded-lg p-6 shadow-sm">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Can I include multiple email recipients?</h3>
+                <p class="text-gray-600">
+                    Yes, you can add multiple recipients using CC or BCC fields when creating your email QR code.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-16 bg-gradient-to-br from-secondary-600 to-primary-600 text-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl font-bold mb-6">Ready to Simplify Email Communication?</h2>
+        <p class="text-xl mb-8 text-white/90">
+            Create professional email QR code formats and make it effortless for customers to reach you!
+
+        </p>
+        <a href="{{ url_for('create_qr') }}" class="bg-white text-secondary-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors shadow-lg inline-block">
+            Create Email QR Code Now
+        </a>
+    </div>
+</section>
+{% endblock %}

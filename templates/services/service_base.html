@@ -1,0 +1,46 @@
+{% extends "base2.html" %}
+
+{% block title %}{% block service_title %}QR Dada - Advanced QR Code Generator{% endblock %}{% endblock %}
+
+{% block extra_head %}
+<!-- Service-specific styles -->
+<style>
+    /* Additional service page animations */
+    .animate-shift {
+        animation: shift 3s ease infinite alternate;
+    }
+
+    @keyframes shift {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(10px); }
+    }
+
+    .animate-fade-in {
+        animation: fadeInUp 0.5s ease-out forwards;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translate3d(0, 20px, 0);
+        }
+        to {
+            opacity: 1;
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+    .animate-bounce-slow {
+        animation: bounce 3s infinite;
+    }
+</style>
+{% block service_extra_head %}{% endblock %}
+{% endblock %}
+
+{% block content %}
+{% block service_content %}{% endblock %}
+{% endblock %}
+
+{% block extra_js %}
+{% block service_extra_js %}{% endblock %}
+{% endblock %}

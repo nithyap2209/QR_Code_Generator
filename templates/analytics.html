@@ -1,0 +1,515 @@
+{% extends "base.html" %}
+
+{% block title %}Analytics for {{ qr_code.name }} | QR Dada{% endblock %}
+
+{% block head %}
+<style>
+    /* Custom styles for analytics */
+    .stats-card {
+        transition: transform 0.2s ease-in-out;
+    }
+    
+    .stats-card:hover {
+        transform: translateY(-2px);
+    }
+    
+    .stat-icon {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    .timezone-alert {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="bg-gray-50 min-h-screen">
+    <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        <!-- Back button and title with timezone info -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between mb-8">
+            <div>
+                <a href="{{ url_for('view_qr', qr_id=qr_code.unique_id) }}" class="inline-flex items-center text-sm font-medium text-secondary-600 hover:text-secondary-800 mb-2">
+                    <i class="fas fa-arrow-left mr-2"></i> Back to QR Code
+                </a>
+                <h1 class="text-2xl font-bold text-gray-900">Analytics for "{{ qr_code.name }}"</h1>
+                <p class="text-gray-600 mt-1">Track performance and engagement metrics for your QR code</p>
+                
+                <!-- Timezone Information -->
+                <div class="mt-2 flex items-center gap-4 text-sm text-gray-500">
+                    <span class="flex items-center gap-1">
+                        <i class="fas fa-clock"></i>
+                        Times shown in: <strong class="text-gray-700">{{ user_timezone or 'UTC' }}</strong>
+                    </span>
+                    {% if user_timezone and user_timezone != 'UTC' %}
+                    <button type="button" onclick="setTimezone('UTC')" class="text-secondary-600 hover:text-secondary-800 font-medium transition-colors duration-200">
+                        Switch to UTC
+                    </button>
+                    {% endif %}
+                    {% if not user_timezone or user_timezone not in ['Asia/Kolkata', 'Asia/Calcutta'] %}
+                    <button type="button" onclick="setTimezone('Asia/Kolkata')" class="text-secondary-600 hover:text-secondary-800 font-medium transition-colors duration-200">
+                        Switch to IST
+                    </button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Timezone Auto-Detection Alert -->
+        <div id="timezone-alert-container"></div>
+
+        {% if not has_data %}
+        <!-- No data state -->
+        <div class="bg-white shadow rounded-lg p-8 text-center">
+            <div class="mx-auto h-24 w-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                <i class="fas fa-chart-line text-4xl text-gray-400"></i>
+            </div>
+            <h2 class="text-xl font-semibold text-gray-800 mb-2">No scan data yet</h2>
+            <p class="text-gray-600 mb-6">Your QR code hasn't been scanned yet. Check back later for analytics.</p>
+            <a href="{{ url_for('download_qr', qr_id=qr_code.unique_id) }}" class="inline-flex items-center px-4 py-2 bg-secondary-600 hover:bg-secondary-700 text-white font-medium rounded-md">
+                <i class="fas fa-download mr-2"></i> Download QR Code
+            </a>
+        </div>
+        {% else %}
+
+        <!-- Statistics Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Total Scans -->
+            <div class="bg-white shadow rounded-lg p-6 border border-gray-200 stats-card">
+                <div class="flex items-center">
+                    <div class="h-12 w-12 stat-icon rounded-lg flex items-center justify-center text-white">
+                        <i class="fas fa-qrcode text-2xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm text-gray-500">Total Scans</p>
+                        <p class="text-2xl font-bold text-gray-900">{{ total_scans or 0 }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Device Distribution -->
+            <div class="bg-white shadow rounded-lg p-6 border border-gray-200 stats-card">
+                <div class="flex items-center">
+                    <div class="h-12 w-12 bg-blue-100 rounded-lg flex items-center justify-center text-blue-700">
+                        <i class="fas fa-mobile-alt text-2xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm text-gray-500">Top Device</p>
+                        {% if device_data and device_data|length > 0 %}
+                            {% set top_device = device_data|sort(attribute='scans', reverse=true)|first %}
+                            <p class="text-lg font-bold text-gray-900">{{ top_device.device }}</p>
+                            <p class="text-xs text-gray-500">{{ top_device.scans }} scans</p>
+                        {% else %}
+                            <p class="text-lg font-bold text-gray-900">No Data</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Operating System -->
+            <div class="bg-white shadow rounded-lg p-6 border border-gray-200 stats-card">
+                <div class="flex items-center">
+                    <div class="h-12 w-12 bg-green-100 rounded-lg flex items-center justify-center text-green-700">
+                        <i class="fas fa-laptop text-2xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm text-gray-500">Top OS</p>
+                        {% if os_data and os_data|length > 0 %}
+                            {% set top_os = os_data|sort(attribute='scans', reverse=true)|first %}
+                            <p class="text-lg font-bold text-gray-900">{{ top_os.os }}</p>
+                            <p class="text-xs text-gray-500">{{ top_os.scans }} scans</p>
+                        {% else %}
+                            <p class="text-lg font-bold text-gray-900">No Data</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Peak Hour -->
+            <div class="bg-white shadow rounded-lg p-6 border border-gray-200 stats-card">
+                <div class="flex items-center">
+                    <div class="h-12 w-12 bg-purple-100 rounded-lg flex items-center justify-center text-purple-700">
+                        <i class="fas fa-clock text-2xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm text-gray-500">Peak Hour</p>
+                        <p class="text-lg font-bold text-gray-900">{{ peak_hour or 'No Data' }}</p>
+                        <p class="text-xs text-gray-500">({{ user_timezone or 'UTC' }})</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary Statistics -->
+        <div class="bg-white shadow rounded-lg p-6 border border-gray-200 mb-8">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-chart-bar text-secondary-600 mr-2"></i> 
+                Summary Statistics
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Device Breakdown -->
+                <div>
+                    <h3 class="text-sm font-medium text-gray-700 mb-3">Device Distribution</h3>
+                    {% if device_data and device_data|length > 0 %}
+                        {% for device in device_data %}
+                        <div class="flex justify-between items-center py-2">
+                            <span class="text-sm text-gray-600">{{ device.device }}</span>
+                            <div class="flex items-center">
+                                <span class="text-sm font-medium text-gray-900 mr-2">{{ device.scans }}</span>
+                                <div class="w-16 bg-gray-200 rounded-full h-2">
+                                    <div class="bg-blue-500 h-2 rounded-full" style="width: {{ (device.scans / total_scans * 100) if total_scans > 0 else 0 }}%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-sm text-gray-500">No device data available</p>
+                    {% endif %}
+                </div>
+
+                <!-- OS Breakdown -->
+                <div>
+                    <h3 class="text-sm font-medium text-gray-700 mb-3">Operating Systems</h3>
+                    {% if os_data and os_data|length > 0 %}
+                        {% for os in os_data %}
+                        <div class="flex justify-between items-center py-2">
+                            <span class="text-sm text-gray-600">{{ os.os }}</span>
+                            <div class="flex items-center">
+                                <span class="text-sm font-medium text-gray-900 mr-2">{{ os.scans }}</span>
+                                <div class="w-16 bg-gray-200 rounded-full h-2">
+                                    <div class="bg-green-500 h-2 rounded-full" style="width: {{ (os.scans / total_scans * 100) if total_scans > 0 else 0 }}%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-sm text-gray-500">No OS data available</p>
+                    {% endif %}
+                </div>
+
+                <!-- Time Statistics -->
+                <div>
+                    <h3 class="text-sm font-medium text-gray-700 mb-3">Time Statistics</h3>
+                    <div class="space-y-2">
+                        <div class="flex justify-between">
+                            <span class="text-sm text-gray-600">Total Scans</span>
+                            <span class="text-sm font-medium text-gray-900">{{ total_scans }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-sm text-gray-600">Peak Hour</span>
+                            <span class="text-sm font-medium text-gray-900">{{ peak_hour or 'N/A' }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-sm text-gray-600">QR Created</span>
+                            <span class="text-sm font-medium text-gray-900">
+                                {% if qr_code.created_at %}
+                                    {{ qr_code.created_at.strftime('%b %d, %Y') }}
+                                {% else %}
+                                    Unknown
+                                {% endif %}
+                            </span>
+                        </div>
+                        {% if scans and scans|length > 0 %}
+                        <div class="flex justify-between">
+                            <span class="text-sm text-gray-600">Last Scan</span>
+                            <span class="text-sm font-medium text-gray-900">
+                                {% set latest_scan = scans[0] %}
+                                {% if hasattr(latest_scan, 'localized_timestamp') and latest_scan.localized_timestamp %}
+                                    {{ latest_scan.localized_timestamp.strftime('%b %d, %Y') }}
+                                {% elif latest_scan.timestamp %}
+                                    {{ latest_scan.timestamp.strftime('%b %d, %Y') }}
+                                {% else %}
+                                    Unknown
+                                {% endif %}
+                            </span>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Scans Table -->
+        <div class="bg-white shadow rounded-lg overflow-hidden border border-gray-200">
+            <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                <h2 class="text-lg font-semibold text-gray-800 flex items-center">
+                    <i class="fas fa-history text-secondary-600 mr-2"></i> 
+                    Recent Scan Activity
+                    <small class="ml-2 text-sm text-gray-500 font-normal">({{ user_timezone or 'UTC' }} time)</small>
+                </h2>
+                <div class="text-sm text-gray-500">
+                    Showing {{ (page_num - 1) * 10 + 1 if total_scans > 0 else 0 }}-{{ (page_num * 10) if (page_num * 10 < total_scans) else total_scans }} of {{ total_scans }} scans
+                </div>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Date & Time ({{ user_timezone or 'UTC' }})
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Device & OS
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Location
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                IP Address
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        {% if paginated_scans %}
+                            {% for scan in paginated_scans %}
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    {% if hasattr(scan, 'localized_timestamp') and scan.localized_timestamp %}
+                                        <div class="text-sm font-medium text-gray-900">{{ scan.localized_timestamp.strftime('%b %d, %Y') }}</div>
+                                        <div class="text-sm text-gray-500">{{ scan.localized_timestamp.strftime('%I:%M %p') }}</div>
+                                    {% elif scan.timestamp %}
+                                        <div class="text-sm font-medium text-gray-900">{{ scan.timestamp.strftime('%b %d, %Y') }}</div>
+                                        <div class="text-sm text-gray-500">{{ scan.timestamp.strftime('%I:%M %p') }} UTC</div>
+                                    {% else %}
+                                        <div class="text-sm font-medium text-gray-900">Unknown</div>
+                                    {% endif %}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <span class="h-8 w-8 rounded-full bg-gray-100 flex items-center justify-center mr-2">
+                                            {% if scan.user_agent and 'Mobile' in scan.user_agent and 'Tablet' not in scan.user_agent %}
+                                            <i class="fas fa-mobile-alt text-gray-600"></i>
+                                            {% elif scan.user_agent and 'Tablet' in scan.user_agent %}
+                                            <i class="fas fa-tablet-alt text-gray-600"></i>
+                                            {% else %}
+                                            <i class="fas fa-desktop text-gray-600"></i>
+                                            {% endif %}
+                                        </span>
+                                        <div>
+                                            {% if scan.user_agent and 'Mobile' in scan.user_agent and 'Tablet' not in scan.user_agent %}
+                                            <div class="text-sm font-medium text-gray-900">Mobile</div>
+                                            {% elif scan.user_agent and 'Tablet' in scan.user_agent %}
+                                            <div class="text-sm font-medium text-gray-900">Tablet</div>
+                                            {% else %}
+                                            <div class="text-sm font-medium text-gray-900">Desktop</div>
+                                            {% endif %}
+                                            <div class="text-xs text-gray-500">
+                                                {% if scan.user_agent %}
+                                                    {% if 'Windows' in scan.user_agent %}Windows
+                                                    {% elif 'Android' in scan.user_agent %}Android
+                                                    {% elif 'iPhone' in scan.user_agent or 'iPad' in scan.user_agent or 'iOS' in scan.user_agent %}iOS
+                                                    {% elif 'Mac OS' in scan.user_agent %}macOS
+                                                    {% elif 'Linux' in scan.user_agent %}Linux
+                                                    {% else %}Unknown
+                                                    {% endif %}
+                                                {% else %}Unknown
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {% if scan.location and scan.location != 'Unknown' %}bg-green-100 text-green-800{% else %}bg-gray-100 text-gray-800{% endif %}">
+                                        <i class="fas fa-map-marker-alt mr-1"></i>
+                                        {{ scan.location or 'Unknown' }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    {{ scan.ip_address or 'Unknown' }}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="4" class="px-6 py-4 text-center text-gray-500">
+                                    No scans available
+                                </td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+                
+                <!-- Pagination Controls -->
+                {% if total_pages and total_pages > 1 %}
+                <div class="bg-gray-50 px-6 py-3 flex items-center justify-between border-t border-gray-200">
+                    <div class="flex-1 flex justify-between sm:hidden">
+                        {% if page_num > 1 %}
+                        <a href="{{ url_for('qr_analytics', qr_id=qr_code.unique_id, page=page_num-1) }}" class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                            Previous
+                        </a>
+                        {% else %}
+                        <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-300 bg-gray-50 cursor-not-allowed">
+                            Previous
+                        </span>
+                        {% endif %}
+                        
+                        {% if page_num < total_pages %}
+                        <a href="{{ url_for('qr_analytics', qr_id=qr_code.unique_id, page=page_num+1) }}" class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                            Next
+                        </a>
+                        {% else %}
+                        <span class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-300 bg-gray-50 cursor-not-allowed">
+                            Next
+                        </span>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                        <div>
+                            <p class="text-sm text-gray-700">
+                                Showing <span class="font-medium">{{ (page_num - 1) * 10 + 1 if total_scans > 0 else 0 }}</span> to <span class="font-medium">{{ (page_num * 10) if (page_num * 10 < total_scans) else total_scans }}</span> of <span class="font-medium">{{ total_scans }}</span> results
+                            </p>
+                        </div>
+                        <div>
+                            <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                                <!-- Previous Page Button -->
+                                {% if page_num > 1 %}
+                                <a href="{{ url_for('qr_analytics', qr_id=qr_code.unique_id, page=page_num-1) }}" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                    <span class="sr-only">Previous</span>
+                                    <i class="fas fa-chevron-left h-5 w-5"></i>
+                                </a>
+                                {% else %}
+                                <span class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-gray-50 text-sm font-medium text-gray-300 cursor-not-allowed">
+                                    <span class="sr-only">Previous</span>
+                                    <i class="fas fa-chevron-left h-5 w-5"></i>
+                                </span>
+                                {% endif %}
+                                
+                                <!-- Page Number Buttons -->
+                                {% set start_page = [1, page_num - 2]|max %}
+                                {% set end_page = [start_page + 4, total_pages]|min %}
+                                {% if end_page - start_page < 4 and total_pages > 4 %}
+                                    {% set start_page = [end_page - 4, 1]|max %}
+                                {% endif %}
+                                
+                                {% for p in range(start_page, end_page + 1) %}
+                                    {% if p == page_num %}
+                                    <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-secondary-50 text-sm font-medium text-secondary-600">
+                                        {{ p }}
+                                    </span>
+                                    {% else %}
+                                    <a href="{{ url_for('qr_analytics', qr_id=qr_code.unique_id, page=p) }}" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                        {{ p }}
+                                    </a>
+                                    {% endif %}
+                                {% endfor %}
+                                
+                                <!-- Next Page Button -->
+                                {% if page_num < total_pages %}
+                                <a href="{{ url_for('qr_analytics', qr_id=qr_code.unique_id, page=page_num+1) }}" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                    <span class="sr-only">Next</span>
+                                    <i class="fas fa-chevron-right h-5 w-5"></i>
+                                </a>
+                                {% else %}
+                                <span class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-gray-50 text-sm font-medium text-gray-300 cursor-not-allowed">
+                                    <span class="sr-only">Next</span>
+                                    <i class="fas fa-chevron-right h-5 w-5"></i>
+                                </span>
+                                {% endif %}
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Timezone functions (keeping these for timezone switching functionality)
+function setTimezone(timezone) {
+    document.body.style.cursor = 'wait';
+    
+    fetch('/set_timezone', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({timezone: timezone})
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success' || data.status === 'fallback') {
+            setTimeout(() => window.location.reload(), 300);
+        } else {
+            document.body.style.cursor = 'default';
+            alert('Failed to change timezone. Please try again.');
+        }
+    })
+    .catch(error => {
+        document.body.style.cursor = 'default';
+        console.error('Error setting timezone:', error);
+        alert('Failed to change timezone. Please try again.');
+    });
+}
+
+function dismissTimezoneAlert() {
+    const alertContainer = document.getElementById('timezone-alert-container');
+    if (alertContainer) {
+        alertContainer.innerHTML = '';
+    }
+    sessionStorage.setItem('timezone_prompt_dismissed_analytics', 'true');
+}
+
+// Initialize timezone alert on page load
+document.addEventListener('DOMContentLoaded', function() {
+    const currentTimezone = '{{ user_timezone or "UTC" }}';
+    
+    try {
+        const detectedTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        
+        if (currentTimezone !== detectedTimezone && 
+            !sessionStorage.getItem('timezone_prompt_dismissed_analytics')) {
+            
+            const alertContainer = document.getElementById('timezone-alert-container');
+            if (alertContainer) {
+                const alertElement = document.createElement('div');
+                alertElement.className = 'timezone-alert border border-blue-200 rounded-xl p-6 shadow-sm mb-6 text-white';
+                alertElement.innerHTML = `
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0">
+                            <div class="h-8 w-8 bg-white bg-opacity-20 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-info-circle text-white"></i>
+                            </div>
+                        </div>
+                        <div class="ml-4 flex-1">
+                            <h3 class="text-sm font-semibold text-white">Timezone Detection</h3>
+                            <p class="mt-2 text-sm text-white text-opacity-90">
+                                We detected your timezone as <strong>${detectedTimezone}</strong>. 
+                                Analytics are currently displayed in <strong>${currentTimezone}</strong>. 
+                                Would you like to switch for more accurate time-based insights?
+                            </p>
+                            <div class="mt-4 flex flex-wrap gap-3">
+                                <button type="button" onclick="setTimezone('${detectedTimezone}')" 
+                                        class="bg-white bg-opacity-20 hover:bg-opacity-30 text-white text-sm font-medium py-2 px-4 rounded-lg transition-all duration-200 border border-white border-opacity-20">
+                                    <i class="fas fa-check mr-1"></i> Switch to ${detectedTimezone}
+                                </button>
+                                <button type="button" onclick="dismissTimezoneAlert()" 
+                                        class="bg-transparent hover:bg-white hover:bg-opacity-10 text-white text-sm font-medium py-2 px-4 rounded-lg border border-white border-opacity-30 transition-all duration-200">
+                                    Keep ${currentTimezone}
+                                </button>
+                            </div>
+                        </div>
+                        <div class="ml-4">
+                            <button type="button" onclick="dismissTimezoneAlert()" 
+                                    class="text-white text-opacity-70 hover:text-opacity-100 transition-colors duration-200">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                alertContainer.appendChild(alertElement);
+            }
+        }
+    } catch (error) {
+        console.warn('Timezone detection not available:', error);
+    }
+});
+</script>
+{% endblock %}

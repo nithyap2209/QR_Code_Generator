@@ -1,0 +1,239 @@
+{% extends 'base2.html' %}
+{% block title %}QR Code for WhatsApp - Instant WhatsApp Chat | QR Dada{% endblock %}
+{% block content %}
+<section class="bg-gradient-to-br from-primary-50 to-secondary-50 py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div class="inline-block p-4 bg-white rounded-full shadow-lg mb-6">
+            <i class="fab fa-whatsapp text-5xl text-secondary-600"></i>
+        </div>
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">QR Code for WhatsApp</h1>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+            Start WhatsApp conversations instantly. Perfect for customer support, sales inquiries, and business communication.
+        </p>
+        <a href="{{ url_for('create_qr') }}" class="bg-secondary-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-secondary-700 transition-colors shadow-lg inline-block">
+            Create WhatsApp QR Code
+        </a>
+    </div>
+</section>
+
+<!-- What is WhatsApp QR Code Section -->
+<section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid md:grid-cols-2 gap-12 items-center mb-16">
+            <div>
+                <h2 class="text-3xl font-bold text-gray-900 mb-6">What is a WhatsApp QR Code?</h2>
+                <p class="text-lg text-gray-600 mb-4">
+                    A WhatsApp QR Code contains your WhatsApp number and optional pre-filled message. When scanned, it instantly opens WhatsApp chat with your number, allowing users to start conversations without saving your contact. This also makes it function like a simple qr code for whatsapp, improving convenience for users.
+                </p>
+                <p class="text-lg text-gray-600 mb-4">
+                   WhatsApp QR codes are essential for businesses using WhatsApp Business, enabling seamless customer communication, support inquiries, and sales conversations with over 2 billion WhatsApp users worldwide. Many brands even use a whatsapp qr code link to share their business profile directly.
+                </p>
+                <div class="bg-secondary-50 border-l-4 border-secondary-600 p-4 mt-6">
+                    <p class="text-sm text-gray-700">
+                        <i class="fas fa-lightbulb text-secondary-600 mr-2"></i>
+                        <strong>Pro Tip:</strong> Pre-fill messages with keywords to automatically categorize incoming chats.
+                    </p>
+                </div>
+            </div>
+            <div class="bg-gray-100 rounded-lg p-8 text-center">
+                <img src="{{ url_for('static', filename='images/qr_whatsapp.png') }}"
+                     alt="WhatsApp QR Code Example"
+                     class="mx-auto mb-4 w-64 h-64 object-contain">
+                <p class="text-sm text-gray-600">Example: WhatsApp QR Code</p>
+            </div>
+        </div>
+
+        <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Perfect for</h2>
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="bg-gray-50 p-6 rounded-lg hover:shadow-lg transition-shadow">
+                <i class="fas fa-comments-dollar text-3xl text-secondary-600 mb-4"></i>
+                <h3 class="text-xl font-semibold mb-2">Sales Inquiries</h3>
+                <p class="text-gray-600">Let potential customers reach your sales team via WhatsApp for product questions and orders.</p>
+            </div>
+            <div class="bg-gray-50 p-6 rounded-lg hover:shadow-lg transition-shadow">
+                <i class="fas fa-hands-helping text-3xl text-secondary-600 mb-4"></i>
+                <h3 class="text-xl font-semibold mb-2">Customer Support</h3>
+                <p class="text-gray-600">Provide instant WhatsApp support for your customers with quick response times, especially when they scan with a whatsapp qr code scanner.</p>
+            </div>
+            <div class="bg-gray-50 p-6 rounded-lg hover:shadow-lg transition-shadow">
+                <i class="fas fa-store-alt text-3xl text-secondary-600 mb-4"></i>
+                <h3 class="text-xl font-semibold mb-2">E-commerce</h3>
+                <p class="text-gray-600">Enable quick product inquiries, order placements, and delivery updates via WhatsApp, making it simple for users to interact through a whatsapp qr code.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">How to Create a WhatsApp QR Code</h2>
+        <div class="grid md:grid-cols-4 gap-8">
+            <div class="text-center">
+                <div class="w-16 h-16 bg-secondary-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                    1
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Enter WhatsApp Number</h3>
+                <p class="text-gray-600"> Provide your WhatsApp Business number with country code. This step is essential when using any qr code generator for whatsapp number.</p>
+            </div>
+
+            <div class="text-center">
+                <div class="w-16 h-16 bg-secondary-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                    2
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Add Pre-filled Message</h3>
+                <p class="text-gray-600">Optionally add a greeting or prompt for customers to send. Some brands prefer to generate whatsapp qr code with a message that boosts engagement.</p>
+            </div>
+
+            <div class="text-center">
+                <div class="w-16 h-16 bg-secondary-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                    3
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Customize Design</h3>
+                <p class="text-gray-600">Add WhatsApp green colors, your logo, and branding using any whatsapp qr code generator.</p>
+            </div>
+
+            <div class="text-center">
+                <div class="w-16 h-16 bg-secondary-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                    4
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Share & Display</h3>
+                <p class="text-gray-600">Place on product packaging, website, or marketing materials.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Benefits Section -->
+<section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Benefits of WhatsApp QR Codes</h2>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <div class="w-10 h-10 bg-secondary-600 text-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Instant Messaging</h3>
+                    <p class="text-gray-600">Start conversations immediately without adding contacts—an advantage of using a whatsapp qr code for customer communication.</p>
+                </div>
+            </div>
+
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <div class="w-10 h-10 bg-secondary-600 text-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Global Reach</h3>
+                    <p class="text-gray-600">Connect with 2+ billion WhatsApp users worldwide.</p>
+                </div>
+            </div>
+
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <div class="w-10 h-10 bg-secondary-600 text-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Rich Messaging</h3>
+                    <p class="text-gray-600">Share images, videos, documents, and voice messages easily.</p>
+                </div>
+            </div>
+
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <div class="w-10 h-10 bg-secondary-600 text-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Secure & Encrypted</h3>
+                    <p class="text-gray-600">End-to-end encryption protects all conversations.</p>
+                </div>
+            </div>
+
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <div class="w-10 h-10 bg-secondary-600 text-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Business Features</h3>
+                    <p class="text-gray-600">Use WhatsApp Business tools for catalogs and automated messages, made even more accessible when created with a qr code generator for whatsapp chat.</p>
+                </div>
+            </div>
+
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <div class="w-10 h-10 bg-secondary-600 text-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">High Engagement</h3>
+                    <p class="text-gray-600">98% message open rate, much higher than email. Businesses often rely on a qr code generator for whatsapp when improving their messaging flow.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="py-16 bg-gray-50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Frequently Asked Questions</h2>
+        <div class="space-y-4">
+            <div class="bg-white rounded-lg p-6 shadow-sm">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Do I need WhatsApp Business to use WhatsApp QR codes?</h3>
+                <p class="text-gray-600">
+                    No, WhatsApp QR codes work with both regular WhatsApp and WhatsApp Business. However, WhatsApp Business offers additional features for customer communication.
+
+                </p>
+            </div>
+
+            <div class="bg-white rounded-lg p-6 shadow-sm">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Can users edit the pre-filled message before sending?</h3>
+                <p class="text-gray-600">
+                    Yes! The pre-filled message is completely editable. Users can modify, delete, or add to it before sending.
+
+                </p>
+            </div>
+
+            <div class="bg-white rounded-lg p-6 shadow-sm">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Will WhatsApp QR codes work in all countries?</h3>
+                <p class="text-gray-600">
+                    Yes, as long as WhatsApp is accessible in that country. Make sure to include the international country code in your phone number (e.g., +1, +91, +44) when creating a qr code generator for whatsapp.
+
+                </p>
+            </div>
+
+            <div class="bg-white rounded-lg p-6 shadow-sm">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Can I track how many people scanned my WhatsApp QR code?</h3>
+                <p class="text-gray-600">
+                    You can see incoming messages in WhatsApp. For detailed scan analytics without requiring messages, use our dynamic QR codes with tracking. Many businesses combine this with tools that generate whatsapp qr code in real time.
+
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-16 bg-gradient-to-br from-secondary-600 to-primary-600 text-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl font-bold mb-6">Connect With Customers on WhatsApp</h2>
+        <p class="text-xl mb-8 text-white/90">
+            Create WhatsApp QR codes and make business communication effortless!
+        </p>
+        <a href="{{ url_for('create_qr') }}" class="bg-white text-secondary-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors shadow-lg inline-block">
+            Create WhatsApp QR Code Now
+        </a>
+    </div>
+</section>
+{% endblock %}

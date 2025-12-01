@@ -1,0 +1,593 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Add New User Subscription{% endblock %}
+
+{% block page_title %}Add New User Subscription{% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('admin.admin_subscribed_users') }}">Subscribed Users</a></li>
+<li class="breadcrumb-item active">Add New</li>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0">
+    <div class="row">
+        <div class="col-lg-8 col-md-12 mx-auto">
+            <div class="card">
+                <div class="card-header d-flex align-items-center">
+                    <i class="fas fa-plus-circle me-2"></i> New Subscription Details
+                </div>
+                <div class="card-body">
+                    <form action="{{ url_for('admin.admin_new_subscribed_user') }}" method="POST">
+                        <div class="mb-4">
+                            <label for="user_search" class="form-label">
+                                <i class="fas fa-user me-2 text-primary"></i>User
+                            </label>
+                            
+                            <!-- Search Input -->
+                            <div class="user-search-container position-relative">
+                                <input type="text" 
+                                       class="form-control" 
+                                       id="user_search" 
+                                       placeholder="Search for user by name or email..."
+                                       autocomplete="off">
+                                <i class="fas fa-search position-absolute search-icon"></i>
+                                
+                                <!-- Hidden select for form submission -->
+                                <select class="d-none" id="user_id" name="user_id" required>
+                                    <option value="">Select a user</option>
+                                    {% for user in users %}
+                                    <option value="{{ user.id }}" 
+                                            data-name="{{ user.name }}" 
+                                            data-email="{{ user.company_email }}">
+                                        {{ user.name }} ({{ user.company_email }})
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                                
+                                <!-- Search Results Dropdown -->
+                                <div class="search-results" id="user_search_results">
+                                    <!-- Results will be populated here -->
+                                </div>
+                            </div>
+                            
+                            <!-- Selected User Display -->
+                            <div class="selected-user-display d-none mt-2" id="selected_user_display">
+                                <div class="alert alert-info d-flex align-items-center">
+                                    <i class="fas fa-check-circle me-2"></i>
+                                    <span id="selected_user_text"></span>
+                                    <button type="button" class="btn-close ms-auto" id="clear_user_selection"></button>
+                                </div>
+                            </div>
+                            
+                            <div class="form-text">Search and select the user to assign this subscription to</div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="subscription_id" class="form-label">
+                                <i class="fas fa-tag me-2 text-primary"></i>Subscription Plan
+                            </label>
+                            <select class="form-select" id="subscription_id" name="subscription_id" required>
+                                <option value="">Select a plan</option>
+                                {% for subscription in subscriptions %}
+                                <option value="{{ subscription.S_ID }}" 
+                                    data-analytics="{{ subscription.analytics }}"
+                                    data-qr-count="{{ subscription.qr_count }}"
+                                    data-designs="{{ subscription.design or '' }}">
+                                    {{ subscription.plan }} - ₹{{ subscription.price }} ({{ subscription.days }} days)
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <!-- Plan Features Preview -->
+                        <div class="mb-4 d-none" id="planFeaturesPreview">
+                            <div class="card bg-light">
+                                <div class="card-header">
+                                    <i class="fas fa-info-circle me-2"></i> Plan Features
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="feature-item" id="analyticsFeature">
+                                                <i class="fas fa-chart-bar text-primary me-2"></i>
+                                                <span>Analytics: <span class="fw-bold" id="analyticsCount">0</span></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="feature-item" id="qrFeature">
+                                                <i class="fas fa-qrcode text-primary me-2"></i>
+                                                <span>QR Codes: <span class="fw-bold" id="qrCount">0</span></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="feature-item" id="designsFeature">
+                                                <i class="fas fa-palette text-primary me-2"></i>
+                                                <span>Design Templates: <span class="fw-bold" id="designCount">0</span></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Auto-renewal option -->
+                        <div class="mb-4">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="auto_renew" name="auto_renew" checked>
+                                <label class="form-check-label" for="auto_renew">
+                                    <i class="fas fa-sync-alt me-2 text-primary"></i>Enable Auto-Renewal
+                                </label>
+                                <div class="form-text">Subscription will automatically renew when it expires</div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{{ url_for('admin.admin_subscribed_users') }}" class="btn btn-outline-secondary me-md-2">
+                                <i class="fas fa-times me-1"></i> Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-1"></i> Add Subscription
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add animation to the card
+        const card = document.querySelector('.card');
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        
+        setTimeout(() => {
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }, 100);
+        
+        // User search functionality
+        const userSearchInput = document.getElementById('user_search');
+        const userSelect = document.getElementById('user_id');
+        const searchResults = document.getElementById('user_search_results');
+        const selectedUserDisplay = document.getElementById('selected_user_display');
+        const selectedUserText = document.getElementById('selected_user_text');
+        const clearUserSelection = document.getElementById('clear_user_selection');
+        
+        let users = [];
+        let searchTimeout;
+        let selectedUser = null; // Track selected user state
+        let isUserSelected = false; // Flag to track if user is selected
+        
+        // Extract users from select options
+        Array.from(userSelect.options).forEach(option => {
+            if (option.value) {
+                users.push({
+                    id: option.value,
+                    name: option.dataset.name,
+                    email: option.dataset.email,
+                    display: option.textContent
+                });
+            }
+        });
+        
+        // Search functionality - only search if no user is selected
+        userSearchInput.addEventListener('input', function() {
+            // If user is selected, don't show search results
+            if (isUserSelected) {
+                searchResults.style.display = 'none';
+                return;
+            }
+            
+            clearTimeout(searchTimeout);
+            const query = this.value.trim().toLowerCase();
+            
+            if (query.length < 2) {
+                searchResults.innerHTML = '';
+                searchResults.style.display = 'none';
+                return;
+            }
+            
+            searchTimeout = setTimeout(() => {
+                const filteredUsers = users.filter(user => 
+                    user.name.toLowerCase().includes(query) || 
+                    user.email.toLowerCase().includes(query)
+                );
+                
+                displaySearchResults(filteredUsers, query);
+            }, 300);
+        });
+        
+        // Handle focus on search input
+        userSearchInput.addEventListener('focus', function() {
+            if (isUserSelected) {
+                // If user is selected, show the selected user in the input field
+                this.value = selectedUser ? `${selectedUser.name} (${selectedUser.email})` : '';
+                this.classList.add('user-selected');
+                searchResults.style.display = 'none';
+            }
+        });
+        
+        // Handle blur on search input
+        userSearchInput.addEventListener('blur', function() {
+            setTimeout(() => {
+                if (isUserSelected && selectedUser) {
+                    // Keep the selected user displayed in the input
+                    this.value = `${selectedUser.name} (${selectedUser.email})`;
+                    this.classList.add('user-selected');
+                }
+            }, 200); // Small delay to allow for click events on search results
+        });
+        
+        // Display search results
+        function displaySearchResults(filteredUsers, query) {
+            if (filteredUsers.length === 0) {
+                searchResults.innerHTML = '<div class="search-result-item no-results">No users found</div>';
+            } else {
+                searchResults.innerHTML = filteredUsers.map(user => `
+                    <div class="search-result-item" data-user-id="${user.id}">
+                        <div class="user-info">
+                            <div class="user-name">${highlightMatch(user.name, query)}</div>
+                            <div class="user-email">${highlightMatch(user.email, query)}</div>
+                        </div>
+                        <i class="fas fa-plus-circle select-icon"></i>
+                    </div>
+                `).join('');
+            }
+            
+            searchResults.style.display = 'block';
+        }
+        
+        // Highlight matching text
+        function highlightMatch(text, query) {
+            const regex = new RegExp(`(${query})`, 'gi');
+            return text.replace(regex, '<mark>$1</mark>');
+        }
+        
+        // Handle result selection
+        searchResults.addEventListener('click', function(e) {
+            const resultItem = e.target.closest('.search-result-item');
+            if (resultItem && !resultItem.classList.contains('no-results')) {
+                const userId = resultItem.dataset.userId;
+                const user = users.find(user => user.id === userId);
+                
+                if (user) {
+                    selectUser(user);
+                }
+            }
+        });
+        
+        // Select user function
+        function selectUser(user) {
+            selectedUser = user;
+            isUserSelected = true;
+            
+            // Update form value
+            userSelect.value = user.id;
+            
+            // Update search input
+            userSearchInput.value = `${user.name} (${user.email})`;
+            userSearchInput.classList.add('user-selected');
+            
+            // Hide search results
+            searchResults.style.display = 'none';
+            
+            // Show selected user display
+            selectedUserText.innerHTML = `
+                <strong>${user.name}</strong> (${user.email})
+            `;
+            selectedUserDisplay.classList.remove('d-none');
+            
+            // Make the input field readonly to prevent accidental changes
+            userSearchInput.setAttribute('readonly', 'readonly');
+        }
+        
+        // Clear user selection
+        clearUserSelection.addEventListener('click', function() {
+            clearUserSelectionFunction();
+        });
+        
+        // Function to clear user selection
+        function clearUserSelectionFunction() {
+            selectedUser = null;
+            isUserSelected = false;
+            
+            // Reset form
+            userSelect.value = '';
+            userSearchInput.value = '';
+            userSearchInput.classList.remove('user-selected');
+            userSearchInput.removeAttribute('readonly');
+            
+            // Hide selected user display
+            selectedUserDisplay.classList.add('d-none');
+            
+            // Focus back on search input
+            userSearchInput.focus();
+        }
+        
+        // Allow user to edit selection by double-clicking the input
+        userSearchInput.addEventListener('dblclick', function() {
+            if (isUserSelected) {
+                clearUserSelectionFunction();
+            }
+        });
+        
+        // Hide search results when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.user-search-container')) {
+                if (!isUserSelected) {
+                    searchResults.style.display = 'none';
+                }
+            }
+        });
+        
+        // Handle keyboard navigation
+        userSearchInput.addEventListener('keydown', function(e) {
+            // If user is selected and they press Escape or Delete, clear selection
+            if (isUserSelected && (e.key === 'Escape' || e.key === 'Delete' || e.key === 'Backspace')) {
+                e.preventDefault();
+                clearUserSelectionFunction();
+                return;
+            }
+            
+            // Don't allow typing if user is selected
+            if (isUserSelected && e.key.length === 1) {
+                e.preventDefault();
+                return;
+            }
+            
+            const items = searchResults.querySelectorAll('.search-result-item:not(.no-results)');
+            let activeItem = searchResults.querySelector('.search-result-item.active');
+            
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                if (!activeItem && items.length > 0) {
+                    items[0]?.classList.add('active');
+                    items[0]?.scrollIntoView({ block: 'nearest' });
+                } else if (activeItem) {
+                    const currentIndex = Array.from(items).indexOf(activeItem);
+                    activeItem.classList.remove('active');
+                    if (currentIndex < items.length - 1) {
+                        items[currentIndex + 1]?.classList.add('active');
+                        items[currentIndex + 1]?.scrollIntoView({ block: 'nearest' });
+                    }
+                }
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                if (activeItem) {
+                    const currentIndex = Array.from(items).indexOf(activeItem);
+                    activeItem.classList.remove('active');
+                    if (currentIndex > 0) {
+                        items[currentIndex - 1]?.classList.add('active');
+                        items[currentIndex - 1]?.scrollIntoView({ block: 'nearest' });
+                    }
+                }
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                if (activeItem) {
+                    activeItem.click();
+                }
+            } else if (e.key === 'Escape') {
+                if (isUserSelected) {
+                    clearUserSelectionFunction();
+                } else {
+                    searchResults.style.display = 'none';
+                    userSearchInput.blur();
+                }
+            }
+        });
+        
+        // Form validation - ensure user is selected before submission
+        document.querySelector('form').addEventListener('submit', function(e) {
+            if (!isUserSelected || !userSelect.value) {
+                e.preventDefault();
+                alert('Please select a user before submitting the form.');
+                userSearchInput.focus();
+                return false;
+            }
+        });
+        
+        // Add select2 for subscription dropdown if available
+        if (typeof $.fn.select2 !== 'undefined') {
+            $('#subscription_id').select2({
+                placeholder: 'Select a plan',
+                allowClear: true,
+                width: '100%'
+            });
+        }
+        
+        // Update plan features preview when a plan is selected
+        document.getElementById('subscription_id').addEventListener('change', function() {
+            const selectedOption = this.options[this.selectedIndex];
+            
+            if (selectedOption.value) {
+                // Get plan features
+                const analytics = selectedOption.dataset.analytics || 0;
+                const qrCount = selectedOption.dataset.qrCount || 0;
+                const designs = selectedOption.dataset.designs || '';
+                const designsArray = designs ? designs.split(',') : [];
+                
+                // Update the preview
+                document.getElementById('analyticsCount').textContent = analytics;
+                document.getElementById('qrCount').textContent = qrCount;
+                document.getElementById('designCount').textContent = designsArray.length;
+                
+                // Show the preview
+                document.getElementById('planFeaturesPreview').classList.remove('d-none');
+                
+                // Highlight features based on availability
+                document.getElementById('analyticsFeature').classList.toggle('text-muted', analytics <= 0);
+                document.getElementById('qrFeature').classList.toggle('text-muted', qrCount <= 0);
+                document.getElementById('designsFeature').classList.toggle('text-muted', designsArray.length <= 0);
+            } else {
+                // Hide the preview if no plan is selected
+                document.getElementById('planFeaturesPreview').classList.add('d-none');
+            }
+        });
+    });
+</script>
+
+<style>
+    .user-search-container {
+        position: relative;
+    }
+    
+    .user-search-container input.user-selected {
+        background-color: #e7f3ff;
+        border-color: #007bff;
+        color: #0056b3;
+        font-weight: 500;
+        cursor: pointer;
+    }
+    
+    .user-search-container input.user-selected::placeholder {
+        color: #0056b3;
+        opacity: 0.8;
+    }
+    
+    .search-icon {
+        top: 50%;
+        right: 12px;
+        transform: translateY(-50%);
+        color: #6c757d;
+        pointer-events: none;
+    }
+    
+    .search-results {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        border: 1px solid #ced4da;
+        border-top: none;
+        border-radius: 0 0 0.375rem 0.375rem;
+        max-height: 300px;
+        overflow-y: auto;
+        z-index: 1000;
+        display: none;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .search-result-item {
+        padding: 12px 16px;
+        cursor: pointer;
+        border-bottom: 1px solid #f8f9fa;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        transition: all 0.2s ease;
+    }
+    
+    .search-result-item:hover,
+    .search-result-item.active {
+        background-color: #f8f9fa;
+    }
+    
+    .search-result-item.no-results {
+        color: #6c757d;
+        cursor: default;
+        font-style: italic;
+        justify-content: center;
+    }
+    
+    .search-result-item.no-results:hover {
+        background-color: transparent;
+    }
+    
+    .user-info {
+        flex-grow: 1;
+    }
+    
+    .user-name {
+        font-weight: 500;
+        color: #495057;
+        margin-bottom: 2px;
+    }
+    
+    .user-email {
+        font-size: 0.875rem;
+        color: #6c757d;
+    }
+    
+    .select-icon {
+        color: #007bff;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+    }
+    
+    .search-result-item:hover .select-icon {
+        opacity: 1;
+    }
+    
+    mark {
+        background-color: #fff3cd;
+        padding: 0 2px;
+        border-radius: 2px;
+    }
+    
+    .selected-user-display .alert {
+        margin-bottom: 0;
+        padding: 8px 12px;
+    }
+    
+    .feature-item {
+        padding: 0.5rem;
+        border-radius: 0.25rem;
+        transition: all 0.2s;
+    }
+    
+    .feature-item:hover {
+        background-color: rgba(0, 123, 255, 0.1);
+    }
+    
+    .text-muted {
+        opacity: 0.6;
+    }
+    
+    /* Animation for the form submission */
+    .btn-primary:active {
+        animation: btn-pulse 0.3s ease-out;
+    }
+    
+    @keyframes btn-pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(0.95); }
+        100% { transform: scale(1); }
+    }
+    
+    /* Visual indicator for readonly state */
+    .user-search-container input[readonly] {
+        cursor: pointer;
+    }
+    
+    .user-search-container input[readonly]:focus {
+        box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+    }
+    
+    /* Responsive design */
+    @media (max-width: 768px) {
+        .search-results {
+            max-height: 200px;
+        }
+        
+        .search-result-item {
+            padding: 10px 12px;
+        }
+        
+        .user-name {
+            font-size: 0.9rem;
+        }
+        
+        .user-email {
+            font-size: 0.8rem;
+        }
+    }
+</style>
+{% endblock %}

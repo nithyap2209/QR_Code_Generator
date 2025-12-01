@@ -1,0 +1,327 @@
+{% extends "base2.html" %}
+
+{% block title %}Privacy Policy | QR Dada{% endblock %}
+
+{% block extra_head %}
+<meta name="description" content="Privacy Policy for QR Dada - Advanced QR Code Generator by Fourth Dimension Media Solutions">
+<style>
+    .section-title {
+        position: relative;
+        padding-bottom: 0.75rem;
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 4rem;
+        height: 3px;
+        background: linear-gradient(45deg, #7c3aed, #0ea5e9);
+        border-radius: 2px;
+    }
+
+    .info-box {
+        background: linear-gradient(135deg, rgba(124, 58, 237, 0.08), rgba(14, 165, 233, 0.05));
+        border: 1px solid rgba(124, 58, 237, 0.2);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .info-box::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: linear-gradient(180deg, #7c3aed, #0ea5e9);
+    }
+
+    .alert-box {
+        border-left: 4px solid;
+        animation: slideIn 0.3s ease;
+    }
+
+    .alert-success {
+        background-color: rgba(16, 185, 129, 0.1);
+        border-color: #10b981;
+    }
+
+    .alert-warning {
+        background-color: rgba(245, 158, 11, 0.1);
+        border-color: #f59e0b;
+    }
+
+    .alert-info {
+        background-color: rgba(14, 165, 233, 0.1);
+        border-color: #0ea5e9;
+    }
+
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .btn-gradient {
+        background: linear-gradient(45deg, #7c3aed, #4f46e5);
+        color: white;
+        transition: all 0.3s ease;
+    }
+
+    .btn-gradient:hover {
+        background: linear-gradient(45deg, #6d28d9, #4338ca);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+        color: white;
+    }
+
+    @media (max-width: 640px) {
+        h1 { font-size: 2rem !important; }
+        h2 { font-size: 1.5rem !important; }
+        .p-8 { padding: 1.5rem; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="relative pt-4 pb-12 overflow-hidden bg-gradient-to-br from-primary-500 to-secondary-600">
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10">
+        <h1 class="text-4xl md:text-5xl font-bold text-white mb-6 animate-fade-in">
+            Privacy Policy
+        </h1>
+        <p class="text-xl text-white/90 max-w-4xl mx-auto animate-fade-in" style="animation-delay: 0.1s">
+            At QR Dada, operated by Fourth Dimension Media Solutions, we are committed to protecting your privacy and respecting the data you trust us with. This Privacy Policy explains what data we collect, how we use it, and what rights you have.
+        </p>
+    </div>
+</section>
+
+<!-- Main Content -->
+<section class="py-16">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Main content card -->
+        <div class="bg-white rounded-xl shadow-card overflow-hidden animate-fade-in">
+            <!-- Content body -->
+            <div class="p-8 md:p-12">
+
+                <!-- Key Privacy Principles -->
+                <div class="info-box rounded-xl p-6 mb-8">
+                    <h2 class="text-xl font-bold text-secondary-600 mb-4 flex items-center">
+                        <i class="fas fa-shield-alt mr-3 text-2xl"></i>
+                        Key Privacy Principles
+                    </h2>
+                    <ul class="space-y-2 text-gray-700">
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-600 mr-3 mt-1"></i>
+                            We do not sell or rent your data to third parties
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-600 mr-3 mt-1"></i>
+                            We collect only essential information to provide our services
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-600 mr-3 mt-1"></i>
+                            You have full control over your data and can request deletion at any time
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-600 mr-3 mt-1"></i>
+                            We use industry-standard security measures to protect your information
+                        </li>
+                    </ul>
+                </div>
+
+                <h2 class="section-title text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                    <i class="fas fa-building mr-3 text-secondary-600"></i>
+                    Who We Are
+                </h2>
+                <p class="text-gray-700 mb-8">
+                    QR Dada is a web-based platform that allows users to generate, customize, and manage QR codes. The platform is operated by <strong>Fourth Dimension Media Solutions</strong> and is available for users worldwide. By accessing or using QR Dada, you agree to the terms of this Privacy Policy.
+                </p>
+
+                <h2 class="section-title text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                    <i class="fas fa-database mr-3 text-secondary-600"></i>
+                    Information We Collect
+                </h2>
+
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">Personal Information</h3>
+                <p class="text-gray-700 mb-4">When you register for QR Dada, we collect:</p>
+                <ul class="list-disc list-inside text-gray-700 mb-6 space-y-2">
+                    <li>Name</li>
+                    <li>Email address</li>
+                    <li>Mobile number</li>
+                    <li>Login credentials (email and password)</li>
+                    <li>Billing and shipping information</li>
+                    <li>Uploaded content (e.g., logos, images, text inside QR codes)</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">Usage Data & Analytics</h3>
+                <p class="text-gray-700 mb-4">When you use QR Dada, we collect:</p>
+                <ul class="list-disc list-inside text-gray-700 mb-6 space-y-2">
+                    <li>IP address</li>
+                    <li>Browser type and version</li>
+                    <li>Device and session data</li>
+                    <li>QR codes you create and their metadata</li>
+                    <li>QR scan activity and performance metrics</li>
+                    <li>Interactions with specific platform features</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">Payment Information</h3>
+                <p class="text-gray-700 mb-8">
+                    Payment information is processed securely through third-party providers such as <strong>Razorpay</strong> and <strong>Stripe</strong>. We do not store credit or debit card details directly on our servers.
+                </p>
+
+                <h2 class="section-title text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                    <i class="fas fa-cogs mr-3 text-secondary-600"></i>
+                    How We Use Your Information
+                </h2>
+                <p class="text-gray-700 mb-4">We use your information to:</p>
+                <ul class="list-disc list-inside text-gray-700 mb-8 space-y-2">
+                    <li>Create and manage your QR Dada account</li>
+                    <li>Generate and customize QR codes</li>
+                    <li>Track QR scan activity and analytics</li>
+                    <li>Respond to customer support requests</li>
+                    <li>Send account-related updates or service communications</li>
+                    <li>Process payments through secure third-party services</li>
+                    <li>Improve and optimize the platform</li>
+                    <li>Ensure system stability and security</li>
+                    <li>Comply with legal obligations and respond to lawful requests</li>
+                </ul>
+
+                <h2 class="section-title text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                    <i class="fas fa-share-alt mr-3 text-secondary-600"></i>
+                    Third-Party Services
+                </h2>
+                <p class="text-gray-700 mb-4">We use trusted third-party services to operate certain features:</p>
+                <ul class="list-disc list-inside text-gray-700 mb-6 space-y-2">
+                    <li><strong>Analytics and Tracking:</strong> Google Analytics, Meta Pixel</li>
+                    <li><strong>Payment Processing:</strong> Stripe and Razorpay</li>
+                    <li><strong>Cloud Hosting:</strong> Secure cloud infrastructure providers</li>
+                    <li><strong>Email Services:</strong> For account communications and support</li>
+                </ul>
+                <p class="text-gray-700 mb-8">
+                    These providers have their own privacy policies that govern how your information is handled on their platforms. We do not sell or rent your data to any third parties.
+                </p>
+
+                <h2 class="section-title text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                    <i class="fas fa-cookie-bite mr-3 text-secondary-600"></i>
+                    Cookies and Tracking Technologies
+                </h2>
+                <p class="text-gray-700 mb-4">QR Dada uses cookies to:</p>
+                <ul class="list-disc list-inside text-gray-700 mb-6 space-y-2">
+                    <li>Keep you logged in to your account</li>
+                    <li>Remember your preferences and settings</li>
+                    <li>Analyze usage and performance</li>
+                    <li>Provide secure authentication</li>
+                </ul>
+                <p class="text-gray-700 mb-8">
+                    You can manage your cookie settings through your browser. Disabling cookies may affect some functionality of the platform.
+                </p>
+
+                <h2 class="section-title text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                    <i class="fas fa-lock mr-3 text-secondary-600"></i>
+                    Data Security
+                </h2>
+
+                <div class="alert-box alert-success rounded-xl p-6 mb-8 flex items-start">
+                    <i class="fas fa-check-circle text-green-600 text-xl mr-4 mt-1"></i>
+                    <div>
+                        <h3 class="font-semibold text-gray-900 mb-2">Industry-Standard Security</h3>
+                        <p class="text-gray-700 mb-4">We implement reasonable security measures to protect your personal information, including:</p>
+                        <ul class="list-disc list-inside text-gray-700 space-y-1">
+                            <li>Encrypted transmission (HTTPS)</li>
+                            <li>Secure cloud infrastructure with access controls</li>
+                            <li>Encrypted password storage and tokenized sessions</li>
+                            <li>Role-based access control for internal staff</li>
+                            <li>Regular security audits and monitoring</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <p class="text-gray-700 mb-8">
+                    However, no method of transmission over the internet is 100% secure. We encourage strong passwords and responsible access practices.
+                </p>
+
+                <h2 class="section-title text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                    <i class="fas fa-user-shield mr-3 text-secondary-600"></i>
+                    Your Rights
+                </h2>
+                <p class="text-gray-700 mb-4">Depending on your location, you may have rights to:</p>
+                <ul class="list-disc list-inside text-gray-700 mb-6 space-y-2">
+                    <li>Access the data we hold about you</li>
+                    <li>Request correction or deletion of your data</li>
+                    <li>Withdraw consent for marketing communications</li>
+                    <li>Disable cookies or limit tracking</li>
+                    <li>Request data portability</li>
+                    <li>Object to certain types of data processing</li>
+                </ul>
+                <p class="text-gray-700 mb-8">
+                    To make such requests, please contact us at <strong>privacy@qrcraft.app</strong>. We will respond within 7–10 working days.
+                </p>
+
+                <h2 class="section-title text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                    <i class="fas fa-child mr-3 text-secondary-600"></i>
+                    Children's Privacy
+                </h2>
+                <p class="text-gray-700 mb-8">
+                    QR Dada is not intended for use by children under the age of 13. We do not knowingly collect personal information from children. If we learn that we have collected personal data from someone underage, we will delete it immediately.
+                </p>
+
+                <h2 class="section-title text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                    <i class="fas fa-clock mr-3 text-secondary-600"></i>
+                    Data Retention
+                </h2>
+                <p class="text-gray-700 mb-8">
+                    We retain your information for as long as necessary to provide our services and meet legal or operational requirements. You may request deletion of your account at any time. After account deletion, we will remove personal data within 60 days, though some billing records may be retained as required by law.
+                </p>
+
+                <h2 class="section-title text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                    <i class="fas fa-globe mr-3 text-secondary-600"></i>
+                    International Access and Storage
+                </h2>
+                <p class="text-gray-700 mb-8">
+                    QR Dada is operated globally. If you are accessing the service from outside the United States, you consent to your data being processed and stored under applicable data protection laws.
+                </p>
+
+                <div class="alert-box alert-info rounded-xl p-6 mb-8 flex items-start">
+                    <i class="fas fa-info-circle text-blue-600 text-xl mr-4 mt-1"></i>
+                    <div>
+                        <h3 class="font-semibold text-gray-900 mb-2">Changes to This Policy</h3>
+                        <p class="text-gray-700">
+                            We may update this Privacy Policy from time to time to reflect legal, technical, or operational changes. Any major changes will be notified on our website or via email. Continued use of QR Dada after updates means you accept the revised terms.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Contact section -->
+                <div class="bg-gradient-to-r from-secondary-50 to-primary-50 rounded-xl p-8 mb-8">
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Contact Information</h3>
+                    <div class="text-gray-700 mb-6">
+                        <p class="mb-4">For any privacy-related questions, concerns, or data access requests, please contact:</p>
+                        <div class="mb-4">
+                            <p class="font-semibold">Fourth Dimension Media Solutions</p>
+                            <p class="font-semibold">QR Dada</p>
+                            <p>Email: support@qrdada.com</p>
+                        </div>
+                    </div>
+                    <a href="mailto:support@qrdada.com" class="btn-gradient inline-flex items-center px-6 py-3 rounded-lg font-semibold text-white">
+                        <i class="fas fa-envelope mr-2"></i>
+                        support@qrdada.com
+                    </a>
+                </div>
+
+                <!-- Last updated -->
+                <div class="text-center pt-8 border-t border-gray-200">
+                    <p class="text-gray-500 text-sm mb-4">Effective Date: July 16, 2025 | Last Updated: July 16, 2025</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

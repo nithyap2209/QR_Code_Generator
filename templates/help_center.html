@@ -1,0 +1,1079 @@
+{% extends "base2.html" %}
+
+{% block title %}Help Center - QR Dada{% endblock %}
+
+{% block content %}
+<div class="bg-gray-50 min-h-[80vh] font-['Inter','Roboto',sans-serif] text-gray-800">
+
+    <!-- Hero Section -->
+    <div class="bg-gradient-to-r from-primary-600 to-secondary-600 text-white text-center py-16 md:py-20">
+        <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-4">How can we help you?</h1>
+        <p class="max-w-2xl mx-auto text-lg text-white/90">Find answers to your questions about QR Dada and learn how to make the most of your QR codes</p>
+
+        <!-- Search Bar -->
+        <!-- <div class="mt-8 mx-auto flex max-w-lg shadow-md rounded-md overflow-hidden">
+            <input type="text" id="help-search" placeholder="Search for help..."
+                class="flex-1 px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-white border-0 rounded-l-md" />
+            <button type="button"
+                class="bg-secondary-500 px-5 py-3 text-white font-medium hover:bg-secondary-600 focus:ring-2 focus:ring-white rounded-r-md">
+                <i class="fas fa-search"></i>
+            </button>
+        </div> -->
+    </div>
+
+    <style>
+        /* Scroll offset for sections on mobile */
+        section[id] {
+            scroll-margin-top: 100px;
+        }
+
+        @media (max-width: 640px) {
+            section[id] {
+                scroll-margin-top: 90px;
+            }
+        }
+
+        /* Consistent heading styles */
+        #help-content h2 {
+            font-size: 1.5rem !important;
+            font-weight: 700 !important;
+            color: #111827 !important;
+            margin-bottom: 1.5rem !important;
+        }
+
+        #help-content h3 {
+            font-size: 1.25rem !important;
+            font-weight: 600 !important;
+            color: #111827 !important;
+            margin-bottom: 1rem !important;
+            margin-top: 1.5rem !important;
+        }
+
+        #help-content h4 {
+            font-size: 1.125rem !important;
+            font-weight: 600 !important;
+            color: #111827 !important;
+            margin-bottom: 0.75rem !important;
+            margin-top: 1rem !important;
+        }
+
+        #help-content h5 {
+            font-size: 1rem !important;
+            font-weight: 600 !important;
+            color: #111827 !important;
+            margin-bottom: 0.5rem !important;
+        }
+
+        /* Consistent paragraph and text styles */
+        #help-content p {
+            font-size: 1rem !important;
+            line-height: 1.75 !important;
+            color: #374151 !important;
+            margin-bottom: 1rem !important;
+        }
+
+        /* Consistent list styles */
+        #help-content ul, #help-content ol {
+            margin-bottom: 1rem !important;
+        }
+
+        #help-content li {
+            font-size: 1rem !important;
+            line-height: 1.75 !important;
+            color: #374151 !important;
+            margin-bottom: 0.5rem !important;
+        }
+
+        /* Consistent article spacing */
+        #help-content article {
+            margin-bottom: 2rem !important;
+        }
+
+        /* Table text consistency */
+        #help-content table td, #help-content table th {
+            font-size: 1rem !important;
+            line-height: 1.5 !important;
+            color: #111827 !important;
+        }
+    </style>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12" id="help-content">
+
+        <!-- Quick Navigation -->
+        <div class="mb-12">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Browse by Category</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <a href="#getting-started" class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow group">
+                    <div class="text-primary-600 mb-3">
+                        <i class="fas fa-rocket text-3xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-900 group-hover:text-primary-600">Getting Started</h3>
+                    <p class="mt-2 text-sm text-gray-600">Learn the basics of QR Dada</p>
+                </a>
+                <a href="#qr-types" class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow group">
+                    <div class="text-primary-600 mb-3">
+                        <i class="fas fa-qrcode text-3xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-900 group-hover:text-primary-600">QR Code Types</h3>
+                    <p class="mt-2 text-sm text-gray-600">Explore different QR code options</p>
+                </a>
+                <a href="#customization" class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow group">
+                    <div class="text-primary-600 mb-3">
+                        <i class="fas fa-palette text-3xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-900 group-hover:text-primary-600">Customization</h3>
+                    <p class="mt-2 text-sm text-gray-600">Design beautiful QR codes</p>
+                </a>
+                <a href="#analytics" class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow group">
+                    <div class="text-primary-600 mb-3">
+                        <i class="fas fa-chart-line text-3xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-900 group-hover:text-primary-600">Analytics</h3>
+                    <p class="mt-2 text-sm text-gray-600">Track QR code performance</p>
+                </a>
+            </div>
+        </div>
+
+        <!-- Help Content -->
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+
+            <!-- Sidebar -->
+            <div class="lg:col-span-1">
+                <!-- Mobile: Collapsible Sidebar -->
+                <div class="lg:hidden mb-6">
+                    <button id="mobile-sidebar-toggle" class="w-full flex items-center justify-between px-4 py-3 bg-white rounded-lg shadow-sm border border-gray-200 text-gray-900 font-medium hover:bg-gray-50 transition-colors">
+                        <span><i class="fas fa-bars mr-2"></i>Browse Topics</span>
+                        <i class="fas fa-chevron-down transition-transform duration-200" id="mobile-sidebar-icon"></i>
+                    </button>
+                    <div id="mobile-sidebar-menu" class="hidden mt-2 bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                        <div class="px-4 py-3 bg-gray-50 border-b border-gray-200">
+                            <h3 class="text-sm font-medium text-gray-900">Help Topics</h3>
+                        </div>
+                        <nav class="px-2 py-3" aria-label="Help navigation mobile">
+                            <ul class="space-y-1">
+                                <li>
+                                    <a href="#getting-started" class="mobile-nav-link flex items-center px-3 py-2 text-sm font-medium text-secondary-700 rounded-md bg-secondary-50 hover:bg-secondary-100 group">
+                                        <i class="fas fa-rocket mr-3 text-secondary-500"></i>
+                                        Getting Started
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#account" class="mobile-nav-link flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-50 group">
+                                        <i class="fas fa-user mr-3 text-gray-400 group-hover:text-gray-500"></i>
+                                        Account Management
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#qr-types" class="mobile-nav-link flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-50 group">
+                                        <i class="fas fa-th-large mr-3 text-gray-400 group-hover:text-gray-500"></i>
+                                        QR Code Types
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#customization" class="mobile-nav-link flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-50 group">
+                                        <i class="fas fa-paint-brush mr-3 text-gray-400 group-hover:text-gray-500"></i>
+                                        Customization
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#dynamic-qr" class="mobile-nav-link flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-50 group">
+                                        <i class="fas fa-bolt mr-3 text-gray-400 group-hover:text-gray-500"></i>
+                                        Dynamic QR Codes
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#analytics" class="mobile-nav-link flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-50 group">
+                                        <i class="fas fa-chart-bar mr-3 text-gray-400 group-hover:text-gray-500"></i>
+                                        Analytics
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#troubleshooting" class="mobile-nav-link flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-50 group">
+                                        <i class="fas fa-exclamation-triangle mr-3 text-gray-400 group-hover:text-gray-500"></i>
+                                        Troubleshooting
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#faqs" class="mobile-nav-link flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-50 group">
+                                        <i class="fas fa-question-circle mr-3 text-gray-400 group-hover:text-gray-500"></i>
+                                        FAQ
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#contact" class="mobile-nav-link flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-50 group">
+                                        <i class="fas fa-question-circle mr-3 text-gray-400 group-hover:text-gray-500"></i>
+                                        Contact Us
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+
+                <!-- Desktop: Fixed Sidebar -->
+                <div class="hidden lg:block sticky top-4 bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                    <div class="px-4 py-3 bg-gray-50 border-b border-gray-200">
+                        <h3 class="text-sm font-medium text-gray-900">Help Topics</h3>
+                    </div>
+                    <nav class="px-2 py-3" aria-label="Help navigation">
+                        <ul class="space-y-1">
+                            <li>
+                                <a href="#getting-started" class="flex items-center px-3 py-2 text-sm font-medium text-secondary-700 rounded-md bg-secondary-50 hover:bg-secondary-100 group">
+                                    <i class="fas fa-rocket mr-3 text-secondary-500"></i>
+                                    Getting Started
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#account" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-50 group">
+                                    <i class="fas fa-user mr-3 text-gray-400 group-hover:text-gray-500"></i>
+                                    Account Management
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#qr-types" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-50 group">
+                                    <i class="fas fa-th-large mr-3 text-gray-400 group-hover:text-gray-500"></i>
+                                    QR Code Types
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#customization" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-50 group">
+                                    <i class="fas fa-paint-brush mr-3 text-gray-400 group-hover:text-gray-500"></i>
+                                    Customization
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#dynamic-qr" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-50 group">
+                                    <i class="fas fa-bolt mr-3 text-gray-400 group-hover:text-gray-500"></i>
+                                    Dynamic QR Codes
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#analytics" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-50 group">
+                                    <i class="fas fa-chart-bar mr-3 text-gray-400 group-hover:text-gray-500"></i>
+                                    Analytics
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#troubleshooting" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-50 group">
+                                    <i class="fas fa-exclamation-triangle mr-3 text-gray-400 group-hover:text-gray-500"></i>
+                                    Troubleshooting
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#faqs" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-50 group">
+                                    <i class="fas fa-question-circle mr-3 text-gray-400 group-hover:text-gray-500"></i>
+                                    FAQ
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#contact" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-50 group">
+                                    <i class="fas fa-question-circle mr-3 text-gray-400 group-hover:text-gray-500"></i>
+                                    Contact Us
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+            <!-- Main Content Sections -->
+            <div class="lg:col-span-3 space-y-12">
+
+                <!-- Getting Started -->
+                <section id="getting-started" class="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">
+                        <i class="fas fa-rocket text-primary-600 mr-2"></i>
+                        Getting Started
+                    </h2>
+                    <div class="prose max-w-none">
+                        <h3 class="text-xl font-semibold text-gray-900 mt-6 mb-4">Welcome to QR Dada!</h3>
+                        <p class="text-gray-700 mb-4">
+                            QR Dada gives you the power to design beautiful, customizable QR codes that capture attention and drive engagement. Create stunning QR codes that stand out and deliver results.
+                        </p>
+                        <h4 class="text-lg font-semibold text-gray-900 mt-6 mb-3">What You Can Do:</h4>
+                        <ul class="list-disc pl-6 space-y-2 text-gray-700">
+                            <li>Generate various types of QR codes for different purposes</li>
+                            <li>Customize designs with templates, colors, and logos</li>
+                            <li>Create dynamic QR codes that can be edited after creation</li>
+                            <li>Track scan analytics and performance metrics</li>
+                            <li>Manage all your QR codes from a centralized dashboard</li>
+                        </ul>
+                        <h4 class="text-lg font-semibold text-gray-900 mt-6 mb-3">Quick Start Steps:</h4>
+                        <ol class="list-decimal pl-6 space-y-2 text-gray-700">
+                            <li>Create an account or log in to your existing account</li>
+                            <li>Choose the type of QR code you want to create</li>
+                            <li>Enter your content or data</li>
+                            <li>Customize the design (optional)</li>
+                            <li>Download your QR code and start using it</li>
+                        </ol>
+                    </div>
+                </section>
+
+                <!-- Account Management -->
+                <section id="account" class="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">
+                        <i class="fas fa-user text-primary-600 mr-2"></i>
+                        Account Management
+                    </h2>
+                    <div class="prose max-w-none">
+                        <h3 class="text-xl font-semibold text-gray-900 mt-6 mb-3">Creating an Account</h3>
+                        <p>
+                            To use QR Dada, you'll need to create an account:
+                        </p>
+                        <ol class="list-decimal pl-6 space-y-2">
+                            <li>Click the "Sign Up" button in the top-right corner.</li>
+                            <li>Enter your username, email address, and create a password.</li>
+                            <li>Click "Create Account" to complete registration.</li>
+                        </ol>
+
+                        <h3 class="text-xl font-semibold text-gray-900 mt-6 mb-3">Managing Your QR Codes</h3>
+                        <p>Your dashboard is where you can manage all your QR codes:</p>
+                        <ul class="list-disc pl-6 space-y-2">
+                            <li>View all your QR codes in one place</li>
+                            <li>Filter and search for specific QR codes</li>
+                            <li>Edit existing QR codes (dynamic QR codes only)</li>
+                            <li>Download your QR codes in different formats</li>
+                            <li>View scan analytics for your dynamic QR codes</li>
+                            <li>Delete QR codes you no longer need</li>
+                        </ul>
+
+                        <h3 class="text-xl font-semibold text-gray-900 mt-6 mb-3">Account Security</h3>
+                        <p>Tips for keeping your QR Dada account secure:</p>
+                        <ul class="list-disc pl-6 space-y-2">
+                            <li>Use a strong, unique password</li>
+                            <li>Never share your login credentials with others</li>
+                            <li>Log out when using shared or public computers</li>
+                            <li>Regularly check your account for any unauthorized activity</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- QR Code Types -->
+                <section id="qr-types" class="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">
+                        <i class="fas fa-qrcode text-primary-600 mr-2"></i>
+                        QR Code Types
+                    </h2>
+                    <div class="prose max-w-none">
+                        <!-- SMS QR Code -->
+                        <article class="mb-8 border-b border-gray-200 pb-8">
+                            <h3 class="text-xl font-semibold text-gray-900 mb-3">
+                                <i class="fas fa-sms text-primary-600 mr-2"></i>SMS QR Code
+                            </h3>
+                            <p>Send a pre-written text message to a specific number when scanned. It saves time and ensures consistency in communication.</p>
+                            <h4 class="font-semibold mb-2">Best for:</h4>
+                            <ul class="list-disc pl-6 space-y-1 mb-4">
+                                <li>Promotions or discount codes via SMS</li>
+                                <li>Customer support requests</li>
+                                <li>Quick confirmations or RSVPs</li>
+                                <li>Lead generation at events or booths</li>
+                            </ul>
+                            <div class="bg-blue-50 border-l-4 border-blue-500 p-4">
+                                <p class="text-sm text-blue-800"><strong>Note:</strong> SMS QR codes work best on mobile devices and may not function on desktop scanners.</p>
+                            </div>
+                        </article>
+
+                        <!-- Event QR Code -->
+                        <article class="mb-8 border-b border-gray-200 pb-8">
+                            <h3 class="text-xl font-semibold text-gray-900 mb-3">
+                                <i class="fas fa-calendar-alt text-primary-600 mr-2"></i>Event QR Code
+                            </h3>
+                            <p>Create a QR code that adds event details directly to the user's calendar, including time, date, and location.</p>
+                            <h4 class="font-semibold mb-2">Best for:</h4>
+                            <ul class="list-disc pl-6 space-y-1 mb-4">
+                                <li>Webinars, workshops, or conferences</li>
+                                <li>Store openings and in-person launches</li>
+                                <li>Weddings or private gatherings</li>
+                                <li>Reminders for registration deadlines</li>
+                            </ul>
+                            <div class="bg-green-50 border-l-4 border-green-500 p-4">
+                                <p class="text-sm text-green-800"><strong>Pro Tip:</strong> Make your Event QR dynamic if you expect changes to timings or location. It saves you from regenerating codes.</p>
+                            </div>
+                        </article>
+
+                        <!-- WhatsApp QR Code -->
+                        <article class="mb-8 border-b border-gray-200 pb-8">
+                            <h3 class="text-xl font-semibold text-gray-900 mb-3">
+                                <i class="fab fa-whatsapp text-primary-600 mr-2"></i>WhatsApp QR Code
+                            </h3>
+                            <p>Start a WhatsApp chat with a pre-filled message to a selected phone number. Users can initiate a conversation instantly without typing.</p>
+                            <h4 class="font-semibold mb-2">Best for:</h4>
+                            <ul class="list-disc pl-6 space-y-1 mb-4">
+                                <li>Customer service and support lines</li>
+                                <li>Lead follow-ups and sales queries</li>
+                                <li>Collecting feedback after events or demos</li>
+                                <li>Small business interactions and orders</li>
+                            </ul>
+                            <div class="bg-blue-50 border-l-4 border-blue-500 p-4">
+                                <p class="text-sm text-blue-800"><strong>Note:</strong> The recipient must have a WhatsApp account active on the given number for the QR to function properly.</p>
+                            </div>
+                        </article>
+
+                        <!-- URL QR Code -->
+                        <article class="mb-8 border-b border-gray-200 pb-8">
+                            <h3 class="text-xl font-semibold text-gray-900 mb-3">
+                                <i class="fas fa-link text-primary-600 mr-2"></i>URL QR Code
+                            </h3>
+                            <p>Link to websites, landing pages, social media profiles, or any web address.</p>
+                            <div class="bg-green-50 border-l-4 border-green-500 p-4">
+                                <p class="text-sm text-green-800"><strong>Pro Tip:</strong> Use dynamic URL QR codes for marketing campaigns so you can change the destination URL anytime without creating a new QR code.</p>
+                            </div>
+                        </article>
+
+                        <!-- Email QR Code -->
+                        <article class="mb-8 border-b border-gray-200 pb-8">
+                            <h3 class="text-xl font-semibold text-gray-900 mb-3">
+                                <i class="fas fa-envelope text-primary-600 mr-2"></i>Email QR Code
+                            </h3>
+                            <p>Pre-compose an email with recipient, subject, and body text that opens in the user's email app.</p>
+                        </article>
+
+                        <!-- WiFi QR Code -->
+                        <article class="mb-8 border-b border-gray-200 pb-8">
+                            <h3 class="text-xl font-semibold text-gray-900 mb-3">
+                                <i class="fas fa-wifi text-primary-600 mr-2"></i>WiFi QR Code
+                            </h3>
+                            <p>Connect to WiFi networks automatically without typing the password.</p>
+                            <div class="bg-blue-50 border-l-4 border-blue-500 p-4">
+                                <p class="text-sm text-blue-800"><strong>Note:</strong> WiFi QR codes work best as static codes since they don't require internet access to function. Use a dynamic code only if you frequently change your WiFi password.</p>
+                            </div>
+                        </article>
+
+                        <!-- vCard QR Code -->
+                        <article>
+                            <h3 class="text-xl font-semibold text-gray-900 mb-3">
+                                <i class="fas fa-address-card text-primary-600 mr-2"></i>vCard QR Code
+                            </h3>
+                            <p>Share contact information that can be directly saved to a phone's contacts.</p>
+                        </article>
+                    </div>
+                </section>
+
+                <!-- Customization -->
+                <section id="customization" class="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">
+                        <i class="fas fa-palette text-primary-600 mr-2"></i>QR Code Customization
+                    </h2>
+                    <div class="prose max-w-none">
+
+                        <h3 class="text-xl font-semibold text-gray-900 mb-4">1. Templates</h3>
+                        <p>QR Dada offers a wide selection of professionally designed templates to help you get started quickly. These templates provide a ready-made layout for your QR, including colors, shapes, frames, and styles that suit different industries and purposes.</p>
+                        <h4 class="font-semibold mb-3">Available Template Styles:</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <h5 class="font-semibold mb-2">Modern</h5>
+                                <p class="text-sm text-gray-700">Clean, tech-forward styles ideal for startups, websites, and app links</p>
+                            </div>
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <h5 class="font-semibold mb-2">Corporate</h5>
+                                <p class="text-sm text-gray-700">Sleek, minimal designs best suited for professional or B2B use</p>
+                            </div>
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <h5 class="font-semibold mb-2">Playful</h5>
+                                <p class="text-sm text-gray-700">Bright, fun layouts ideal for cafes, events, or creative brands</p>
+                            </div>
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <h5 class="font-semibold mb-2">Minimal</h5>
+                                <p class="text-sm text-gray-700">Simple, elegant QR codes that let your content take the spotlight</p>
+                            </div>
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <h5 class="font-semibold mb-2">High Contrast</h5>
+                                <p class="text-sm text-gray-700">Bold and sharp designs for maximum scan visibility in print or outdoor displays</p>
+                            </div>
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <h5 class="font-semibold mb-2">Custom</h5>
+                                <p class="text-sm text-gray-700">A blank canvas that lets you apply every detail from scratch</p>
+                            </div>
+                        </div>
+                        <p>Each template is fully editable. Whether you want to use a QR code generator with a logo or switch to a website QR code generator layout, templates are just a starting point — not a limit. You can change the shape of modules, color palette, logo position, and more.</p>
+                        <p>Templates are especially helpful when using a bulk QR code generator, as they allow you to keep branding consistent across thousands of codes.</p>
+
+                        <h3 class="text-xl font-semibold text-gray-900 mt-10 mb-4">2. Custom Design</h3>
+                        <p>The Custom Design section gives you total freedom to create a QR that looks and feels like your brand. It's the preferred route for users who care deeply about aesthetics, functionality, and brand recall.</p>
+
+                        <h4 class="font-semibold mb-3">What You Can Control:</h4>
+                        <div class="space-y-6">
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <h5 class="font-semibold mb-2">
+                                    <i class="fas fa-shapes text-primary-600 mr-2"></i>QR Shape and Modules
+                                </h5>
+                                <p class="text-sm text-gray-700">Choose from a wide range of QR module styles — square, rounded, hexagonal, and more. You can also control spacing, density, and alignment to suit your output format.</p>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <h5 class="font-semibold mb-2">
+                                    <i class="fas fa-fill-drip text-primary-600 mr-2"></i>Colors
+                                </h5>
+                                <p class="text-sm text-gray-700 mb-2">Apply brand colors easily. You can choose:</p>
+                                <ul class="list-disc pl-6 text-sm text-gray-700 space-y-1">
+                                    <li>A solid fill for consistency</li>
+                                    <li>Dual-color gradients for creative blends</li>
+                                    <li>Transparency settings for web overlays or print layering</li>
+                                </ul>
+                                <p class="text-sm text-gray-700 mt-2">Most users prefer to match the QR's color with their brand's primary or secondary palette.</p>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <h5 class="font-semibold mb-2">
+                                    <i class="fas fa-image text-primary-600 mr-2"></i>Logo Upload
+                                </h5>
+                                <p class="text-sm text-gray-700">Upload your logo and position it at the center of the QR. Our system automatically adjusts spacing and error correction to make sure it remains scannable.</p>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <h5 class="font-semibold mb-2">
+                                    <i class="fas fa-border-style text-primary-600 mr-2"></i>Frames and Callouts
+                                </h5>
+                                <p class="text-sm text-gray-700 mb-2">Add an optional frame with call-to-action text like:</p>
+                                <ul class="list-disc pl-6 text-sm text-gray-700 space-y-1">
+                                    <li>"Scan Me"</li>
+                                    <li>"View Menu"</li>
+                                    <li>"Save Contact"</li>
+                                </ul>
+                                <p class="text-sm text-gray-700 mt-2">Frames help increase engagement, especially in offline media.</p>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <h5 class="font-semibold mb-2">
+                                    <i class="fas fa-font text-primary-600 mr-2"></i>Font and CTA Styling
+                                </h5>
+                                <p class="text-sm text-gray-700">Choose a custom font for your callout text. Adjust font size, weight, and alignment to match your flyer, packaging, or business card.</p>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <h5 class="font-semibold mb-2">
+                                    <i class="fas fa-image text-primary-600 mr-2"></i>Background Options
+                                </h5>
+                                <p class="text-sm text-gray-700">Apply a plain color, a pattern, or a full image behind the QR code. Make sure the background doesn't clash with the QR's readability. High-contrast background images work well with semi-transparent modules.</p>
+                            </div>
+                        </div>
+
+                        <h3 class="text-xl font-semibold text-gray-900 mt-10 mb-4">3. Advanced Settings</h3>
+                        <p>The Advanced tab gives you full control over how your QR code behaves, looks, and performs — especially useful if you're creating high-volume designs or sharing brand-critical content.</p>
+                        <div class="space-y-6">
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <h5 class="font-semibold mb-2">QR Eye Customization</h5>
+                                <p class="text-sm text-gray-700 mb-2">
+                                    The "eyes" are the three corner blocks of a QR code that help scanners detect and align the image. You can:
+                                </p>
+                                <ul class="list-disc pl-6 text-sm text-gray-700 space-y-1">
+                                    <li>Change the shape (Square, Circle, etc.)</li>
+                                    <li>Apply custom inner and outer colors</li>
+                                    <li>Style them to match your brand palette</li>
+                                </ul>
+                                <p class="text-sm text-gray-700 mt-2"><strong>Why it matters:</strong> Custom eyes improve visual branding and also help increase scan accuracy when placed on different backgrounds.</p>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <h5 class="font-semibold mb-2">Gradient Effects</h5>
+                                <p class="text-sm text-gray-700">Make your code visually appealing by applying linear or radial gradients. You can choose two or more brand colors and blend them smoothly across your QR.</p>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <h5 class="font-semibold mb-2">Module Size Control</h5>
+                                <p class="text-sm text-gray-700 mb-2">
+                                    "Modules" are the individual dots/blocks that make up your QR. Adjusting their size lets you:
+                                </p>
+                                <ul class="list-disc pl-6 text-sm text-gray-700 space-y-1">
+                                    <li>Increase density for compact design (ideal for small labels or tags)</li>
+                                    <li>Decrease density for bold, highly readable display use</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <h5 class="font-semibold mb-2">Quiet Zone Adjustment</h5>
+                                <p class="text-sm text-gray-700">The quiet zone is the margin of white space around your QR. It ensures scanners don't mistake other elements as part of the code.</p>
+                                <ul class="list-disc pl-6 text-sm text-gray-700 space-y-1 mt-2">
+                                    <li>Minimum recommended: 4 modules</li>
+                                    <li>You can increase the margin if your design is dense or used in print materials</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <h5 class="font-semibold mb-2">Error Correction Level</h5>
+                                <p class="text-sm text-gray-700 mb-2">
+                                    Choose from four standard levels — L, M, Q, H — which determine how much of the QR can be damaged or obscured while still being scannable.
+                                </p>
+                                <ul class="list-disc pl-6 text-sm text-gray-700 space-y-1">
+                                    <li><strong>L (Low)</strong> – up to 7% restoration</li>
+                                    <li><strong>M (Medium)</strong> – up to 15% (default for most)</li>
+                                    <li><strong>Q (Quartile)</strong> – up to 25%</li>
+                                    <li><strong>H (High)</strong> – up to 30% recovery, perfect for codes with logos or overlay designs</li>
+                                </ul>
+                                <p class="text-sm text-gray-700 mt-2">Use higher correction if you're designing for event badges, product packaging, or anything that may experience wear and tear.</p>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <h5 class="font-semibold mb-2">Watermark</h5>
+                                <p class="text-sm text-gray-700 mb-2">This lets you include light branding text or source credit beneath the QR image. Example uses:</p>
+                                <ul class="list-disc pl-6 text-sm text-gray-700 space-y-1">
+                                    <li>"Scan to view offer"</li>
+                                    <li>"Powered by QR Dada"</li>
+                                    <li>"Download menu" for restaurant displays</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Dynamic QR Codes -->
+                <section id="dynamic-qr" class="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">
+                        <i class="fas fa-sync-alt text-primary-600 mr-2"></i>
+                        Dynamic QR Codes
+                    </h2>
+                    <p class="text-gray-700 mb-4">
+                        A dynamic QR code gives you the ability to change its destination link after the QR has already been created and shared. You do not need to regenerate or reprint the QR — just update the content behind it, and the same code will take users to the new location.
+                    </p>
+                    <p class="text-gray-700 mb-6">
+                        This makes dynamic QRs ideal for evolving campaigns, changing menus, rotating offers, and other use cases where content needs to stay current without physical rework.
+                    </p>
+                    <div class="mb-8 pb-8 border-b border-gray-200">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-4">How Dynamic QR Works</h3>
+                        <p class="text-gray-700 mb-4">
+                            Unlike a standard QR that holds a fixed URL, a dynamic QR code uses a redirect. This lets you:
+                        </p>
+                        <ul class="list-disc pl-6 space-y-2 text-gray-700">
+                            <li>Change the link without changing the QR</li>
+                            <li>Track how often the code is scanned</li>
+                            <li>Learn how people interact with it over time</li>
+                        </ul>
+                    </div>
+                    <div class="mb-8 pb-8 border-b border-gray-200">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-4">Subscription Required</h3>
+                        <p class="text-gray-700 mb-4">
+                            Dynamic QR features are only available under a paid plan. You can choose from three subscription tiers, based on how many codes you need, how often you plan to update them, and how much scan data you want to collect.
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                            <div class="border border-gray-200 rounded-lg p-6">
+                                <h4 class="text-lg font-semibold text-gray-900 mb-3">Plan A</h4>
+                                <ul class="space-y-2 text-sm text-gray-700">
+                                    <li><i class="fas fa-check text-green-500 mr-2"></i>Create up to X dynamic QR codes</li>
+                                    <li><i class="fas fa-check text-green-500 mr-2"></i>Track basic scan count</li>
+                                    <li><i class="fas fa-check text-green-500 mr-2"></i>Up to (I) destination edits per QR</li>
+                                </ul>
+                            </div>
+                            <div class="border-2 border-primary-500 rounded-lg p-6 relative">
+                                <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-primary-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                                    POPULAR
+                                </div>
+                                <h4 class="text-lg font-semibold text-gray-900 mb-3">Plan B</h4>
+                                <ul class="space-y-2 text-sm text-gray-700">
+                                    <li><i class="fas fa-check text-green-500 mr-2"></i>Create up to Y dynamic QR codes</li>
+                                    <li><i class="fas fa-check text-green-500 mr-2"></i>Moderate scan analytics (time and location data)</li>
+                                    <li><i class="fas fa-check text-green-500 mr-2"></i>Up to (II) destination edits per QR</li>
+                                </ul>
+                            </div>
+                            <div class="border border-gray-200 rounded-lg p-6">
+                                <h4 class="text-lg font-semibold text-gray-900 mb-3">Plan C</h4>
+                                <ul class="space-y-2 text-sm text-gray-700">
+                                    <li><i class="fas fa-check text-green-500 mr-2"></i>Create up to Z dynamic QR codes</li>
+                                    <li><i class="fas fa-check text-green-500 mr-2"></i>Full scan analytics (device, time, region, frequency)</li>
+                                    <li><i class="fas fa-check text-green-500 mr-2"></i>Up to (III) destination edits per QR</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-4">Why Choose Dynamic QR?</h3>
+                        <p class="text-gray-700 mb-4">
+                            Dynamic QR codes help you stay relevant. Once you've printed a QR on packaging, posters, or brochures, you can still point it to fresh content as things change.
+                        </p>
+                        <h4 class="font-semibold text-gray-900 mb-3">Use cases include:</h4>
+                        <ul class="list-disc pl-6 space-y-2 text-gray-700">
+                            <li>Updating product pages for seasonal offers</li>
+                            <li>Redirecting event links after launch</li>
+                            <li>Managing real-time menus and downloadable files</li>
+                            <li>Connecting scans to different URLs by region through a location QR code generator</li>
+                            <li>Improving the performance of bulk campaigns without reprinting codes</li>
+                        </ul>
+                    <p class="text-gray-700 mb-8">
+        If you're trying to understand how to generate QR code formats that adapt to changing business needs, this feature is the right fit.
+    </p>
+
+    <h3 class="text-xl font-semibold text-gray-900 mb-6">Static vs Dynamic QR Codes</h3>
+    <div class="overflow-x-auto mb-8">
+        <table class="min-w-full border border-gray-300 divide-y divide-gray-200 text-gray-900">
+            <thead class="bg-gray-100">
+                <tr>
+                    <th class="px-4 py-3 text-left font-semibold">Feature</th>
+                    <th class="px-4 py-3 text-left font-semibold">Static QR Code</th>
+                    <th class="px-4 py-3 text-left font-semibold">Dynamic QR Code</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+                <tr>
+                    <td class="px-4 py-3">Edit After Creation</td>
+                    <td class="px-4 py-3">Not possible</td>
+                    <td class="px-4 py-3">Destination link can be updated</td>
+                </tr>
+                <tr class="bg-gray-50">
+                    <td class="px-4 py-3">Data Stored</td>
+                    <td class="px-4 py-3">Direct link or fixed content</td>
+                    <td class="px-4 py-3">Short redirect URL pointing to an editable link</td>
+                </tr>
+                <tr>
+                    <td class="px-4 py-3">Scan Tracking</td>
+                    <td class="px-4 py-3">Not available</td>
+                    <td class="px-4 py-3">Scan data (based on plan) can be collected</td>
+                </tr>
+                <tr class="bg-gray-50">
+                    <td class="px-4 py-3">Best For</td>
+                    <td class="px-4 py-3">One-time links, fixed information, quick access</td>
+                    <td class="px-4 py-3">Campaigns, changing content, long-term use</td>
+                </tr>
+                <tr>
+                    <td class="px-4 py-3">Analytics Access</td>
+                    <td class="px-4 py-3">Not included</td>
+                    <td class="px-4 py-3">Available in Plan B and Plan C</td>
+                </tr>
+                <tr class="bg-gray-50">
+                    <td class="px-4 py-3">Number of Destination Edits</td>
+                    <td class="px-4 py-3">Not applicable</td>
+                    <td class="px-4 py-3">Limited edits per QR depending on plan (I, II, III)</td>
+                </tr>
+                <tr class="bg-gray-50">
+                    <td class="px-4 py-3 ">Recommended For</td>
+                    <td class="px-4 py-3 ">Personal use, fixed content</td>
+                    <td class="px-4 py-3 ">Agencies, marketers, businesses with evolving content</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    
+</section>
+
+<section id="analytics" class="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+  <h2 class="text-2xl font-bold text-gray-900 mb-6">
+    <i class="fas fa-chart-bar text-primary-600 mr-2"></i> Analytics Dashboard
+  </h2>
+  <p class="text-gray-700 mb-4">
+    Get a complete view of how your dynamic QR codes are performing — across time, devices, locations, and scan behavior.
+    This dashboard brings together all the key insights that help you improve engagement, track performance, and make data-driven decisions.
+  </p>
+  <p class="text-gray-700 mb-8 italic">
+    <strong>Note:</strong> Analytics is available only for Dynamic QR codes. Timezone is set to Asia/Calcutta (IST) by default.
+  </p>
+
+  <h3 class="text-xl font-semibold text-gray-900 mb-4">Top Summary Cards</h3>
+  <ul class="list-disc pl-6 mb-6 text-gray-700">
+    <li><strong>Total Scans:</strong> Shows the total number of scans recorded across all your dynamic QR codes. This includes every time someone scanned any dynamic QR — whether it was for a file, a link, or a WiFi connection.</li>
+    <li><strong>Total QR Codes:</strong> Displays the total number of QR codes generated in your account — both static and dynamic. This is a cumulative count and helps you track your overall QR usage.</li>
+    <li><strong>Daily Avg. Scans:</strong> Gives you the average number of scans per day, calculated only from dynamic QR scans.
+      You’ll also see a small trend indicator (like +2.5%) that compares your current average with the previous week, so you know if scan activity is rising or dropping.
+    </li>
+    <li><strong>Peak Hour:</strong> Shows the hour of the day when your QR codes are scanned the most.
+      Useful for understanding user behavior — especially for campaigns placed in public spaces, stores, or events.
+    </li>
+  </ul>
+
+  <h3 class="text-xl font-semibold text-gray-900 mb-4">Scan Timeline</h3>
+  <p class="text-gray-700 mb-6">
+    A smooth line graph that visualizes scan activity over time.
+    This graph shows daily scan counts for your dynamic QR codes.
+  </p>
+  <p class="text-gray-700 mb-6">
+    It helps you understand engagement patterns, detect spikes (such as after promotions), or find drop-off periods.
+  </p>
+  <p class="text-gray-700 mb-6">
+    Hovering over a date will reveal the exact number of scans on that day.
+  </p>
+  <p class="text-gray-700 mb-12">
+    This section is ideal for tracking your QR performance week-by-week or day-by-day.
+  </p>
+
+  <h3 class="text-xl font-semibold text-gray-900 mb-4">User Behavior Insights</h3>
+  <ul class="list-disc pl-6 mb-6 text-gray-700">
+    <li><strong>Device Distribution:</strong> A donut chart showing what percentage of your QR scans came from mobile vs desktop devices.
+      Helps you know where your audience is engaging from — on-the-go or at work.
+    </li>
+    <li>Useful for optimizing the QR landing page (e.g., mobile-first vs desktop design).</li>
+    <li><strong>Operating System:</strong> This chart tells you which operating systems people are using to scan your dynamic QR codes — Windows, Android, macOS, and others.
+      This lets you identify what platforms your users are most active on.
+    </li>
+    <li>Helps in designing platform-specific pages or experiences if needed.</li>
+    <li><strong>Hourly Activity:</strong> A bar chart showing how your QR codes perform across different times of the day. Each bar represents a one-hour window.</li>
+    <li>You can clearly see when scan activity is peaking or dropping.</li>
+    <li>Helps in scheduling QR placement (e.g., digital screens, shift-based workspaces).</li>
+  </ul>
+
+  <h3 class="text-xl font-semibold text-gray-900 mb-4">Top Performing Dynamic QR Codes</h3>
+  <p class="text-gray-700 mb-6">
+    This section ranks your most successful dynamic QR codes based on total scans.
+    For each QR code, you can view:
+  </p>
+  <ul class="list-disc pl-6 mb-6 text-gray-700">
+    <li>Name of QR code</li>
+    <li>Type (e.g., Link, WiFi, File, etc.)</li>
+    <li>Date Created</li>
+    <li>Total Scans</li>
+    <li>Actions: View detailed analytics, View/Edit QR details, Download QR code</li>
+  </ul>
+  <p class="text-gray-700 mb-6">
+    This helps you quickly identify which QR codes are performing best, what types of content are getting more attention, and where to focus your next campaign.
+  </p>
+
+  <h3 class="text-xl font-semibold text-gray-900 mb-4">Geographic Distribution</h3>
+  <p class="text-gray-700 mb-6">
+    Visual chart showing location-wise scan data, based on IP information collected at the time of scanning.
+    You’ll see location or IP address, number of scans, and percentage share of total scans.
+  </p>
+  <p class="text-gray-700 mb-6">
+    This section helps you understand where your scans are coming from, identify top-performing cities or regions, and evaluate regional engagement for local marketing efforts.
+  </p>
+
+  <h3 class="text-xl font-semibold text-gray-900 mb-6">Individual QR Code Analytics</h3>
+  <p class="text-gray-700 mb-6">
+    This page shows you detailed performance and engagement metrics for a single dynamic QR code — including how, when, where, and from what device your QR was scanned.
+    Timezone for all timestamps: Asia/Calcutta (IST). You can switch to UTC if needed for global analysis.
+  </p>
+  <ul class="list-disc pl-6 mb-6 text-gray-700">
+    <li><strong>Top Summary Cards:</strong>
+      <ul class="list-disc pl-6">
+        <li>Total Scans — The total number of times this specific QR code has been scanned.</li>
+        <li>Top Device — Identifies whether most scans came from Mobile or Desktop.</li>
+        <li>Top OS (Operating System) — Highlights the most commonly used OS among users who scanned this QR.</li>
+        <li>Peak Hour — Indicates the time of day when the scan activity peaked for this QR.</li>
+      </ul>
+    </li>
+    <li><strong>Summary Statistics:</strong> Provides a breakdown of the QR code’s performance in device distribution, operating systems used, scan counts, peak hour, creation and last scan dates.</li>
+    <li><strong>Recent Scan Activity:</strong> Shows recent scans with details like IP address/location, date/time, device and OS used, and other metadata. Useful for tracking campaign reach, monitoring suspicious activity, and post-event engagement analysis.</li>
+  </ul>
+</section>
+
+
+                <!-- Troubleshooting -->
+                <section id="troubleshooting" class="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">
+                        <i class="fas fa-exclamation-triangle text-primary-600 mr-2"></i>
+                        Troubleshooting
+                    </h2>
+                    <p>If you are unable to generate a QR code, please try the following steps:</p>
+                    <ul class="list-disc pl-6 space-y-2">
+                        <li><strong>Check your input:</strong> Make sure you have entered all the required information in the correct field before clicking the create button.</li>
+                        <li><strong>Internet connection:</strong> Ensure you are connected to the internet and your connection is stable.</li>
+                        <li><strong>File upload issues:</strong> Verify that logo or image files are supported formats like JPG or PNG and within size limits.</li>
+                        <li><strong>Browser issues:</strong> Try refreshing the page or using a different browser if problems continue.</li>
+                        <li><strong>Session expired:</strong> Log out and log in again if your session has expired before generating a QR code.</li>
+                        <li><strong>Check error messages:</strong> Follow any displayed instructions or contact support with the error details.</li>
+                    </ul>
+                    <p>If problems persist, please contact our support team for further assistance.</p>
+                </section>
+
+                <!-- FAQs -->
+                <section id="faqs" class="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">
+                        <i class="fas fa-question-circle text-primary-600 mr-2"></i>
+                        Frequently Asked Questions
+                    </h2>
+                    <div class="space-y-6">
+                        <article class="border-b border-gray-200 pb-6">
+                            <h3 class="text-lg font-semibold mb-2">What's the difference between static and dynamic QR codes?</h3>
+                            <p>Static QR codes have fixed content that cannot be changed after creation. Dynamic QR codes can be edited anytime without changing the QR code itself, and they also provide scan tracking and analytics.</p>
+                        </article>
+                        <article class="border-b border-gray-200 pb-6">
+                            <h3 class="text-lg font-semibold mb-2">How do I track my QR code scans?</h3>
+                            <p>Scan tracking is available for dynamic QR codes only. You can view analytics for any dynamic QR code via your dashboard or the QR code's detail page.</p>
+                        </article>
+                        <article class="border-b border-gray-200 pb-6">
+                            <h3 class="text-lg font-semibold mb-2">Can I customize my QR code design?</h3>
+                            <p>Yes! QR Dada offers extensive customization options including colors, shapes, styles, and the ability to add your logo. Be careful not to customize too heavily as it may affect scannability.</p>
+                        </article>
+                        <article>
+                            <h3 class="text-lg font-semibold mb-2">What size should my QR code be?</h3>
+                            <p>For good scannability, your QR code should be at least 1 x 1 inch (2.5 x 2.5 cm). Maintain a quiet zone (white border) around the QR code for best results.</p>
+                        </article>
+                    </div>
+                </section>
+
+                <!-- Contact Support -->
+                <section id="contact" class="bg-gradient-to-r from-primary-50 to-secondary-50 rounded-lg border border-primary-200 p-8 text-center">
+                    <i class="fas fa-headset text-5xl text-primary-600 mb-4"></i>
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">Still Need Help?</h2>
+                    <p class="text-gray-700 mb-6 max-w-2xl mx-auto">Our support team is ready to help with any questions or issues you might have. We're here to ensure you get the most out of QR Dada.</p>
+                    <a href="/contact" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 shadow-sm">
+                        <i class="fas fa-envelope mr-2"></i>Contact Support
+                    </a>
+                </section>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<!-- Scroll to Top Button -->
+<button id="scroll-to-top" class="fixed bottom-8 right-8 z-50 w-12 h-12 bg-gradient-to-r from-primary-600 to-secondary-600 text-white rounded-full shadow-lg hover:shadow-xl transform hover:scale-110 transition-all duration-300 opacity-0 invisible flex items-center justify-center">
+    <i class="fas fa-arrow-up text-lg"></i>
+</button>
+
+<style>
+    /* Scroll to top button styles */
+    #scroll-to-top.visible {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* Active sidebar link styles */
+    .sidebar-link.active {
+        background-color: rgb(237 233 254) !important;
+        color: rgb(109 40 217) !important;
+    }
+
+    .sidebar-link.active i {
+        color: rgb(139 92 246) !important;
+    }
+
+    .sidebar-link {
+        transition: all 0.2s ease;
+    }
+</style>
+
+<!-- Search Functionality, Smooth Scroll, and Scroll Spy -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('help-search');
+
+    if (searchInput) {
+        searchInput.addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const sections = document.querySelectorAll('[id]');
+            sections.forEach(section => {
+                const text = section.textContent.toLowerCase();
+                section.style.display = (text.includes(searchTerm) || searchTerm === '') ? '' : 'none';
+            });
+        });
+    }
+
+    // Smooth scroll for all anchor links with header offset
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            const target = document.querySelector(targetId);
+
+            if (target) {
+                // Close mobile sidebar dropdown first if open
+                const mobileSidebarMenu = document.getElementById('mobile-sidebar-menu');
+                const mobileSidebarIcon = document.getElementById('mobile-sidebar-icon');
+                if (mobileSidebarMenu && !mobileSidebarMenu.classList.contains('hidden')) {
+                    mobileSidebarMenu.classList.add('hidden');
+                    if (mobileSidebarIcon) {
+                        mobileSidebarIcon.classList.remove('rotate-180');
+                    }
+                }
+
+                // Small delay to let dropdown close, then scroll
+                setTimeout(function() {
+                    // Get header height for offset (account for fixed header on mobile)
+                    const header = document.querySelector('header');
+                    const headerHeight = header ? header.offsetHeight : 0;
+                    const additionalOffset = 30; // Extra padding for mobile
+                    const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - headerHeight - additionalOffset;
+
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }, 100);
+            }
+        });
+    });
+
+    // Mobile sidebar toggle
+    const mobileSidebarToggle = document.getElementById('mobile-sidebar-toggle');
+    const mobileSidebarMenu = document.getElementById('mobile-sidebar-menu');
+    const mobileSidebarIcon = document.getElementById('mobile-sidebar-icon');
+
+    if (mobileSidebarToggle && mobileSidebarMenu) {
+        mobileSidebarToggle.addEventListener('click', function() {
+            mobileSidebarMenu.classList.toggle('hidden');
+            mobileSidebarIcon.classList.toggle('rotate-180');
+        });
+
+        // Close mobile sidebar when clicking on a link
+        const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+        mobileNavLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                mobileSidebarMenu.classList.add('hidden');
+                mobileSidebarIcon.classList.remove('rotate-180');
+            });
+        });
+    }
+
+    // Scroll to Top Button
+    const scrollToTopBtn = document.getElementById('scroll-to-top');
+
+    window.addEventListener('scroll', function() {
+        if (window.pageYOffset > 300) {
+            scrollToTopBtn.classList.add('visible');
+        } else {
+            scrollToTopBtn.classList.remove('visible');
+        }
+    });
+
+    scrollToTopBtn.addEventListener('click', function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // Scroll Spy - Highlight sidebar links based on scroll position
+    const sections = document.querySelectorAll('section[id]');
+    const desktopNavLinks = document.querySelectorAll('.hidden.lg\\:block nav ul li a');
+    const mobileNavLinks = document.querySelectorAll('#mobile-sidebar-menu nav ul li a');
+
+    function updateActiveLink() {
+        let currentSection = '';
+        const scrollPosition = window.pageYOffset + 150; // Offset for header
+
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.offsetHeight;
+
+            if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                currentSection = section.getAttribute('id');
+            }
+        });
+
+        // Update desktop sidebar links
+        desktopNavLinks.forEach(link => {
+            link.classList.remove('text-secondary-700', 'bg-secondary-50');
+            link.classList.add('text-gray-700');
+            const icon = link.querySelector('i');
+            if (icon) {
+                icon.classList.remove('text-secondary-500');
+                icon.classList.add('text-gray-400');
+            }
+
+            if (link.getAttribute('href') === '#' + currentSection) {
+                link.classList.remove('text-gray-700');
+                link.classList.add('text-secondary-700', 'bg-secondary-50');
+                if (icon) {
+                    icon.classList.remove('text-gray-400');
+                    icon.classList.add('text-secondary-500');
+                }
+            }
+        });
+
+        // Update mobile sidebar links
+        mobileNavLinks.forEach(link => {
+            link.classList.remove('text-secondary-700', 'bg-secondary-50');
+            link.classList.add('text-gray-700');
+            const icon = link.querySelector('i');
+            if (icon) {
+                icon.classList.remove('text-secondary-500');
+                icon.classList.add('text-gray-400');
+            }
+
+            if (link.getAttribute('href') === '#' + currentSection) {
+                link.classList.remove('text-gray-700');
+                link.classList.add('text-secondary-700', 'bg-secondary-50');
+                if (icon) {
+                    icon.classList.remove('text-gray-400');
+                    icon.classList.add('text-secondary-500');
+                }
+            }
+        });
+    }
+
+    // Run on scroll
+    window.addEventListener('scroll', updateActiveLink);
+
+    // Run on page load
+    updateActiveLink();
+});
+</script>
+
+{% endblock %}

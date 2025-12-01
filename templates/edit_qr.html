@@ -1,0 +1,3008 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit QR Code - QR Dada{% endblock %}
+
+{% block head %}
+<style>
+/* Glass morphic UI styles matching dashboard design */
+    body {
+        background-color: #f8fafc;
+    }
+    
+    /* Main card styling to match dashboard glass effect */
+    .formal-card {
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 1rem; /* Keeping 1rem for now, can change to 2xl if needed */
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        transition: all 0.3s ease;
+    }
+    
+    .formal-card:hover {
+        box-shadow: 0 25px 30px -5px rgba(0, 0, 0, 0.15), 0 15px 15px -5px rgba(0, 0, 0, 0.06);
+    }
+    
+    /* Button styling matching dashboard gradient */
+    .formal-button {
+        background: linear-gradient(45deg, #7c3aed, #4f46e5);
+        color: white;
+        border: none;
+        transition: all 0.3s ease;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+    
+    .formal-button:hover {
+        background: linear-gradient(45deg, #6d28d9, #4338ca);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.4), 0 4px 6px -2px rgba(79, 70, 229, 0.2);
+    }
+    
+    /* Section headers with consistent styling */
+    .section-header {
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: #1f2937;
+        border-bottom: 2px solid #e5e7eb;
+        padding-bottom: 0.75rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .form-label {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #4b5563;
+        margin-bottom: 0.5rem;
+    }
+    
+    /* Form inputs with cleaner styling */
+    .form-input {
+        border: 1px solid #d1d5db;
+        background-color: #ffffff;
+        font-size: 0.875rem;
+        padding: 0.625rem 0.875rem;
+        transition: all 0.2s ease;
+        border-radius: 0.5rem;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    }
+    
+    .form-input:focus {
+        border-color: #7c3aed;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+    }
+    
+    /* QR type options with glass effect */
+    .qr-type-option {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 2px solid #e5e7eb;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        border-radius: 0.75rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+    
+    .qr-type-option:hover {
+        border-color: #7c3aed;
+        box-shadow: 0 10px 15px -3px rgba(124, 58, 237, 0.1), 0 4px 6px -2px rgba(124, 58, 237, 0.05);
+        transform: translateY(-3px);
+        background: rgba(255, 255, 255, 1);
+    }
+    
+    .qr-type-option.active {
+        border-color: #7c3aed;
+        background: linear-gradient(to bottom, rgba(124, 58, 237, 0.05), rgba(124, 58, 237, 0.1));
+        box-shadow: 0 10px 15px -3px rgba(124, 58, 237, 0.1), 0 4px 6px -2px rgba(124, 58, 237, 0.05);
+    }
+    
+    /* Tab styling */
+    .tab-button {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #6b7280;
+        padding: 0.75rem 1rem;
+        border-bottom: 3px solid transparent;
+        transition: all 0.3s ease;
+    }
+    
+    .tab-button.active {
+        color: #7c3aed;
+        border-bottom-color: #7c3aed;
+    }
+    
+    .tab-button:hover:not(.active) {
+        color: #9333ea;
+    }
+    
+    /* Template cards with glass effect */
+    .template-card {
+        border: 2px solid #e5e7eb;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border-radius: 1rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+    
+    .template-card:hover {
+        border-color: #7c3aed;
+        box-shadow: 0 20px 25px -5px rgba(124, 58, 237, 0.1), 0 10px 10px -5px rgba(124, 58, 237, 0.05);
+        transform: translateY(-4px);
+        background: rgba(255, 255, 255, 1);
+    }
+    
+    .template-card.selected {
+        border-color: #7c3aed;
+        background: linear-gradient(to bottom, rgba(124, 58, 237, 0.05), rgba(124, 58, 237, 0.1));
+        box-shadow: 0 20px 25px -5px rgba(124, 58, 237, 0.1), 0 10px 10px -5px rgba(124, 58, 237, 0.05);
+    }
+    
+    /* Color preview with modern styling */
+    .color-preview {
+        width: 32px;
+        height: 32px;
+        border: 2px solid #e5e7eb;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border-radius: 0.5rem;
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    }
+    
+    .color-preview:hover {
+        box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.1);
+        transform: scale(1.1);
+        border-color: #7c3aed;
+    }
+    
+    /* Modern accordion styling with glass effect */
+    .accordion-header {
+        background-color: rgba(249, 250, 251, 0.9);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid #e5e7eb;
+        font-weight: 500;
+        color: #374151;
+        transition: all 0.3s ease;
+        border-radius: 0.5rem;
+        cursor: pointer;
+    }
+    
+    .accordion-header:hover {
+        background-color: rgba(237, 233, 254, 0.5);
+        border-color: #c4b5fd;
+    }
+    
+    /* Modern shape options */
+    .shape-option label {
+        border: 2px solid #e5e7eb;
+        background: rgba(255, 255, 255, 0.95);
+        transition: all 0.3s ease;
+        padding: 0.625rem 1rem;
+        font-size: 0.875rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        cursor: pointer;
+    }
+    
+    .shape-option input:checked + label {
+        border-color: #7c3aed;
+        background: linear-gradient(to bottom, rgba(124, 58, 237, 0.05), rgba(124, 58, 237, 0.1));
+        box-shadow: 0 4px 6px -1px rgba(124, 58, 237, 0.1), 0 2px 4px -1px rgba(124, 58, 237, 0.06);
+        transform: translateY(-2px);
+    }
+    
+    .shape-option label:hover {
+        border-color: #a78bfa;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+    
+    /* Modern range slider */
+    input[type="range"] {
+        -webkit-appearance: none;
+        appearance: none;
+        height: 6px;
+        background: #e5e7eb;
+        border-radius: 3px;
+        outline: none;
+        transition: background 0.3s ease;
+    }
+    
+    input[type="range"]:hover {
+        background: #d1d5db;
+    }
+    
+    input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: linear-gradient(45deg, #7c3aed, #4f46e5);
+        cursor: pointer;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        transition: all 0.3s ease;
+    }
+    
+    input[type="range"]::-webkit-slider-thumb:hover {
+        transform: scale(1.2);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+    
+    /* Modern color picker popup */
+    .color-picker-popup {
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-radius: 0.75rem;
+        animation: fadeIn 0.3s ease forwards;
+    }
+    
+    .color-preset {
+        border: 2px solid #e5e7eb;
+        transition: all 0.3s ease;
+        border-radius: 0.375rem;
+    }
+    
+    .color-preset:hover {
+        transform: scale(1.15);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        border-color: #a78bfa;
+    }
+    
+    /* Preview section styling matching dashboard glass effect */
+    .qr-preview {
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        padding: 2rem;
+        border-radius: 1rem;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        transition: all 0.3s ease;
+    }
+    
+    .qr-preview:hover {
+        box-shadow: 0 25px 30px -5px rgba(0, 0, 0, 0.15), 0 15px 15px -5px rgba(0, 0, 0, 0.06);
+        transform: translateY(-2px);
+    }
+    
+    /* Modern toggle switch */
+    .toggle-checkbox:checked {
+        right: 0;
+        border-color: #7c3aed;
+    }
+    
+    .toggle-checkbox:checked + .toggle-label {
+        background-color: #7c3aed;
+    }
+    
+    /* Help text styling */
+    .help-text {
+        font-size: 0.8125rem;
+        color: #6b7280;
+        margin-top: 0.375rem;
+    }
+    
+    /* Error message styling */
+    .error-text {
+        font-size: 0.8125rem;
+        color: #ef4444;
+    }
+    
+    /* Badge styling matching dashboard */
+    .badge {
+        background-color: #f3f4f6;
+        color: #4b5563;
+        font-size: 0.75rem;
+        font-weight: 600;
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+        display: inline-flex;
+        align-items: center;
+    }
+    
+    .badge.primary {
+        background-color: #ede9fe;
+        color: #7c3aed;
+    }
+
+    /* ENHANCED VALIDATION MODAL STYLES - Matching dashboard glass effect */
+    .validation-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .validation-modal.show {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .validation-modal-content {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-radius: 1rem;
+        padding: 24px;
+        max-width: 450px;
+        width: 90%;
+        box-shadow: 0 25px 30px -5px rgba(0, 0, 0, 0.2), 0 15px 15px -5px rgba(0, 0, 0, 0.1);
+        transform: scale(0.9);
+        transition: transform 0.3s ease;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .validation-modal.show .validation-modal-content {
+        transform: scale(1);
+    }
+
+    .validation-modal-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 16px;
+    }
+
+    .validation-modal-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 16px;
+        font-size: 24px;
+    }
+
+    .validation-modal-icon.error {
+        background-color: #fee2e2;
+        color: #dc2626;
+    }
+
+    .validation-modal-icon.warning {
+        background-color: #fef3c7;
+        color: #d97706;
+    }
+
+    .validation-modal-icon.subscription {
+        background: linear-gradient(to bottom, rgba(124, 58, 237, 0.1), rgba(124, 58, 237, 0.15));
+        color: #7c3aed;
+    }
+
+    .validation-modal-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #1f2937;
+        margin: 0;
+    }
+
+    .validation-modal-body {
+        color: #6b7280;
+        margin-bottom: 24px;
+        line-height: 1.6;
+    }
+
+    .validation-modal-actions {
+        display: flex;
+        gap: 12px;
+        justify-content: flex-end;
+    }
+
+    .validation-modal-btn {
+        padding: 8px 16px;
+        border-radius: 0.5rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: none;
+    }
+
+    .validation-modal-btn.primary {
+        background: linear-gradient(45deg, #7c3aed, #4f46e5);
+        color: white;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+
+    .validation-modal-btn.primary:hover {
+        background: linear-gradient(45deg, #6d28d9, #4338ca);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.4), 0 4px 6px -2px rgba(79, 70, 229, 0.2);
+    }
+
+    .validation-modal-btn.secondary {
+        background-color: #f3f4f6;
+        color: #374151;
+        border: 1px solid #d1d5db;
+    }
+
+    .validation-modal-btn.secondary:hover {
+        background-color: #e5e7eb;
+        transform: translateY(-2px);
+    }
+
+    /* Form validation styles */
+    .form-field-error {
+        border-color: #dc2626 !important;
+        box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1) !important;
+    }
+
+    .field-error-message {
+        color: #dc2626;
+        font-size: 0.875rem;
+        margin-top: 4px;
+        display: flex;
+        align-items: center;
+    }
+
+    .field-error-message i {
+        margin-right: 4px;
+    }
+
+    /* Upgrade prompt styling */
+    .upgrade-prompt {
+        background: linear-gradient(135deg, #7c3aed, #4f46e5);
+        color: white;
+        padding: 16px;
+        border-radius: 0.75rem;
+        margin-top: 12px;
+        animation: fadeIn 0.5s ease forwards;
+        box-shadow: 0 10px 15px -3px rgba(124, 58, 237, 0.3), 0 4px 6px -2px rgba(124, 58, 237, 0.15);
+    }
+
+    .upgrade-btn {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        padding: 8px 16px;
+        border-radius: 0.5rem;
+        text-decoration: none;
+        display: inline-block;
+        margin-top: 8px;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+    }
+
+    .upgrade-btn:hover {
+        background: rgba(255, 255, 255, 0.3);
+        color: white;
+        text-decoration: none;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+
+    /* Dynamic QR disabled state */
+    .dynamic-qr-disabled {
+        opacity: 0.6;
+        position: relative;
+    }
+
+    .dynamic-qr-disabled::after {
+        content: '🔒';
+        position: absolute;
+        right: -25px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 14px;
+    }
+    
+    /* Animation keyframes matching dashboard */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    /* Add fade in animation class */
+    .animate-fade-in {
+        animation: fadeIn 0.5s ease forwards;
+    }
+    
+    /* Floating animation for certain elements */
+    @keyframes float {
+        0%, 100% { 
+            transform: translateY(0);
+        }
+        50% { 
+            transform: translateY(-10px);
+        }
+    }
+    
+    .animate-float {
+        animation: float 6s ease-in-out infinite;
+    }
+
+    /* Pulse animation for dynamic indicators */
+    @keyframes pulse {
+        0%, 100% {
+            opacity: 1;
+        }
+        50% {
+            opacity: .5;
+        }
+    }
+
+    .animate-pulse {
+        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    /* Loading overlay for preview */
+    .preview-loading {
+        position: absolute;
+        inset: 0;
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border-radius: 1rem;
+    }
+
+    /* Enhanced button hover effects */
+    .btn-gradient {
+        background: linear-gradient(45deg, #7c3aed, #4f46e5);
+        color: white;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+
+    .btn-gradient:hover {
+        background: linear-gradient(45deg, #6d28d9, #4338ca);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.4), 0 4px 6px -2px rgba(79, 70, 229, 0.2);
+    }
+
+    /* Feature box styling */
+    .feature-box {
+        border-radius: 1rem;
+        padding: 1.5rem;
+        transition: all 0.3s ease;
+        border: 2px solid #e5e7eb;
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+    }
+
+    .feature-box:hover {
+        border-color: #c4b5fd;
+        box-shadow: 0 20px 25px -5px rgba(124, 58, 237, 0.1), 0 10px 10px -5px rgba(124, 58, 237, 0.05);
+        transform: translateY(-3px);
+    }
+
+    .feature-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 3rem;
+        height: 3rem;
+        border-radius: 9999px;
+        font-size: 1.25rem;
+        background: linear-gradient(45deg, #7c3aed, #4f46e5);
+        color: white;
+        margin-bottom: 1rem;
+        box-shadow: 0 4px 6px -1px rgba(124, 58, 237, 0.2), 0 2px 4px -1px rgba(124, 58, 237, 0.1);
+    }
+
+    /* Progress bar */
+    .progress {
+        height: 0.5rem;
+        width: 100%;
+        background-color: #e5e7eb;
+        border-radius: 9999px;
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        height: 100%;
+        background: linear-gradient(90deg, #7c3aed, #4f46e5);
+        border-radius: 9999px;
+        transition: width 0.5s ease;
+    }
+
+    /* Gradient preview enhancement */
+    .gradient-preview {
+        transition: all 0.3s ease;
+        box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+    }
+
+    /* Template preview styling */
+    .template-preview {
+        transition: all 0.3s ease;
+        border-radius: 0.5rem;
+        overflow: hidden;
+    }
+
+    .template-card:hover .template-preview {
+        transform: scale(1.05);
+    }
+
+    /* Consistent spacing and padding */
+    .section-spacing {
+        padding: 2rem;
+    }
+
+    /* Smooth transitions for all interactive elements */
+    * {
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1.5rem;
+    }
+
+    .stat-card {
+        background: rgba(243, 244, 246, 0.8); /* light gray with slight transparency */
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        padding: 1rem;
+        border-radius: 0.75rem;
+        text-align: center;
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 16px rgba(124, 58, 237, 0.1);
+    }
+
+    .stat-number {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #4f46e5; /* Indigo */
+    }
+
+    .stat-label {
+        font-size: 0.875rem;
+        color: #6b7280; /* Cool Gray */
+        margin-top: 0.25rem;
+    }
+
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 py-8">
+    <!-- Professional Page Header -->
+    <div class="mb-8 border-b border-gray-300 pb-6">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900">Edit QR Code</h1>
+                <p class="text-gray-600 mt-2">Update your QR code content and styling</p>
+            </div>
+            <div class="flex space-x-3">
+                <a href="{{ url_for('view_qr', qr_id=qr_code.unique_id) }}" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    <i class="fas fa-eye mr-2"></i> View QR
+                </a>
+                <a href="{{ url_for('download_qr', qr_id=qr_code.unique_id) }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    <i class="fas fa-download mr-2"></i> Download
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Current QR Stats (for dynamic QR codes) -->
+    {% if qr_code.is_dynamic and scans %}
+    <div class="mb-8">
+        <div class="formal-card p-6 analytics-card">
+            <h3 class="text-lg font-semibold mb-4">
+                <i class="fas fa-chart-line mr-2"></i> QR Code Performance
+            </h3>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">{{ scans|length }}</div>
+                    <div class="stat-label">Total Scans</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">{{ qr_code.created_at.strftime('%m/%d/%Y') }}</div>
+                    <div class="stat-label">Created</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">{{ qr_code.updated_at.strftime('%m/%d/%Y') if qr_code.updated_at else 'Never' }}</div>
+                    <div class="stat-label">Last Updated</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">{{ 'Dynamic' if qr_code.is_dynamic else 'Static' }}</div>
+                    <div class="stat-label">Type</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="mb-6 p-4 formal-card {% if category == 'success' %}success-message{% elif category == 'danger' or category == 'error' %}error-message{% elif category == 'warning' %}bg-yellow-50 border-yellow-200 text-yellow-800{% elif category == 'info' %}bg-blue-50 border-blue-200 text-blue-800{% endif %}" role="alert">
+                    <div class="flex items-center">
+                        {% if category == 'success' %}
+                            <i class="fas fa-check-circle mr-3"></i>
+                        {% elif category == 'danger' or category == 'error' %}
+                            <i class="fas fa-exclamation-circle mr-3"></i>
+                        {% elif category == 'warning' %}
+                            <i class="fas fa-exclamation-triangle text-yellow-600 mr-3"></i>
+                        {% elif category == 'info' %}
+                            <i class="fas fa-info-circle text-blue-600 mr-3"></i>
+                        {% endif %}
+                        <div class="flex-1">{{ message }}</div>
+                        <button type="button" class="ml-4 text-gray-500 hover:text-gray-700" onclick="this.parentElement.parentElement.remove()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    
+    <form id="edit-qr-form" action="{{ url_for('edit_qr', qr_id=qr_code.unique_id) }}" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2">
+                <!-- Step 1: QR Type (Read-only since we're editing) -->
+                <div class="formal-card p-6 mb-6">
+                    <h2 class="section-header">
+                        <span class="mr-2 text-gray-500">1.</span>
+                        QR Code Type
+                        <span class="ml-3 px-2 py-1 text-xs font-medium bg-gray-100 text-gray-800 rounded">{{ qr_code.qr_type.title() }}</span>
+                    </h2>
+                    
+                    <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                        <div class="flex items-center">
+                            {% if qr_code.qr_type == 'link' %}
+                                <i class="fas fa-link text-blue-700 text-xl mr-3"></i>
+                            {% elif qr_code.qr_type == 'email' %}
+                                <i class="fas fa-envelope text-blue-700 text-xl mr-3"></i>
+                            {% elif qr_code.qr_type == 'text' %}
+                                <i class="fas fa-font text-blue-700 text-xl mr-3"></i>
+                            {% elif qr_code.qr_type == 'call' %}
+                                <i class="fas fa-phone text-blue-700 text-xl mr-3"></i>
+                            {% elif qr_code.qr_type == 'sms' %}
+                                <i class="fas fa-sms text-blue-700 text-xl mr-3"></i>
+                            {% elif qr_code.qr_type == 'whatsapp' %}
+                                <i class="fab fa-whatsapp text-blue-700 text-xl mr-3"></i>
+                            {% elif qr_code.qr_type == 'wifi' %}
+                                <i class="fas fa-wifi text-blue-700 text-xl mr-3"></i>
+                            {% elif qr_code.qr_type == 'vcard' %}
+                                <i class="fas fa-address-card text-blue-700 text-xl mr-3"></i>
+                            {% elif qr_code.qr_type == 'event' %}
+                                <i class="fas fa-calendar-alt text-blue-700 text-xl mr-3"></i>
+                            {% endif %}
+                            <div>
+                                <div class="font-medium text-gray-900">{{ qr_code.qr_type.title() }} QR Code</div>
+                                <div class="text-sm text-gray-600">QR code type cannot be changed after creation</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Hidden field to maintain QR type -->
+                    <input type="hidden" name="qr_type" value="{{ qr_code.qr_type }}">
+                </div>
+                
+                <!-- Step 2: QR Content Settings -->
+                <div class="formal-card p-6 mb-6">
+                    <h2 class="section-header">
+                        <span class="mr-2 text-gray-500">2.</span>
+                        QR Code Content
+                        {% if not qr_code.is_dynamic %}
+                            <span class="ml-3 px-2 py-1 text-xs font-medium bg-yellow-100 text-yellow-800 rounded">
+                                <i class="fas fa-lock mr-1"></i>Read-only (Static QR)
+                            </span>
+                        {% endif %}
+                    </h2>
+                    
+                    <div class="mb-6">
+                        <label for="name" class="form-label block">QR Code Name <span class="text-red-500">*</span></label>
+                        <input type="text" class="form-input w-full" id="name" name="name" value="{{ qr_code.name }}" placeholder="Enter a name for your QR code" required>
+                        <p class="help-text mt-1">This name is for your reference only</p>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <div class="flex items-center">
+                            <input type="checkbox" id="is_dynamic" name="is_dynamic" value="true" class="mr-3 h-4 w-4 text-blue-700 focus:ring-blue-500" {% if qr_code.is_dynamic %}checked{% endif %} disabled>
+                            <label for="is_dynamic" class="text-gray-700 font-medium">
+                                Dynamic QR Code
+                                {% if qr_code.is_dynamic %}
+                                    <span class="ml-2 px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded">Enabled</span>
+                                {% else %}
+                                    <span class="ml-2 px-2 py-1 text-xs font-medium bg-gray-100 text-gray-800 rounded">Disabled</span>
+                                {% endif %}
+                            </label>
+                        </div>
+                        <p class="help-text mt-2 ml-7">
+                            {% if qr_code.is_dynamic %}
+                                Dynamic QR codes can be updated after creation
+                            {% else %}
+                                Static QR code content cannot be changed after creation
+                            {% endif %}
+                        </p>
+                    </div>
+                    
+                    <!-- CHANGED: Added conditional wrapper for content fields -->
+                    {% if not qr_code.is_dynamic %}
+                        <!-- Static QR - Show content as read-only -->
+                        <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                            <div class="flex items-center mb-3">
+                                <i class="fas fa-lock text-gray-500 mr-2"></i>
+                                <h3 class="font-medium text-gray-700">Current QR Content (Read-only)</h3>
+                            </div>
+                            
+                            {% if qr_code.qr_type == 'link' %}
+                                <div class="text-sm text-gray-600">
+                                    <strong>URL:</strong> {{ qr_code.link_detail.url if qr_code.link_detail else 'Not set' }}
+                                </div>
+                            {% elif qr_code.qr_type == 'email' %}
+                                <div class="text-sm text-gray-600">
+                                    <strong>Email:</strong> {{ qr_code.email_detail.email if qr_code.email_detail else 'Not set' }}<br>
+                                    {% if qr_code.email_detail and qr_code.email_detail.subject %}
+                                        <strong>Subject:</strong> {{ qr_code.email_detail.subject }}<br>
+                                    {% endif %}
+                                    {% if qr_code.email_detail and qr_code.email_detail.body %}
+                                        <strong>Message:</strong> {{ qr_code.email_detail.body[:100] }}{% if qr_code.email_detail.body|length > 100 %}...{% endif %}
+                                    {% endif %}
+                                </div>
+                            {% elif qr_code.qr_type == 'text' %}
+                                <div class="text-sm text-gray-600">
+                                    <strong>Text:</strong> {{ qr_code.text_detail.text if qr_code.text_detail else 'Not set' }}
+                                </div>
+                            {% elif qr_code.qr_type == 'call' %}
+                                <div class="text-sm text-gray-600">
+                                    <strong>Phone:</strong> {{ qr_code.phone_detail.phone if qr_code.phone_detail else 'Not set' }}
+                                </div>
+                            {% elif qr_code.qr_type == 'sms' %}
+                                <div class="text-sm text-gray-600">
+                                    <strong>Phone:</strong> {{ qr_code.sms_detail.phone if qr_code.sms_detail else 'Not set' }}<br>
+                                    {% if qr_code.sms_detail and qr_code.sms_detail.message %}
+                                        <strong>Message:</strong> {{ qr_code.sms_detail.message }}
+                                    {% endif %}
+                                </div>
+                            {% elif qr_code.qr_type == 'whatsapp' %}
+                                <div class="text-sm text-gray-600">
+                                    <strong>Phone:</strong> {{ qr_code.whatsapp_detail.phone if qr_code.whatsapp_detail else 'Not set' }}<br>
+                                    {% if qr_code.whatsapp_detail and qr_code.whatsapp_detail.message %}
+                                        <strong>Message:</strong> {{ qr_code.whatsapp_detail.message }}
+                                    {% endif %}
+                                </div>
+                            {% elif qr_code.qr_type == 'wifi' %}
+                                <div class="text-sm text-gray-600">
+                                    <strong>Network:</strong> {{ qr_code.wifi_detail.ssid if qr_code.wifi_detail else 'Not set' }}<br>
+                                    <strong>Security:</strong> {{ qr_code.wifi_detail.encryption if qr_code.wifi_detail else 'Not set' }}
+                                </div>
+                            {% elif qr_code.qr_type == 'vcard' %}
+                                <div class="text-sm text-gray-600">
+                                    <strong>Name:</strong> {{ qr_code.vcard_detail.name if qr_code.vcard_detail else 'Not set' }}<br>
+                                    {% if qr_code.vcard_detail and qr_code.vcard_detail.company %}
+                                        <strong>Company:</strong> {{ qr_code.vcard_detail.company }}<br>
+                                    {% endif %}
+                                    {% if qr_code.vcard_detail and qr_code.vcard_detail.email %}
+                                        <strong>Email:</strong> {{ qr_code.vcard_detail.email }}
+                                    {% endif %}
+                                </div>
+                            {% elif qr_code.qr_type == 'event' %}
+                                <div class="text-sm text-gray-600">
+                                    <strong>Title:</strong> {{ qr_code.event_detail.title if qr_code.event_detail else 'Not set' }}<br>
+                                    {% if qr_code.event_detail and qr_code.event_detail.location %}
+                                        <strong>Location:</strong> {{ qr_code.event_detail.location }}<br>
+                                    {% endif %}
+                                    {% if qr_code.event_detail and qr_code.event_detail.start_date %}
+                                        <strong>Date:</strong> {{ qr_code.event_detail.start_date.strftime('%Y-%m-%d %H:%M') }}
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                            
+                            <div class="mt-3 p-3 bg-blue-50 border border-blue-200 rounded">
+                                <div class="flex items-center">
+                                    <i class="fas fa-info-circle text-blue-600 mr-2"></i>
+                                    <span class="text-sm text-blue-800">
+                                        To edit QR content, create a new Dynamic QR code from your dashboard.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <!-- Dynamic QR - Show editable content fields -->
+                        <div id="qr-content-fields">
+                            <!-- Content Fields for Different QR Types -->
+                            <!-- URL Content Fields -->
+                            {% if qr_code.qr_type == 'link' %}
+                            <div class="qr-type-content" id="link-content">
+                                <div class="mb-6">
+                                    <label for="url" class="form-label block">Website URL <span class="text-red-500">*</span></label>
+                                    <div class="flex">
+                                        <span class="inline-flex items-center px-3 border border-r-0 border-gray-300 bg-gray-50 text-gray-500">
+                                            <i class="fas fa-globe"></i>
+                                        </span>
+                                        <input type="url" class="form-input flex-1 rounded-l-none" id="url" name="url" value="{{ qr_code.link_detail.url if qr_code.link_detail else content.url|default('') }}" placeholder="https://example.com" required>
+                                    </div>
+                                    <p class="help-text mt-1">Enter the full URL including https://</p>
+                                </div>
+                            </div>
+                            {% endif %}
+                            
+                            <!-- Email Content Fields -->
+                            {% if qr_code.qr_type == 'email' %}
+                            <div class="qr-type-content" id="email-content">
+                                <div class="mb-6">
+                                    <label for="email" class="form-label block">Email Address <span class="text-red-500">*</span></label>
+                                    <div class="flex">
+                                        <span class="inline-flex items-center px-3 border border-r-0 border-gray-300 bg-gray-50 text-gray-500">
+                                            <i class="fas fa-at"></i>
+                                        </span>
+                                        <input type="email" class="form-input flex-1 rounded-l-none" id="email" name="email" value="{{ qr_code.email_detail.email if qr_code.email_detail else content.email|default('') }}" placeholder="recipient@example.com" required>
+                                    </div>
+                                </div>
+                                <div class="mb-6">
+                                    <label for="subject" class="form-label block">Subject</label>
+                                    <input type="text" class="form-input w-full" id="subject" name="subject" value="{{ qr_code.email_detail.subject if qr_code.email_detail else content.subject|default('') }}" placeholder="Email subject">
+                                </div>
+                                <div class="mb-6">
+                                    <label for="body" class="form-label block">Message</label>
+                                    <textarea class="form-input w-full" id="body" name="body" rows="3" placeholder="Email message content">{{ qr_code.email_detail.body if qr_code.email_detail else content.body|default('') }}</textarea>
+                                </div>
+                            </div>
+                            {% endif %}
+                            
+                            <!-- Text Content Fields -->
+                            {% if qr_code.qr_type == 'text' %}
+                            <div class="qr-type-content" id="text-content">
+                                <div class="mb-6">
+                                    <label for="text" class="form-label block">Text Content <span class="text-red-500">*</span></label>
+                                    <textarea class="form-input w-full" id="text" name="text" rows="5" placeholder="Enter your text message" required>{{ qr_code.text_detail.text if qr_code.text_detail else content.text|default('') }}</textarea>
+                                    <p class="help-text mt-1">
+                                        <span id="textCounter">{{ (qr_code.text_detail.text if qr_code.text_detail else content.text|default(''))|length }}</span>/500 characters
+                                    </p>
+                                </div>
+                            </div>
+                            {% endif %}
+                            
+                            <!-- Phone Call Content Fields -->
+                            {% if qr_code.qr_type == 'call' %}
+                            <div class="qr-type-content" id="call-content">
+                                <div class="mb-6">
+                                    <label for="phone" class="form-label block">Phone Number <span class="text-red-500">*</span></label>
+                                    <div class="flex">
+                                        <span class="inline-flex items-center px-3 border border-r-0 border-gray-300 bg-gray-50 text-gray-500">
+                                            <i class="fas fa-phone"></i>
+                                        </span>
+                                        <input type="tel" class="form-input flex-1 rounded-l-none" id="phone" name="phone" value="{{ qr_code.phone_detail.phone if qr_code.phone_detail else content.phone|default('') }}" placeholder="+1234567890" required>
+                                    </div>
+                                    <p class="help-text mt-1">Include country code (e.g., +1 for US)</p>
+                                </div>
+                            </div>
+                            {% endif %}
+                            
+                            <!-- SMS Content Fields -->
+                            {% if qr_code.qr_type == 'sms' %}
+                            <div class="qr-type-content" id="sms-content">
+                                <div class="mb-6">
+                                    <label for="sms-phone" class="form-label block">Phone Number <span class="text-red-500">*</span></label>
+                                    <div class="flex">
+                                        <span class="inline-flex items-center px-3 border border-r-0 border-gray-300 bg-gray-50 text-gray-500">
+                                            <i class="fas fa-mobile-alt"></i>
+                                        </span>
+                                        <input type="tel" class="form-input flex-1 rounded-l-none" id="sms-phone" name="phone" value="{{ qr_code.sms_detail.phone if qr_code.sms_detail else content.phone|default('') }}" placeholder="+1234567890" required>
+                                    </div>
+                                    <p class="help-text mt-1">Include country code (e.g., +1 for US)</p>
+                                </div>
+                                <div class="mb-6">
+                                    <label for="message" class="form-label block">Message</label>
+                                    <textarea class="form-input w-full" id="message" name="message" rows="3" placeholder="SMS message content">{{ qr_code.sms_detail.message if qr_code.sms_detail else content.message|default('') }}</textarea>
+                                    <p class="help-text mt-1">
+                                        <span id="smsCounter">{{ (qr_code.sms_detail.message if qr_code.sms_detail else content.message|default(''))|length }}</span>/160 characters
+                                    </p>
+                                </div>
+                            </div>
+                            {% endif %}
+                            
+                            <!-- WhatsApp Content Fields -->
+                            {% if qr_code.qr_type == 'whatsapp' %}
+                            <div class="qr-type-content" id="whatsapp-content">
+                                <div class="mb-6">
+                                    <label for="whatsapp-phone" class="form-label block">Phone Number <span class="text-red-500">*</span></label>
+                                    <div class="flex">
+                                        <span class="inline-flex items-center px-3 border border-r-0 border-gray-300 bg-gray-50 text-gray-500">
+                                            <i class="fab fa-whatsapp"></i>
+                                        </span>
+                                        <input type="tel" class="form-input flex-1 rounded-l-none" id="whatsapp-phone" name="phone" value="{{ qr_code.whatsapp_detail.phone if qr_code.whatsapp_detail else content.phone|default('') }}" placeholder="+1234567890" required>
+                                    </div>
+                                    <p class="help-text mt-1">Enter number with country code but without spaces or special characters</p>
+                                </div>
+                                <div class="mb-6">
+                                    <label for="whatsapp-message" class="form-label block">Message</label>
+                                    <textarea class="form-input w-full" id="whatsapp-message" name="message" rows="3" placeholder="WhatsApp message content">{{ qr_code.whatsapp_detail.message if qr_code.whatsapp_detail else content.message|default('') }}</textarea>
+                                </div>
+                            </div>
+                            {% endif %}
+                            
+                            <!-- WiFi Content Fields -->
+                            {% if qr_code.qr_type == 'wifi' %}
+                            <div class="qr-type-content" id="wifi-content">
+                                <div class="mb-6">
+                                    <label for="ssid" class="form-label block">Network Name (SSID) <span class="text-red-500">*</span></label>
+                                    <div class="flex">
+                                        <span class="inline-flex items-center px-3 border border-r-0 border-gray-300 bg-gray-50 text-gray-500">
+                                            <i class="fas fa-wifi"></i>
+                                        </span>
+                                        <input type="text" class="form-input flex-1 rounded-l-none" id="ssid" name="ssid" value="{{ qr_code.wifi_detail.ssid if qr_code.wifi_detail else content.ssid|default('') }}" placeholder="Your WiFi network name" required>
+                                    </div>
+                                    <p class="help-text mt-1">Enter the exact name of your WiFi network</p>
+                                </div>
+                                <div class="mb-6">
+                                    <label for="wifi-password" class="form-label block">Password</label>
+                                    <div class="flex">
+                                        <span class="inline-flex items-center px-3 border border-r-0 border-gray-300 bg-gray-50 text-gray-500">
+                                            <i class="fas fa-key"></i>
+                                        </span>
+                                        <input type="password" class="form-input flex-1 rounded-l-none" id="wifi-password" name="password" value="{{ qr_code.wifi_detail.password if qr_code.wifi_detail else content.password|default('') }}" placeholder="WiFi password">
+                                        <span class="inline-flex items-center px-3 border border-l-0 border-gray-300 bg-gray-50 text-gray-500 cursor-pointer" id="toggleWifiPassword">
+                                            <i class="fas fa-eye"></i>
+                                        </span>
+                                    </div>
+                                    <p class="help-text mt-1">Leave empty for open networks</p>
+                                </div>
+                                <div class="mb-6">
+                                    <label for="encryption" class="form-label block">Security Type</label>
+                                    <select class="form-input w-full" id="encryption" name="encryption">
+                                        <option value="WPA" {% if (qr_code.wifi_detail.encryption if qr_code.wifi_detail else content.encryption|default('WPA')) == 'WPA' %}selected{% endif %}>WPA/WPA2/WPA3</option>
+                                        <option value="WEP" {% if (qr_code.wifi_detail.encryption if qr_code.wifi_detail else content.encryption|default('WPA')) == 'WEP' %}selected{% endif %}>WEP</option>
+                                        <option value="nopass" {% if (qr_code.wifi_detail.encryption if qr_code.wifi_detail else content.encryption|default('WPA')) == 'nopass' %}selected{% endif %}>No Password</option>
+                                    </select>
+                                </div>
+                            </div>
+                            {% endif %}
+                            
+                            <!-- vCard Content Fields -->
+                            {% if qr_code.qr_type == 'vcard' %}
+                            <div class="qr-type-content" id="vcard-content">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                                    <div>
+                                        <label for="full_name" class="form-label block">Full Name <span class="text-red-500">*</span></label>
+                                        <input type="text" class="form-input w-full" id="full_name" name="full_name" value="{{ qr_code.vcard_detail.name if qr_code.vcard_detail else content.name|default('') }}" placeholder="John Doe" required>
+                                    </div>
+                                    <div>
+                                        <label for="vcard-phone" class="form-label block">Phone Number</label>
+                                        <div class="flex">
+                                            <span class="inline-flex items-center px-3 border border-r-0 border-gray-300 bg-gray-50 text-gray-500">
+                                                <i class="fas fa-phone"></i>
+                                            </span>
+                                            <input type="tel" class="form-input flex-1 rounded-l-none" id="vcard-phone" name="vcard-phone" value="{{ qr_code.vcard_detail.phone if qr_code.vcard_detail else content.phone|default('') }}" placeholder="+1234567890">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-6">
+                                    <label for="vcard-email" class="form-label block">Email</label>
+                                    <div class="flex">
+                                        <span class="inline-flex items-center px-3 border border-r-0 border-gray-300 bg-gray-50 text-gray-500">
+                                            <i class="fas fa-at"></i>
+                                        </span>
+                                        <input type="email" class="form-input flex-1 rounded-l-none" id="vcard-email" name="vcard-email" value="{{ qr_code.vcard_detail.email if qr_code.vcard_detail else content.email|default('') }}" placeholder="contact@example.com">
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                                    <div>
+                                        <label for="company" class="form-label block">Company</label>
+                                        <input type="text" class="form-input w-full" id="company" name="company" value="{{ qr_code.vcard_detail.company if qr_code.vcard_detail else content.company|default('') }}" placeholder="Company name">
+                                    </div>
+                                    <div>
+                                        <label for="title" class="form-label block">Job Title</label>
+                                        <input type="text" class="form-input w-full" id="title" name="title" value="{{ qr_code.vcard_detail.title if qr_code.vcard_detail else content.title|default('') }}" placeholder="Job title">
+                                    </div>
+                                </div>
+                                <div class="mb-6">
+                                    <label for="address" class="form-label block">Address</label>
+                                    <textarea class="form-input w-full" id="address" name="address" rows="2" placeholder="Street address">{{ qr_code.vcard_detail.address if qr_code.vcard_detail else content.address|default('') }}</textarea>
+                                </div>
+                                <div class="mb-6">
+                                    <label for="website" class="form-label block">Website</label>
+                                    <div class="flex">
+                                        <span class="inline-flex items-center px-3 border border-r-0 border-gray-300 bg-gray-50 text-gray-500">
+                                            <i class="fas fa-globe"></i>
+                                        </span>
+                                        <input type="url" class="form-input flex-1 rounded-l-none" id="website" name="website" value="{{ qr_code.vcard_detail.website if qr_code.vcard_detail else content.website|default('') }}" placeholder="https://example.com">
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            
+                            <!-- Event Content Fields -->
+                            {% if qr_code.qr_type == 'event' %}
+                            <div class="qr-type-content" id="event-content">
+                                <div class="mb-6">
+                                    <label for="event-title" class="form-label block">Event Title <span class="text-red-500">*</span></label>
+                                    <input type="text" class="form-input w-full" id="event-title" name="event-title" value="{{ qr_code.event_detail.title if qr_code.event_detail else content.title|default('') }}" placeholder="Event name" required>
+                                </div>
+                                <div class="mb-6">
+                                    <label for="location" class="form-label block">Location</label>
+                                    <div class="flex">
+                                        <span class="inline-flex items-center px-3 border border-r-0 border-gray-300 bg-gray-50 text-gray-500">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                        </span>
+                                        <input type="text" class="form-input flex-1 rounded-l-none" id="location" name="location" value="{{ qr_code.event_detail.location if qr_code.event_detail else content.location|default('') }}" placeholder="Event location">
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                                    <div>
+                                        <label for="start_date" class="form-label block">Start Date/Time <span class="text-red-500">*</span></label>
+                                        <input type="datetime-local" class="form-input w-full" id="start_date" name="start_date" value="{{ qr_code.event_detail.start_date.strftime('%Y-%m-%dT%H:%M') if qr_code.event_detail and qr_code.event_detail.start_date else content.start_date|default('') }}" required>
+                                    </div>
+                                    <div>
+                                        <label for="end_time" class="form-label block">End Date/Time</label>
+                                        <input type="datetime-local" class="form-input w-full" id="end_time" name="end_time" value="{{ qr_code.event_detail.end_time.strftime('%Y-%m-%dT%H:%M') if qr_code.event_detail and qr_code.event_detail.end_time else content.end_time|default('') }}">
+                                    </div>
+                                </div>
+                                <div class="mb-6">
+                                    <label for="description" class="form-label block">Description</label>
+                                    <textarea class="form-input w-full" id="description" name="description" rows="3" placeholder="Event description">{{ qr_code.event_detail.description if qr_code.event_detail else content.description|default('') }}</textarea>
+                                </div>
+                                <div class="mb-6">
+                                    <label for="organizer" class="form-label block">Organizer</label>
+                                    <input type="text" class="form-input w-full" id="organizer" name="organizer" value="{{ qr_code.event_detail.organizer if qr_code.event_detail else content.organizer|default('') }}" placeholder="Event organizer">
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <!-- Step 3: QR Code Styling -->
+                <div class="formal-card p-6 mb-6">
+                    <h2 class="section-header">
+                        <span class="mr-2 text-gray-500">3.</span>
+                        Design Your QR Code
+                    </h2>
+                    
+                    <div class="mb-8">
+                        <nav class="flex border-b border-gray-200" id="qrDesignTab" role="tablist">
+                            <button class="tab-button active" id="custom-tab" data-bs-toggle="pill" data-bs-target="#custom" type="button" role="tab" aria-controls="custom" aria-selected="true">
+                                Custom Design
+                            </button>
+                            <button class="tab-button" id="advanced-tab" data-bs-toggle="pill" data-bs-target="#advanced" type="button" role="tab" aria-controls="advanced" aria-selected="false">
+                                Advanced
+                            </button>
+                        </nav>
+                    </div>
+                    
+                    <div class="tab-content" id="qrDesignTabContent">
+                        <!-- Custom Design Tab -->
+                        <div class="tab-pane fade show active" id="custom" role="tabpanel" aria-labelledby="custom-tab">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                <div>
+                                    <label class="form-label block mb-3">QR Code Shape</label>
+                                    <div class="flex flex-wrap gap-2" role="radiogroup" aria-label="QR code shape options">
+                                        <div class="shape-option">
+                                            <input type="radio" id="shape-square" name="shape" value="square" class="hidden" {% if qr_code.shape == 'square' or not qr_code.shape %}checked{% endif %}>
+                                            <label for="shape-square" class="inline-flex items-center gap-2 cursor-pointer" tabindex="0">
+                                                <i class="fas fa-square text-blue-700"></i>
+                                                <span class="text-sm font-medium text-gray-700">Square</span>
+                                            </label>
+                                        </div>
+                                        
+                                        <div class="shape-option">
+                                            <input type="radio" id="shape-rounded" name="shape" value="rounded" class="hidden" {% if qr_code.shape == 'rounded' %}checked{% endif %}>
+                                            <label for="shape-rounded" class="inline-flex items-center gap-2 cursor-pointer" tabindex="0">
+                                                <i class="fas fa-square text-blue-700 rounded"></i>
+                                                <span class="text-sm font-medium text-gray-700">Rounded</span>
+                                            </label>
+                                        </div>
+                                        
+                                        <div class="shape-option">
+                                            <input type="radio" id="shape-circle" name="shape" value="circle" class="hidden" {% if qr_code.shape == 'circle' %}checked{% endif %}>
+                                            <label for="shape-circle" class="inline-flex items-center gap-2 cursor-pointer" tabindex="0">
+                                                <i class="fas fa-circle text-blue-700"></i>
+                                                <span class="text-sm font-medium text-gray-700">Circle</span>
+                                            </label>
+                                        </div>
+                                        
+                                        <div class="shape-option">
+                                            <input type="radio" id="shape-vertical" name="shape" value="vertical_bars" class="hidden" {% if qr_code.shape == 'vertical_bars' %}checked{% endif %}>
+                                            <label for="shape-vertical" class="inline-flex items-center gap-2 cursor-pointer" tabindex="0">
+                                                <i class="fas fa-grip-lines-vertical text-blue-700"></i>
+                                                <span class="text-sm font-medium text-gray-700">Vertical</span>
+                                            </label>
+                                        </div>
+
+                                        <div class="shape-option">
+                                            <input type="radio" id="shape-horizontal" name="shape" value="horizontal_bars" class="hidden" {% if qr_code.shape == 'horizontal_bars' %}checked{% endif %}>
+                                            <label for="shape-horizontal" class="inline-flex items-center gap-2 cursor-pointer" tabindex="0">
+                                                <i class="fas fa-grip-lines text-blue-700"></i>
+                                                <span class="text-sm font-medium text-gray-700">Horizontal</span>
+                                            </label>
+                                        </div>
+
+
+                                        <div class="shape-option">
+                                            <input type="radio" id="shape-gapped" name="shape" value="gapped_square" class="hidden" {% if qr_code.shape == 'gapped_square' %}checked{% endif %}>
+                                            <label for="shape-gapped" class="inline-flex items-center gap-2 cursor-pointer" tabindex="0">
+                                                <i class="fas fa-th-large text-blue-700"></i>
+                                                <span class="text-sm font-medium text-gray-700">Gapped</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <label class="form-label block mb-3">Frame Style (Optional)</label>
+                                    <div class="flex flex-wrap gap-2" role="radiogroup" aria-label="QR code frame options">
+                                        <div class="shape-option">
+                                            <input type="radio" id="frame-none" name="frame_type" value="" class="hidden" {% if not qr_code.frame_type %}checked{% endif %}>
+                                            <label for="frame-none" class="inline-flex items-center gap-2 cursor-pointer" tabindex="0">
+                                                <i class="fas fa-ban text-gray-600"></i>
+                                                <span class="text-sm font-medium text-gray-700">None</span>
+                                            </label>
+                                        </div>
+                                        
+                                        <div class="shape-option">
+                                            <input type="radio" id="frame-square" name="frame_type" value="square" class="hidden" {% if qr_code.frame_type == 'square' %}checked{% endif %}>
+                                            <label for="frame-square" class="inline-flex items-center gap-2 cursor-pointer" tabindex="0">
+                                                <i class="far fa-square text-gray-600"></i>
+                                                <span class="text-sm font-medium text-gray-700">Square</span>
+                                            </label>
+                                        </div>
+                                        
+                                        <div class="shape-option">
+                                            <input type="radio" id="frame-scan-me" name="frame_type" value="scan_me" class="hidden" {% if qr_code.frame_type == 'scan_me' %}checked{% endif %}>
+                                            <label for="frame-scan-me" class="inline-flex items-center gap-2 cursor-pointer" tabindex="0">
+                                                <i class="fas fa-mobile-alt text-gray-600"></i>
+                                                <span class="text-sm font-medium text-gray-700">Scan Me</span>
+                                            </label>
+                                        </div>
+
+                                        <div class="shape-option">
+                                            <input type="radio" id="frame-branded" name="frame_type" value="branded" class="hidden" {% if qr_code.frame_type == 'branded' %}checked{% endif %}>
+                                            <label for="frame-branded" class="inline-flex items-center gap-2 cursor-pointer" tabindex="0">
+                                                <i class="fas fa-building text-gray-600"></i>
+                                                <span class="text-sm font-medium text-gray-700">Branded</span>
+                                            </label>
+                                        </div>
+
+                                        <div class="shape-option">
+                                            <input type="radio" id="frame-circle" name="frame_type" value="circle" class="hidden" {% if qr_code.frame_type == 'circle' %}checked{% endif %}>
+                                            <label for="frame-circle" class="inline-flex items-center gap-2 cursor-pointer" tabindex="0">
+                                                <i class="far fa-circle text-gray-600"></i>
+                                                <span class="text-sm font-medium text-gray-700">Circle</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div id="frame-text-container" class="mt-4 {% if qr_code.frame_type not in ['scan_me', 'branded'] %}hidden{% endif %}">
+                                        <label for="frame_text" class="form-label block">Frame Text</label>
+                                        <input type="text" class="form-input w-full" id="frame_text" name="frame_text" value="{{ qr_code.frame_text or 'SCAN ME' }}" placeholder="SCAN ME">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                <div>
+                                    <label for="color" class="form-label block">QR Code Color</label>
+                                    <div class="flex">
+                                        <span class="inline-flex items-center px-3 border border-r-0 border-gray-300 bg-gray-50">
+                                            <div id="color-preview" class="color-preview" style="background-color: {{ qr_code.color or '#000000' }};" tabindex="0" role="button" aria-label="Pick QR code color"></div>
+                                        </span>
+                                        <input type="text" class="form-input flex-1 rounded-l-none" id="color" name="color" value="{{ qr_code.color or '#000000' }}">
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <label for="background_color" class="form-label block">Background Color</label>
+                                    <div class="flex">
+                                        <span class="inline-flex items-center px-3 border border-r-0 border-gray-300 bg-gray-50">
+                                            <div id="bg-color-preview" class="color-preview" style="background-color: {{ qr_code.background_color or '#FFFFFF' }};" tabindex="0" role="button" aria-label="Pick background color"></div>
+                                        </span>
+                                        <input type="text" class="form-input flex-1 rounded-l-none" id="background_color" name="background_color" value="{{ qr_code.background_color or '#FFFFFF' }}">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <label for="logo" class="form-label block">Update Logo (Optional)</label>
+                                <div class="flex">
+                                    <input type="file" class="form-input flex-1 rounded-r-none" id="logo" name="logo" accept="image/*">
+                                    <button class="inline-flex items-center px-3 border border-l-0 border-gray-300 bg-gray-50 text-gray-500 hover:bg-gray-100" type="button" id="removeLogo">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                                {% if qr_code.logo_path %}
+                                    <p class="help-text mt-1">Current logo: {{ qr_code.logo_path|basename }}</p>
+                                {% endif %}
+                                <p class="help-text mt-1">Recommended: square image in PNG or JPG format</p>
+                                
+                                <div class="mt-4">
+                                    <div class="flex items-center">
+                                        <input class="h-4 w-4 text-blue-700 focus:ring-blue-500 mr-3" type="checkbox" id="round_logo" name="round_logo" value="true" {% if qr_code.round_logo %}checked{% endif %}>
+                                        <label class="text-gray-700" for="round_logo">Apply rounded corners to logo</label>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-6">
+                                    <label for="logo_size_percentage" class="form-label block">
+                                        Logo Size: <span id="logo-size-value" class="font-semibold">{{ qr_code.logo_size_percentage or 25 }}</span>%
+                                    </label>
+                                    <input type="range" class="w-full" id="logo_size_percentage" name="logo_size_percentage" min="10" max="30" value="{{ qr_code.logo_size_percentage or 25 }}">
+                                    <p class="help-text mt-1">Adjust logo size relative to QR code</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Advanced Tab -->
+                        <div class="tab-pane fade" id="advanced" role="tabpanel" aria-labelledby="advanced-tab" x-data="{ sections: {} }">
+                            <div class="space-y-4">
+                                
+                                <!-- Eye Customization -->
+                                <div>
+                                    <div class="accordion-header p-4 flex items-center justify-between cursor-pointer"
+                                        @click="sections.eye = !sections.eye">
+                                        <h3 class="text-sm font-medium text-gray-700 flex items-center">
+                                            <i class="fas fa-eye text-gray-600 mr-2"></i> Eye Customization
+                                        </h3>
+                                        <i class="fas fa-chevron-down text-gray-400 text-sm transition-transform duration-200"
+                                        :class="{'rotate-180': sections.eye}"></i>
+                                    </div>
+                                    <div x-show="sections.eye" x-transition class="p-4 border border-t-0 border-gray-200">
+                                        <div class="mb-4">
+                                            <div class="flex items-center">
+                                                <input class="h-4 w-4 text-blue-700 focus:ring-blue-500 mr-3" type="checkbox" id="custom_eyes" name="custom_eyes" value="true" {% if qr_code.custom_eyes %}checked{% endif %} @change="sections.eyeOptions = $event.target.checked">
+                                                <label class="text-gray-700" for="custom_eyes">Customize QR code eyes</label>
+                                            </div>
+                                            <p class="help-text mt-2 ml-7">Modify the appearance of the three corner squares</p>
+                                        </div>
+
+                                        <div x-show="sections.eyeOptions || {{ 'true' if qr_code.custom_eyes else 'false' }}" x-transition>
+                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                <div>
+                                                    <label for="inner_eye_style" class="form-label block">Inner Eye Style</label>
+                                                    <select class="form-input w-full" id="inner_eye_style" name="inner_eye_style">
+                                                        <option value="square" {% if qr_code.inner_eye_style == 'square' %}selected{% endif %}>Square</option>
+                                                        <option value="circle" {% if qr_code.inner_eye_style == 'circle' or not qr_code.inner_eye_style %}selected{% endif %}>Circle</option>
+                                                        <option value="rounded" {% if qr_code.inner_eye_style == 'rounded' %}selected{% endif %}>Rounded</option>
+                                                    </select>
+                                                </div>
+
+                                                <div>
+                                                    <label for="outer_eye_style" class="form-label block">Outer Eye Style</label>
+                                                    <select class="form-input w-full" id="outer_eye_style" name="outer_eye_style">
+                                                        <option value="square" {% if qr_code.outer_eye_style == 'square' %}selected{% endif %}>Square</option>
+                                                        <option value="circle" {% if qr_code.outer_eye_style == 'circle' %}selected{% endif %}>Circle</option>
+                                                        <option value="rounded" {% if qr_code.outer_eye_style == 'rounded' or not qr_code.outer_eye_style %}selected{% endif %}>Rounded</option>
+                                                    </select>
+                                                </div>
+
+                                                <div>
+                                                    <label for="inner_eye_color" class="form-label block">Inner Eye Color</label>
+                                                    <div class="flex">
+                                                        <span class="inline-flex items-center px-3 border border-r-0 border-gray-300 bg-gray-50">
+                                                            <div id="inner-eye-color-preview" class="color-preview" style="background-color: {{ qr_code.inner_eye_color or qr_code.color or '#000000' }};" tabindex="0" role="button"></div>
+                                                        </span>
+                                                        <input type="text" class="form-input flex-1 rounded-l-none" id="inner_eye_color" name="inner_eye_color" value="{{ qr_code.inner_eye_color or qr_code.color or '#000000' }}">
+                                                    </div>
+                                                </div>
+
+                                                <div>
+                                                    <label for="outer_eye_color" class="form-label block">Outer Eye Color</label>
+                                                    <div class="flex">
+                                                        <span class="inline-flex items-center px-3 border border-r-0 border-gray-300 bg-gray-50">
+                                                            <div id="outer-eye-color-preview" class="color-preview" style="background-color: {{ qr_code.outer_eye_color or qr_code.color or '#000000' }};" tabindex="0" role="button"></div>
+                                                        </span>
+                                                        <input type="text" class="form-input flex-1 rounded-l-none" id="outer_eye_color" name="outer_eye_color" value="{{ qr_code.outer_eye_color or qr_code.color or '#000000' }}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Gradient & Effects -->
+                                <div>
+                                    <div class="accordion-header p-4 flex items-center justify-between cursor-pointer"
+                                        @click="sections.gradient = !sections.gradient">
+                                        <h3 class="text-sm font-medium text-gray-700 flex items-center">
+                                            <i class="fas fa-fill-drip text-gray-600 mr-2"></i> Gradient & Effects
+                                        </h3>
+                                        <i class="fas fa-chevron-down text-gray-400 text-sm transition-transform duration-200"
+                                        :class="{'rotate-180': sections.gradient}"></i>
+                                    </div>
+                                    <div x-show="sections.gradient" x-transition class="p-4 border border-t-0 border-gray-200">
+                                        <div class="mb-4">
+                                            <label for="export_type" class="form-label block">Effect Type</label>
+                                            <select class="form-input w-full" id="export_type" name="export_type">
+                                                <option value="png" {% if qr_code.export_type != 'gradient' %}selected{% endif %}>Solid Color</option>
+                                                <option value="gradient" {% if qr_code.export_type == 'gradient' %}selected{% endif %}>Linear Gradient</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <div>
+                                                <label for="gradient_start_color" class="form-label block">Gradient Start Color</label>
+                                                <div class="flex">
+                                                    <span class="inline-flex items-center px-3 border border-r-0 border-gray-300 bg-gray-50 rounded-l">
+                                                        <div id="gradient-start-preview" class="color-preview" style="background-color: {{ qr_code.gradient_start or '#f97316' }};" tabindex="0" role="button"></div>
+                                                    </span>
+                                                    <input type="text" class="form-input flex-1 rounded-l-none" id="gradient_start_color" name="gradient_start" value="{{ qr_code.gradient_start or '#f97316' }}">
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <label for="gradient_end_color" class="form-label block">Gradient End Color</label>
+                                                <div class="flex">
+                                                    <span class="inline-flex items-center px-3 border border-r-0 border-gray-300 bg-gray-50 rounded-l">
+                                                        <div id="gradient-end-preview" class="color-preview" style="background-color: {{ qr_code.gradient_end or '#fbbf24' }};" tabindex="0" role="button"></div>
+                                                    </span>
+                                                    <input type="text" class="form-input flex-1 rounded-l-none" id="gradient_end_color" name="gradient_end" value="{{ qr_code.gradient_end or '#fbbf24' }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="gradient-preview mt-4 rounded" style="background: linear-gradient(135deg, {{ qr_code.gradient_start or '#f97316' }}, {{ qr_code.gradient_end or '#fbbf24' }}); height: 40px; border: 1px solid #e5e7eb;"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Size & Error Correction -->
+                                <div>
+                                    <div class="accordion-header p-4 flex items-center justify-between cursor-pointer"
+                                        @click="sections.size = !sections.size">
+                                        <h3 class="text-sm font-medium text-gray-700 flex items-center">
+                                            <i class="fas fa-expand-arrows-alt text-gray-600 mr-2"></i> Size & Error Correction
+                                        </h3>
+                                        <i class="fas fa-chevron-down text-gray-400 text-sm transition-transform duration-200"
+                                        :class="{'rotate-180': sections.size}"></i>
+                                    </div>
+                                    <div x-show="sections.size" x-transition class="p-4 border border-t-0 border-gray-200">
+                                        <div class="mb-6">
+                                            <label for="module_size" class="form-label block">
+                                                Module Size: <span id="module-size-value" class="font-semibold">{{ qr_code.module_size or 10 }}</span>px
+                                            </label>
+                                            <input type="range" class="w-full" id="module_size" name="module_size" min="4" max="20" value="{{ qr_code.module_size or 10 }}">
+                                            <p class="help-text mt-1">Adjusts the size of individual QR code blocks</p>
+                                        </div>
+
+                                        <div class="mb-6">
+                                            <label for="quiet_zone" class="form-label block">
+                                                Quiet Zone: <span id="quiet-zone-value" class="font-semibold">{{ qr_code.quiet_zone or 2 }}</span> units
+                                            </label>
+                                            <input type="range" class="w-full" id="quiet_zone" name="quiet_zone" min="0" max="8" value="{{ qr_code.quiet_zone or 2 }}">
+                                            <p class="help-text mt-1">White space around the QR code (minimum 4 units recommended)</p>
+                                        </div>
+
+                                        <div class="mb-6">
+                                            <label for="error_correction" class="form-label block">Error Correction Level</label>
+                                            <select class="form-input w-full" id="error_correction" name="error_correction">
+                                                <option value="L" {% if qr_code.error_correction == 'L' %}selected{% endif %}>Low (7%)</option>
+                                                <option value="M" {% if qr_code.error_correction == 'M' %}selected{% endif %}>Medium (15%)</option>
+                                                <option value="Q" {% if qr_code.error_correction == 'Q' %}selected{% endif %}>Quartile (25%)</option>
+                                                <option value="H" {% if qr_code.error_correction == 'H' or not qr_code.error_correction %}selected{% endif %}>High (30%)</option>
+                                            </select>
+                                            <p class="help-text mt-1">Higher levels allow QR codes to be readable even if partially damaged</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Watermark -->
+                                <div>
+                                    <div class="accordion-header p-4 flex items-center justify-between cursor-pointer"
+                                        @click="sections.watermark = !sections.watermark">
+                                        <h3 class="text-sm font-medium text-gray-700 flex items-center">
+                                            <i class="fas fa-signature text-gray-600 mr-2"></i> Watermark
+                                        </h3>
+                                        <i class="fas fa-chevron-down text-gray-400 text-sm transition-transform duration-200"
+                                        :class="{'rotate-180': sections.watermark}"></i>
+                                    </div>
+                                    <div x-show="sections.watermark" x-transition class="p-4 border border-t-0 border-gray-200">
+                                        <div class="mb-4">
+                                            <label for="watermark_text" class="form-label block">Watermark Text</label>
+                                            <input type="text" class="form-input w-full" id="watermark_text" name="watermark_text" value="{{ qr_code.watermark_text or '' }}" placeholder="Created with QR Dada">
+                                            <p class="help-text mt-1">Adds subtle text to the bottom of the QR code</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="formal-card p-6">
+                    <button type="submit" class="w-full formal-button py-3 px-4 font-medium flex items-center justify-center">
+                        <i class="fas fa-save mr-2"></i> Update QR Code
+                    </button>
+                </div>
+            </div>
+            
+            <div class="lg:col-span-1">
+                <!-- Current QR Code Preview -->
+                <div class="formal-card p-6 sticky top-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4 text-center">Current QR Code</h3>
+                    <div class="qr-preview">
+                        {% if qr_image %}
+                            <img src="{{ qr_image }}" alt="Current QR Code" class="w-full h-auto" id="qr-preview-image">
+                        {% else %}
+                            <img src="/static/images/qr-placeholder.png" alt="QR Code Preview" class="w-full h-auto" id="qr-preview-image">
+                        {% endif %}
+                    </div>
+                    <p class="text-sm text-gray-600 my-3 text-center">
+                        <i class="fas fa-info-circle mr-1"></i> 
+                        Changes will update automatically
+                    </p>
+                    
+                    <div class="mt-6 space-y-3">
+                        <button type="button" class="w-full py-2 px-4 border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 focus:outline-none text-sm font-medium" id="refreshPreviewBtn">
+                            <i class="fas fa-sync-alt mr-2"></i> Refresh Preview
+                        </button>
+                        
+                        <button type="button" class="w-full py-2 px-4 border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 focus:outline-none text-sm font-medium" id="downloadPreviewBtn">
+                            <i class="fas fa-download mr-2"></i> Download Preview
+                        </button>
+                        
+                        {% if qr_code.is_dynamic %}
+                        <a href="{{ url_for('qr_analytics', qr_id=qr_code.unique_id) }}" class="w-full py-2 px-4 border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 focus:outline-none text-sm font-medium flex items-center justify-center">
+                            <i class="fas fa-chart-bar mr-2"></i> View Analytics
+                        </a>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Recent Scans Section (for dynamic QR codes) -->
+                    {% if qr_code.is_dynamic and scans %}
+                    <div class="mt-8 pt-6 border-t border-gray-200">
+                        <div class="mb-4">
+                            <h4 class="font-medium text-gray-800">Recent Scans</h4>
+                            <p class="text-sm text-gray-600">{{ scans|length }} total scans</p>
+                        </div>
+                        <div class="max-h-48 overflow-y-auto space-y-2">
+                            {% for scan in scans[:10] %}
+                            <div class="scan-item p-2 text-sm">
+                                <div class="flex justify-between items-center">
+                                    <div class="text-gray-700">
+                                        <i class="fas fa-mobile-alt text-gray-400 mr-1"></i>
+                                        {{ scan.os or 'Unknown Device' }}
+                                    </div>
+                                    <div class="text-gray-500 text-xs">
+                                        {{ scan.timestamp.strftime('%m/%d %H:%M') }}
+                                    </div>
+                                </div>
+                                {% if scan.location %}
+                                <div class="text-xs text-gray-500 mt-1">
+                                    <i class="fas fa-map-marker-alt mr-1"></i>{{ scan.location }}
+                                </div>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+// *** COMPLETE FIXED JAVASCRIPT FOR edit_qr.html ***
+// This solves the background color and gradient switching issues
+// Global variables
+let isUpdatingPreview = false;
+let updateTimeout = null;
+let formChanged = false;
+
+// CRITICAL FIX: Enhanced formatColorValue function
+function formatColorValue(color) {
+    if (!color) return '#000000';
+    
+    color = String(color).trim().replace(/\s/g, '');
+    
+    if (!color.startsWith('#')) {
+        color = '#' + color;
+    }
+    
+    if (/^#[0-9A-Fa-f]{3}$/.test(color)) {
+        color = '#' + color[1] + color[1] + color[2] + color[2] + color[3] + color[3];
+    }
+    
+    if (!/^#[0-9A-Fa-f]{6}$/.test(color)) {
+        console.warn('Invalid color format:', color);
+        return '#000000';
+    }
+    
+    return color.toUpperCase();
+}
+
+// FIXED: Main function to update QR preview
+function updateQRPreview(reason = null) {
+    // CHANGED: Check if QR is static and skip content-related preview updates
+    const isStaticQR = {% if qr_code.is_dynamic %}false{% else %}true{% endif %};
+    
+    if (isStaticQR && reason && reason.includes('content')) {
+        console.log('Skipping preview update for static QR content change');
+        return;
+    }
+    
+    if (isUpdatingPreview) {
+        console.log('Preview update already in progress, skipping...');
+        return;
+    }
+    
+    if (updateTimeout) {
+        clearTimeout(updateTimeout);
+    }
+    
+    isUpdatingPreview = true;
+    
+    const previewContainer = document.querySelector('.qr-preview');
+    const previewImage = document.getElementById('qr-preview-image');
+    
+    if (!previewContainer || !previewImage) {
+        console.error('Preview container or image not found');
+        isUpdatingPreview = false;
+        return;
+    }
+    
+    // Create loading overlay
+    let loadingOverlay = document.querySelector('.preview-loading');
+    if (!loadingOverlay) {
+        loadingOverlay = document.createElement('div');
+        loadingOverlay.className = 'preview-loading absolute inset-0 bg-white bg-opacity-80 flex flex-col items-center justify-center rounded-lg';
+        loadingOverlay.innerHTML = `
+            <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-600"></div>
+            <p class="mt-2 text-sm font-medium text-gray-700">Updating preview...</p>`;
+        previewContainer.style.position = 'relative';
+        previewContainer.appendChild(loadingOverlay);
+    } else {
+        loadingOverlay.style.display = 'flex';
+    }
+    
+    const form = document.getElementById('edit-qr-form');
+    if (!form) {
+        console.error('Edit QR form not found');
+        isUpdatingPreview = false;
+        return;
+    }
+    
+    const formData = new FormData();
+    
+    // Add QR ID for preview
+    formData.set('id', '{{ qr_code.unique_id }}');
+    formData.set('qr_type', '{{ qr_code.qr_type }}');
+    
+    // Add basic form fields
+    const name = document.getElementById('name');
+    if (name) formData.set('name', name.value);
+    
+    // Add content fields based on QR type - only for dynamic QR codes
+    if (!isStaticQR) {
+        const qrType = '{{ qr_code.qr_type }}';
+        
+        if (qrType === 'link') {
+            const urlField = document.getElementById('url');
+            if (urlField) formData.set('url', urlField.value);
+        } else if (qrType === 'email') {
+            const emailField = document.getElementById('email');
+            const subjectField = document.getElementById('subject');
+            const bodyField = document.getElementById('body');
+            if (emailField) formData.set('email', emailField.value);
+            if (subjectField) formData.set('subject', subjectField.value);
+            if (bodyField) formData.set('body', bodyField.value);
+        } else if (qrType === 'text') {
+            const textField = document.getElementById('text');
+            if (textField) formData.set('text', textField.value);
+        } else if (qrType === 'call') {
+            const phoneField = document.getElementById('phone');
+            if (phoneField) formData.set('phone', phoneField.value);
+        } else if (qrType === 'sms') {
+            const smsPhoneField = document.getElementById('sms-phone');
+            const messageField = document.getElementById('message');
+            if (smsPhoneField) formData.set('sms-phone', smsPhoneField.value);
+            if (messageField) formData.set('message', messageField.value);
+        } else if (qrType === 'whatsapp') {
+            const whatsappPhoneField = document.getElementById('whatsapp-phone');
+            const whatsappMessageField = document.getElementById('whatsapp-message');
+            if (whatsappPhoneField) formData.set('whatsapp-phone', whatsappPhoneField.value);
+            if (whatsappMessageField) formData.set('whatsapp-message', whatsappMessageField.value);
+        } else if (qrType === 'wifi') {
+            const ssidField = document.getElementById('ssid');
+            const passwordField = document.getElementById('wifi-password');
+            const encryptionField = document.getElementById('encryption');
+            if (ssidField) formData.set('ssid', ssidField.value);
+            if (passwordField) formData.set('password', passwordField.value);
+            if (encryptionField) formData.set('encryption', encryptionField.value);
+        } else if (qrType === 'vcard') {
+            const vcardFields = ['full_name', 'vcard-phone', 'vcard-email', 'company', 'title', 'address', 'website'];
+            vcardFields.forEach(fieldName => {
+                const field = document.getElementById(fieldName);
+                if (field) formData.set(fieldName, field.value);
+            });
+        } else if (qrType === 'event') {
+            const eventFields = ['event-title', 'location', 'start_date', 'end_time', 'description', 'organizer'];
+            eventFields.forEach(fieldName => {
+                const field = document.getElementById(fieldName);
+                if (field) formData.set(fieldName, field.value);
+            });
+        }
+    }
+
+    // CRITICAL FIX: Handle styling options with proper color validation
+    const shape = document.querySelector('input[name="shape"]:checked');
+    if (shape) formData.set('shape', shape.value);
+    
+    const frameType = document.querySelector('input[name="frame_type"]:checked');
+    if (frameType) formData.set('frame_type', frameType.value);
+    
+    const frameText = document.getElementById('frame_text');
+    if (frameText) formData.set('frame_text', frameText.value);
+
+    // CRITICAL FIX: Handle colors with proper validation and formatting
+    const colorInput = document.getElementById('color');
+    if (colorInput && colorInput.value) {
+        const colorValue = formatColorValue(colorInput.value);
+        formData.set('color', colorValue);
+        console.log(`Set color = ${colorValue}`);
+    }
+    
+    const backgroundColorInput = document.getElementById('background_color');
+    if (backgroundColorInput && backgroundColorInput.value) {
+        const bgColorValue = formatColorValue(backgroundColorInput.value);
+        formData.set('background_color', bgColorValue);
+        console.log(`Set background_color = ${bgColorValue}`);
+    }
+    
+    const innerEyeColorInput = document.getElementById('inner_eye_color');
+    if (innerEyeColorInput && innerEyeColorInput.value) {
+        const innerEyeColorValue = formatColorValue(innerEyeColorInput.value);
+        formData.set('inner_eye_color', innerEyeColorValue);
+        console.log(`Set inner_eye_color = ${innerEyeColorValue}`);
+    }
+    
+    const outerEyeColorInput = document.getElementById('outer_eye_color');
+    if (outerEyeColorInput && outerEyeColorInput.value) {
+        const outerEyeColorValue = formatColorValue(outerEyeColorInput.value);
+        formData.set('outer_eye_color', outerEyeColorValue);
+        console.log(`Set outer_eye_color = ${outerEyeColorValue}`);
+    }
+    
+    // CRITICAL FIX: Handle export type and gradient properly
+    const exportTypeSelect = document.getElementById('export_type');
+    if (exportTypeSelect) {
+        formData.set('export_type', exportTypeSelect.value);
+        console.log(`Export type: ${exportTypeSelect.value}`);
+        
+        if (exportTypeSelect.value === 'gradient') {
+            formData.set('using_gradient', 'true');
+            console.log('Gradient mode enabled');
+            
+            // Only send gradient colors if in gradient mode AND they have values
+            const gradientStartInput = document.getElementById('gradient_start_color');
+            const gradientEndInput = document.getElementById('gradient_end_color');
+            
+            if (gradientStartInput && gradientStartInput.value && gradientStartInput.value.trim() !== '') {
+                const gradientStartValue = formatColorValue(gradientStartInput.value);
+                formData.set('gradient_start', gradientStartValue);
+                console.log(`Set gradient_start = ${gradientStartValue}`);
+            } else {
+                // Set default gradient start color if empty
+                formData.set('gradient_start', '#f97316');
+                console.log('Set default gradient_start = #f97316');
+            }
+            
+            if (gradientEndInput && gradientEndInput.value && gradientEndInput.value.trim() !== '') {
+                const gradientEndValue = formatColorValue(gradientEndInput.value);
+                formData.set('gradient_end', gradientEndValue);
+                console.log(`Set gradient_end = ${gradientEndValue}`);
+            } else {
+                // Set default gradient end color if empty
+                formData.set('gradient_end', '#fbbf24');
+                console.log('Set default gradient_end = #fbbf24');
+            }
+            
+            // Set gradient type and direction
+            formData.set('gradient_type', 'linear');
+            formData.set('gradient_direction', 'to-right');
+            
+        } else {
+            formData.set('using_gradient', 'false');
+            console.log('Solid color mode enabled');
+            
+            // CRITICAL FIX: Explicitly clear gradient data for solid color mode
+            formData.set('gradient_start', '');
+            formData.set('gradient_end', '');
+            formData.set('gradient_type', '');
+            formData.set('gradient_direction', '');
+            console.log('Cleared gradient data for solid color mode');
+        }
+    }
+    
+    // Handle range sliders
+    const moduleSize = document.getElementById('module_size');
+    if (moduleSize) formData.set('module_size', moduleSize.value);
+    
+    const quietZone = document.getElementById('quiet_zone');
+    if (quietZone) formData.set('quiet_zone', quietZone.value);
+    
+    const logoSizePercentage = document.getElementById('logo_size_percentage');
+    if (logoSizePercentage) formData.set('logo_size_percentage', logoSizePercentage.value);
+    
+    // Handle checkboxes
+    const customEyes = document.getElementById('custom_eyes');
+    if (customEyes) formData.set('custom_eyes', customEyes.checked ? 'true' : 'false');
+    
+    const roundLogo = document.getElementById('round_logo');
+    if (roundLogo) formData.set('round_logo', roundLogo.checked ? 'true' : 'false');
+    
+    const isDynamic = document.getElementById('is_dynamic');
+    if (isDynamic) formData.set('is_dynamic', isDynamic.checked ? 'true' : 'false');
+
+    // Handle eye styles
+    const innerEyeStyle = document.getElementById('inner_eye_style');
+    if (innerEyeStyle) formData.set('inner_eye_style', innerEyeStyle.value);
+    
+    const outerEyeStyle = document.getElementById('outer_eye_style');
+    if (outerEyeStyle) formData.set('outer_eye_style', outerEyeStyle.value);
+    
+    // Handle error correction
+    const errorCorrection = document.getElementById('error_correction');
+    if (errorCorrection) formData.set('error_correction', errorCorrection.value);
+    
+    // Handle watermark
+    const watermarkText = document.getElementById('watermark_text');
+    if (watermarkText) formData.set('watermark_text', watermarkText.value);
+
+    // Handle logo file
+    const logoInput = document.getElementById('logo');
+    if (logoInput && logoInput.files && logoInput.files[0]) {
+        formData.set('logo', logoInput.files[0]);
+    }
+    
+    // Debug: Log form data being sent
+    console.log('Form data being sent for preview:');
+    for (let pair of formData.entries()) {
+        if (pair[1] instanceof File) {
+            console.log(pair[0] + ': [File: ' + pair[1].name + ']');
+        } else {
+            console.log(pair[0] + ': ' + pair[1]);
+        }
+    }
+    
+    // Make AJAX request
+    fetch('/preview-qr', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        console.log('Preview response status:', response.status);
+        
+        if (!response.ok) {
+            return response.text().then(text => {
+                console.error('Preview error response:', text);
+                throw new Error(`Preview request failed with status: ${response.status}`);
+            });
+        }
+        
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('image')) {
+            return response.text().then(text => {
+                console.error('Non-image response:', text);
+                throw new Error(`Expected image response, got: ${contentType}`);
+            });
+        }
+        
+        return response.blob();
+    })
+    .then(blob => {
+        console.log('Preview blob received, size:', blob.size, 'bytes');
+        
+        // Hide loading overlay
+        if (loadingOverlay) {
+            loadingOverlay.style.display = 'none';
+        }
+        
+        if (blob.size === 0) {
+            throw new Error('Received empty image blob');
+        }
+        
+        // Update preview image
+        const url = URL.createObjectURL(blob);
+        
+        // Clean up previous blob URL
+        if (previewImage.src && previewImage.src.startsWith('blob:')) {
+            URL.revokeObjectURL(previewImage.src);
+        }
+        
+        previewImage.src = url;
+        
+        previewImage.onload = function() {
+            console.log('Preview image loaded successfully');
+            if (reason) {
+                console.log(`Preview updated: ${reason}`);
+            }
+        };
+        
+        previewImage.onerror = function() {
+            console.error('Failed to load preview image');
+        };
+        
+        isUpdatingPreview = false;
+        return true;
+    })
+    .catch(error => {
+        console.error('Error updating preview:', error);
+        
+        if (loadingOverlay) {
+            loadingOverlay.style.display = 'none';
+        }
+        
+        isUpdatingPreview = false;
+    });
+}
+
+// FIXED: Color input handling WITHOUT automatic gradient switching
+function updateColorInputWithPreview(input, preview, color, skipPreviewUpdate = false) {
+    const formattedColor = formatColorValue(color);
+    input.value = formattedColor;
+    if (preview) {
+        preview.style.backgroundColor = formattedColor;
+    }
+    input.dataset.userChanged = 'true';
+    
+    // CRITICAL FIX: Do NOT automatically switch to gradient mode when changing colors
+    // Only update preview if not skipping (to avoid loops during template application)
+    if (!skipPreviewUpdate) {
+        let changeText = '';
+        if (input.id === 'color') {
+            changeText = `Changed QR code color to ${formattedColor}`;
+        } else if (input.id === 'background_color') {
+            changeText = `Changed background color to ${formattedColor}`;
+        } else if (input.id.includes('eye')) {
+            changeText = `Updated eye colors`;
+        } else if (input.id.includes('gradient')) {
+            changeText = `Updated gradient colors`;
+        }
+        
+        // Use debounced update to prevent rapid-fire requests
+        debounce(() => updateQRPreview(changeText), 800)();
+    }
+}
+
+// CRITICAL FIX: Template application that respects user's current mode
+function applyTemplateStyles(templateName) {
+    if (!templateName || templateName === 'custom' || !QR_TEMPLATES[templateName]) {
+        console.log('No template or custom template selected, skipping style application');
+        return;
+    }
+    
+    const template = QR_TEMPLATES[templateName];
+    console.log(`Applying template: ${templateName}`, template);
+    
+    // CRITICAL FIX: Always clear frame settings first
+    clearAllFrameSettings();
+    
+    // CRITICAL FIX: Check if user is currently in gradient mode
+    const exportTypeSelect = document.getElementById('export_type');
+    const currentExportType = exportTypeSelect ? exportTypeSelect.value : 'png';
+    const userIsCurrentlyInGradientMode = currentExportType === 'gradient';
+    
+    console.log(`Current export type: ${currentExportType}, User in gradient mode: ${userIsCurrentlyInGradientMode}`);
+    
+    // CRITICAL FIX: Only apply template's gradient/solid mode if template explicitly requires it
+    // Don't override user's current mode unless template specifically needs gradient
+    
+    if (template.gradient === true && template.export_type === 'gradient') {
+        console.log(`Template ${templateName} REQUIRES gradient mode - applying gradient`);
+        
+        // Template requires gradient mode
+        if (exportTypeSelect) {
+            exportTypeSelect.value = 'gradient';
+            console.log('Set export type to gradient per template requirement');
+        }
+        
+        // Apply gradient colors
+        if (template.gradient_start) {
+            const gradientStartInput = document.getElementById('gradient_start_color');
+            const gradientStartPreview = document.getElementById('gradient-start-preview');
+            if (gradientStartInput) {
+                gradientStartInput.value = formatColorValue(template.gradient_start);
+                if (gradientStartPreview) {
+                    gradientStartPreview.style.backgroundColor = template.gradient_start;
+                }
+                console.log(`Applied gradient start: ${template.gradient_start}`);
+            }
+        }
+        
+        if (template.gradient_end) {
+            const gradientEndInput = document.getElementById('gradient_end_color');
+            const gradientEndPreview = document.getElementById('gradient-end-preview');
+            if (gradientEndInput) {
+                gradientEndInput.value = formatColorValue(template.gradient_end);
+                if (gradientEndPreview) {
+                    gradientEndPreview.style.backgroundColor = template.gradient_end;
+                }
+                console.log(`Applied gradient end: ${template.gradient_end}`);
+            }
+        }
+        
+        updateGradientPreview();
+        
+    } else if (template.gradient === false || !template.gradient) {
+        console.log(`Template ${templateName} is SOLID COLOR - ensuring solid color mode`);
+        
+        // Template is solid color - ensure solid mode
+        if (exportTypeSelect) {
+            exportTypeSelect.value = 'png';
+            console.log('FORCED export type to PNG (solid color) per template');
+        }
+        
+        // CRITICAL FIX: Clear gradient inputs completely
+        const gradientStartInput = document.getElementById('gradient_start_color');
+        const gradientEndInput = document.getElementById('gradient_end_color');
+        const gradientStartPreview = document.getElementById('gradient-start-preview');
+        const gradientEndPreview = document.getElementById('gradient-end-preview');
+        
+        if (gradientStartInput) {
+            gradientStartInput.value = '';
+            console.log('Cleared gradient start input for solid color template');
+        }
+        if (gradientEndInput) {
+            gradientEndInput.value = '';
+            console.log('Cleared gradient end input for solid color template');
+        }
+        if (gradientStartPreview) {
+            gradientStartPreview.style.backgroundColor = '#f97316';
+        }
+        if (gradientEndPreview) {
+            gradientEndPreview.style.backgroundColor = '#fbbf24';
+        }
+        
+        updateGradientPreview();
+    } else {
+        console.log(`Template ${templateName} has no explicit gradient setting - preserving user's current mode: ${currentExportType}`);
+        // Template doesn't specify gradient preference - keep user's current setting
+    }
+    
+    // Apply template colors AFTER setting gradient/solid mode
+    if (template.color) {
+        const colorInput = document.getElementById('color');
+        const colorPreview = document.getElementById('color-preview');
+        if (colorInput) {
+            colorInput.value = formatColorValue(template.color);
+            if (colorPreview) {
+                colorPreview.style.backgroundColor = template.color;
+            }
+            console.log(`Applied QR color: ${template.color}`);
+        }
+    }
+    
+    // CRITICAL FIX: Always apply background color
+    if (template.background_color) {
+        const bgColorInput = document.getElementById('background_color');
+        const bgColorPreview = document.getElementById('bg-color-preview');
+        if (bgColorInput) {
+            bgColorInput.value = formatColorValue(template.background_color);
+            if (bgColorPreview) {
+                bgColorPreview.style.backgroundColor = template.background_color;
+            }
+            console.log(`Applied background color: ${template.background_color}`);
+        }
+    }
+    
+    // Apply shape
+    if (template.shape) {
+        const shapeRadio = document.querySelector(`input[name="shape"][value="${template.shape}"]`);
+        if (shapeRadio) {
+            shapeRadio.checked = true;
+            console.log(`Applied shape: ${template.shape}`);
+        }
+    }
+    
+    // Apply custom eyes settings
+    const customEyesCheckbox = document.getElementById('custom_eyes');
+    if (customEyesCheckbox && template.custom_eyes !== undefined) {
+        customEyesCheckbox.checked = template.custom_eyes;
+        console.log(`Applied custom eyes: ${template.custom_eyes}`);
+        
+        if (template.custom_eyes) {
+            // Apply eye styles and colors
+            if (template.inner_eye_style) {
+                const innerEyeSelect = document.getElementById('inner_eye_style');
+                if (innerEyeSelect) {
+                    innerEyeSelect.value = template.inner_eye_style;
+                }
+            }
+            
+            if (template.outer_eye_style) {
+                const outerEyeSelect = document.getElementById('outer_eye_style');
+                if (outerEyeSelect) {
+                    outerEyeSelect.value = template.outer_eye_style;
+                }
+            }
+            
+            if (template.inner_eye_color) {
+                const innerEyeColorInput = document.getElementById('inner_eye_color');
+                const innerEyeColorPreview = document.getElementById('inner-eye-color-preview');
+                if (innerEyeColorInput) {
+                    innerEyeColorInput.value = formatColorValue(template.inner_eye_color);
+                    if (innerEyeColorPreview) {
+                        innerEyeColorPreview.style.backgroundColor = template.inner_eye_color;
+                    }
+                }
+            }
+            
+            if (template.outer_eye_color) {
+                const outerEyeColorInput = document.getElementById('outer_eye_color');
+                const outerEyeColorPreview = document.getElementById('outer-eye-color-preview');
+                if (outerEyeColorInput) {
+                    outerEyeColorInput.value = formatColorValue(template.outer_eye_color);
+                    if (outerEyeColorPreview) {
+                        outerEyeColorPreview.style.backgroundColor = template.outer_eye_color;
+                    }
+                }
+            }
+        }
+    }
+    
+    // Apply frame settings only if template has them
+    if (template.frame_type && template.frame_type !== "") {
+        const frameRadio = document.querySelector(`input[name="frame_type"][value="${template.frame_type}"]`);
+        if (frameRadio) {
+            frameRadio.checked = true;
+            
+            if (template.frame_text) {
+                const frameTextInput = document.getElementById('frame_text');
+                if (frameTextInput) {
+                    frameTextInput.value = template.frame_text;
+                }
+            }
+        }
+    }
+    
+    console.log(`Template ${templateName} applied successfully`);
+    
+    // Force preview update
+    setTimeout(() => {
+        console.log('Triggering preview update after template application');
+        updateQRPreview(`Applied template: ${templateName}`);
+    }, 200);
+}
+
+// NEW: Function to clear all frame settings
+function clearAllFrameSettings() {
+    console.log('Clearing all frame settings');
+    
+    const frameRadios = document.querySelectorAll('input[name="frame_type"]');
+    frameRadios.forEach(radio => {
+        radio.checked = false;
+    });
+    
+    const noneFrameRadio = document.querySelector('input[name="frame_type"][value=""]');
+    if (noneFrameRadio) {
+        noneFrameRadio.checked = true;
+        console.log('Set frame to none');
+    }
+    
+    const frameTextContainer = document.getElementById('frame-text-container');
+    if (frameTextContainer) {
+        frameTextContainer.classList.add('hidden');
+    }
+    
+    const frameTextInput = document.getElementById('frame_text');
+    if (frameTextInput) {
+        frameTextInput.value = '';
+    }
+}
+
+// CRITICAL FIX: Shape and color changes should NOT automatically switch to gradient
+function setupNonGradientEventListeners() {
+    // Shape change listeners
+    const shapeRadios = document.querySelectorAll('input[name="shape"]');
+    shapeRadios.forEach(radio => {
+        radio.addEventListener('change', function() {
+            console.log(`Shape changed to: ${this.value} - NOT switching to gradient mode`);
+            // Just update preview, don't change gradient mode
+            debounce(() => updateQRPreview('Shape changed'), 500)();
+        });
+    });
+    
+    // Color input listeners that DON'T trigger gradient mode
+    const colorInputs = document.querySelectorAll('input[id$="color"]:not([id*="gradient"])');
+    colorInputs.forEach(input => {
+        input.addEventListener('input', function() {
+            console.log(`Color ${this.id} changed to: ${this.value} - NOT switching to gradient mode`);
+            
+            // Update preview color
+            const previewElement = document.querySelector(`#${this.id.replace('_', '-')}-preview`);
+            if (previewElement) {
+                previewElement.style.backgroundColor = formatColorValue(this.value);
+            }
+            
+            // Update preview without changing gradient mode
+            debounce(() => updateQRPreview(`Color ${this.id} changed`), 800)();
+        });
+    });
+}
+
+// CRITICAL FIX: Enhanced gradient options setup - prevents auto-switching
+function setupGradientOptions() {
+    const exportTypeSelect = document.getElementById('export_type');
+    
+    if (exportTypeSelect) {
+        exportTypeSelect.addEventListener('change', function() {
+            const isGradient = this.value === 'gradient';
+            
+            console.log(`MANUAL export type change to: ${this.value}, isGradient: ${isGradient}`);
+            
+            if (isGradient) {
+                // ONLY switch TO gradient mode if user explicitly selected it
+                console.log('User MANUALLY switched to gradient mode');
+                
+                const customEyesCheckbox = document.getElementById('custom_eyes');
+                if (customEyesCheckbox) {
+                    customEyesCheckbox.checked = true;
+                    console.log('Auto-enabled custom eyes for gradient mode');
+                }
+                
+                // Set default gradient colors if empty
+                const gradientStartInput = document.getElementById('gradient_start_color');
+                const gradientEndInput = document.getElementById('gradient_end_color');
+                
+                if (gradientStartInput && (!gradientStartInput.value || gradientStartInput.value === '')) {
+                    gradientStartInput.value = '#f97316';
+                    const startPreview = document.getElementById('gradient-start-preview');
+                    if (startPreview) startPreview.style.backgroundColor = '#f97316';
+                }
+                
+                if (gradientEndInput && (!gradientEndInput.value || gradientEndInput.value === '')) {
+                    gradientEndInput.value = '#fbbf24';
+                    const endPreview = document.getElementById('gradient-end-preview');
+                    if (endPreview) endPreview.style.backgroundColor = '#fbbf24';
+                }
+                
+                // Set eye colors to match gradient
+                const innerEyeColorInput = document.getElementById('inner_eye_color');
+                const outerEyeColorInput = document.getElementById('outer_eye_color');
+                
+                if (gradientStartInput && innerEyeColorInput) {
+                    innerEyeColorInput.value = gradientStartInput.value;
+                    const innerPreview = document.getElementById('inner-eye-color-preview');
+                    if (innerPreview) {
+                        innerPreview.style.backgroundColor = gradientStartInput.value;
+                    }
+                }
+                
+                if (gradientEndInput && outerEyeColorInput) {
+                    outerEyeColorInput.value = gradientEndInput.value;
+                    const outerPreview = document.getElementById('outer-eye-color-preview');
+                    if (outerPreview) {
+                        outerPreview.style.backgroundColor = gradientEndInput.value;
+                    }
+                }
+                
+            } else {
+                // User MANUALLY switched TO solid color mode
+                console.log('User MANUALLY switched to solid color mode - clearing gradient data');
+                
+                // CRITICAL FIX: Completely clear gradient inputs
+                const gradientStartInput = document.getElementById('gradient_start_color');
+                const gradientEndInput = document.getElementById('gradient_end_color');
+                
+                if (gradientStartInput) {
+                    gradientStartInput.value = '';
+                    const startPreview = document.getElementById('gradient-start-preview');
+                    if (startPreview) startPreview.style.backgroundColor = '#f97316';
+                }
+                
+                if (gradientEndInput) {
+                    gradientEndInput.value = '';
+                    const endPreview = document.getElementById('gradient-end-preview');
+                    if (endPreview) endPreview.style.backgroundColor = '#fbbf24';
+                }
+                
+                // Update eye colors to match main QR color
+                const mainColorInput = document.getElementById('color');
+                const innerEyeColorInput = document.getElementById('inner_eye_color');
+                const outerEyeColorInput = document.getElementById('outer_eye_color');
+                
+                if (mainColorInput && innerEyeColorInput) {
+                    innerEyeColorInput.value = mainColorInput.value;
+                    const innerPreview = document.getElementById('inner-eye-color-preview');
+                    if (innerPreview) {
+                        innerPreview.style.backgroundColor = mainColorInput.value;
+                    }
+                }
+                
+                if (mainColorInput && outerEyeColorInput) {
+                    outerEyeColorInput.value = mainColorInput.value;
+                    const outerPreview = document.getElementById('outer-eye-color-preview');
+                    if (outerPreview) {
+                        outerPreview.style.backgroundColor = mainColorInput.value;
+                    }
+                }
+            }
+            
+            updateGradientPreview();
+            
+            // Force preview update when user manually switches modes
+            setTimeout(() => {
+                updateQRPreview('User manually changed export type to ' + this.options[this.selectedIndex].text);
+            }, 100);
+        });
+        
+        updateGradientPreview();
+        
+        // REMOVED: Automatic gradient switching logic from color input listeners
+        // Color changes should NOT automatically switch to gradient mode
+        
+        const gradientStartInput = document.getElementById('gradient_start_color');
+        const gradientEndInput = document.getElementById('gradient_end_color');
+        
+        if (gradientStartInput) {
+            gradientStartInput.addEventListener('input', function() {
+                updateGradientPreview();
+                
+                // ONLY update eye colors if currently in gradient mode
+                const exportType = document.getElementById('export_type').value;
+                if (exportType === 'gradient') {
+                    const innerEyeColorInput = document.getElementById('inner_eye_color');
+                    const innerPreview = document.getElementById('inner-eye-color-preview');
+                    if (innerEyeColorInput && !innerEyeColorInput.dataset.userChanged) {
+                        innerEyeColorInput.value = this.value;
+                        if (innerPreview) {
+                            innerPreview.style.backgroundColor = this.value;
+                        }
+                    }
+                    
+                    // Update preview when gradient colors change
+                    debounce(() => updateQRPreview('Gradient start color changed'), 500)();
+                }
+            });
+        }
+        
+        if (gradientEndInput) {
+            gradientEndInput.addEventListener('input', function() {
+                updateGradientPreview();
+                
+                // ONLY update eye colors if currently in gradient mode
+                const exportType = document.getElementById('export_type').value;
+                if (exportType === 'gradient') {
+                    const outerEyeColorInput = document.getElementById('outer_eye_color');
+                    const outerPreview = document.getElementById('outer-eye-color-preview');
+                    if (outerEyeColorInput && !outerEyeColorInput.dataset.userChanged) {
+                        outerEyeColorInput.value = this.value;
+                        if (outerPreview) {
+                            outerPreview.style.backgroundColor = this.value;
+                        }
+                    }
+                    
+                    // Update preview when gradient colors change
+                    debounce(() => updateQRPreview('Gradient end color changed'), 500)();
+                }
+            });
+        }
+    }
+}
+
+function updateGradientPreview() {
+    const startColor = document.getElementById('gradient_start_color');
+    const endColor = document.getElementById('gradient_end_color');
+    const gradientPreview = document.querySelector('.gradient-preview');
+    
+    if (gradientPreview && startColor && endColor) {
+        gradientPreview.style.background = `linear-gradient(135deg, ${startColor.value}, ${endColor.value})`;
+    }
+}
+
+// Initialize color pickers with proper preview updates
+function setupColorPickers() {
+    const inputs = document.querySelectorAll('input[id$="color"]');
+    
+    inputs.forEach(input => {
+        const flex = input.closest('.flex');
+        if (!flex) return;
+
+        const preview = flex.querySelector('.color-preview');
+        if (!preview) return;
+
+        preview.style.backgroundColor = formatColorValue(input.value);
+
+        const popupId = `color-popup-${input.id}`;
+        let popup = document.getElementById(popupId);
+
+        if (!popup) {
+            popup = document.createElement('div');
+            popup.id = popupId;
+            popup.className = 'color-picker-popup hidden absolute z-50 mt-2 p-2 bg-white border border-gray-300 rounded shadow-lg';
+            popup.innerHTML = `
+                <div class="grid grid-cols-6 gap-2">
+                    ${['#000000','#FFFFFF','#FF0000','#00FF00','#0000FF','#FFFF00','#FF00FF','#00FFFF','#FFA500','#800080','#008000','#800000']
+                        .map(color => `<div class="color-preset w-6 h-6 cursor-pointer rounded border border-gray-300 hover:border-gray-500" style="background-color: ${color}" data-color="${color}"></div>`).join('')}
+                </div>
+                <input type="color" class="mt-2 w-full h-8 rounded border border-gray-300" value="${formatColorValue(input.value)}">
+            `;
+            flex.appendChild(popup);
+
+            popup.querySelectorAll('.color-preset').forEach(preset => {
+                preset.addEventListener('click', function () {
+                    const color = this.dataset.color;
+                    updateColorInputWithPreview(input, preview, color);
+                    popup.classList.add('hidden');
+                    updateGradientPreview();
+                });
+            });
+
+            popup.querySelector('input[type="color"]').addEventListener('input', function () {
+                updateColorInputWithPreview(input, preview, this.value);
+                updateGradientPreview();
+            });
+
+            popup.querySelector('input[type="color"]').addEventListener('change', function () {
+                updateColorInputWithPreview(input, preview, this.value);
+                updateGradientPreview();
+            });
+        }
+
+        preview.addEventListener('click', function (e) {
+            e.stopPropagation();
+            document.querySelectorAll('.color-picker-popup').forEach(p => {
+                if (p !== popup) p.classList.add('hidden');
+            });
+            popup.classList.toggle('hidden');
+            popup.querySelector('input[type="color"]').value = formatColorValue(input.value);
+        });
+
+        input.addEventListener('input', debounce(function() {
+            updateColorInputWithPreview(input, preview, this.value);
+            updateGradientPreview();
+        }, 500));
+
+        input.addEventListener('paste', function () {
+            setTimeout(() => {
+                updateColorInputWithPreview(input, preview, this.value);
+                updateGradientPreview();
+            }, 100);
+        });
+
+        input.addEventListener('change', function() {
+            updateColorInputWithPreview(input, preview, this.value);
+            updateGradientPreview();
+        });
+    });
+
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.color-picker-popup').forEach(popup => popup.classList.add('hidden'));
+    });
+}
+
+// Debounce function
+function debounce(func, wait) {
+    let timeout;
+    return function() {
+        const context = this;
+        const args = arguments;
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+            func.apply(context, args);
+        }, wait);
+    };
+}
+
+// UPDATED: Form change detection that excludes static content fields
+function setupFormChangeDetection() {
+    const form = document.getElementById('edit-qr-form');
+    if (!form) return;
+    
+    const inputs = form.querySelectorAll('input, textarea, select');
+    
+    inputs.forEach(input => {
+        // CHANGED: Skip disabled inputs and inputs in read-only sections
+        if (input.disabled || input.readOnly) {
+            return;
+        }
+        
+        // CHANGED: Skip inputs that are in static content display areas
+        const parentSection = input.closest('.bg-gray-50');
+        if (parentSection && parentSection.querySelector('.fas.fa-lock')) {
+            return; // Skip inputs in read-only static content sections
+        }
+        
+        if (input.type === 'checkbox' || input.type === 'radio') {
+            input.addEventListener('change', function() {
+                if (!this.disabled) { // CHANGED: Additional check
+                    debounce(() => updateQRPreview('Form field changed'), 500)();
+                    formChanged = true;
+                }
+            });
+        } else {
+            input.addEventListener('input', debounce(function() {
+                if (!this.disabled) { // CHANGED: Additional check
+                    updateQRPreview('Form field changed');
+                    formChanged = true;
+                }
+            }, 800));
+        }
+    });
+}
+
+// Setup tabs
+function setupTabSwitching() {
+    const tabButtons = document.querySelectorAll('[data-bs-toggle="pill"]');
+    const tabPanes = document.querySelectorAll('.tab-pane');
+    
+    tabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const target = document.querySelector(this.dataset.bsTarget);
+            
+            tabButtons.forEach(btn => {
+                btn.classList.remove('border-blue-500', 'text-blue-600', 'active');
+                btn.classList.add('border-transparent', 'text-gray-500');
+                btn.setAttribute('aria-selected', 'false');
+            });
+            
+            tabPanes.forEach(pane => {
+                pane.classList.remove('show', 'active');
+                pane.classList.add('hidden');
+            });
+            
+            this.classList.remove('border-transparent', 'text-gray-500');
+            this.classList.add('border-blue-500', 'text-blue-600', 'active');
+            this.setAttribute('aria-selected', 'true');
+            
+            target.classList.remove('hidden');
+            target.classList.add('show', 'active');
+        });
+    });
+}
+
+// Other setup functions
+function setupFrameText() {
+    const frameTypeRadios = document.querySelectorAll('input[name="frame_type"]');
+    const frameTextContainer = document.getElementById('frame-text-container');
+    
+    if (frameTypeRadios.length && frameTextContainer) {
+        const selectedFrameType = document.querySelector('input[name="frame_type"]:checked');
+        const needsText = selectedFrameType && ['scan_me', 'branded'].includes(selectedFrameType.value);
+        frameTextContainer.classList.toggle('hidden', !needsText);
+        
+        frameTypeRadios.forEach(radio => {
+            radio.addEventListener('change', function() {
+                const needsText = ['scan_me', 'branded'].includes(this.value);
+                frameTextContainer.classList.toggle('hidden', !needsText);
+                
+                // Update preview when frame changes
+                debounce(() => updateQRPreview('Frame changed'), 500)();
+            });
+        });
+    }
+}
+
+function setupEyeCustomization() {
+    const customEyesCheckbox = document.getElementById('custom_eyes');
+    
+    if (customEyesCheckbox) {
+        customEyesCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                const exportType = document.getElementById('export_type').value;
+                
+                if (exportType === 'gradient') {
+                    const gradientStartInput = document.getElementById('gradient_start_color');
+                    const gradientEndInput = document.getElementById('gradient_end_color');
+                    const innerEyeColorInput = document.getElementById('inner_eye_color');
+                    const outerEyeColorInput = document.getElementById('outer_eye_color');
+                    
+                    if (gradientStartInput && innerEyeColorInput && 
+                        (!innerEyeColorInput.value || innerEyeColorInput.value === '#000000')) {
+                        innerEyeColorInput.value = gradientStartInput.value;
+                        const innerPreview = document.getElementById('inner-eye-color-preview');
+                        if (innerPreview) innerPreview.style.backgroundColor = gradientStartInput.value;
+                    }
+                    
+                    if (gradientEndInput && outerEyeColorInput && 
+                        (!outerEyeColorInput.value || outerEyeColorInput.value === '#000000')) {
+                        outerEyeColorInput.value = gradientEndInput.value;
+                        const outerPreview = document.getElementById('outer-eye-color-preview');
+                        if (outerPreview) outerPreview.style.backgroundColor = gradientEndInput.value;
+                    }
+                } else {
+                    const mainColor = document.getElementById('color').value;
+                    const innerEyeColorInput = document.getElementById('inner_eye_color');
+                    const outerEyeColorInput = document.getElementById('outer_eye_color');
+                    
+                    if (innerEyeColorInput && (!innerEyeColorInput.value || innerEyeColorInput.value === '#000000')) {
+                        innerEyeColorInput.value = mainColor;
+                        const innerPreview = document.getElementById('inner-eye-color-preview');
+                        if (innerPreview) innerPreview.style.backgroundColor = mainColor;
+                    }
+                    
+                    if (outerEyeColorInput && (!outerEyeColorInput.value || outerEyeColorInput.value === '#000000')) {
+                        outerEyeColorInput.value = mainColor;
+                        const outerPreview = document.getElementById('outer-eye-color-preview');
+                        if (outerPreview) outerPreview.style.backgroundColor = mainColor;
+                    }
+                }
+            }
+            
+            updateQRPreview('Toggled custom eye styles');
+        });
+    }
+}
+
+function setupSliders() {
+    // Module size slider
+    const moduleSizeSlider = document.getElementById('module_size');
+    const moduleSizeValue = document.getElementById('module-size-value');
+    
+    if (moduleSizeSlider && moduleSizeValue) {
+        moduleSizeValue.textContent = moduleSizeSlider.value;
+        moduleSizeSlider.addEventListener('input', function() {
+            moduleSizeValue.textContent = this.value;
+            debounce(() => updateQRPreview('Module size changed'), 600)();
+        });
+    }
+    
+    // Quiet zone slider
+    const quietZoneSlider = document.getElementById('quiet_zone');
+    const quietZoneValue = document.getElementById('quiet-zone-value');
+    
+    if (quietZoneSlider && quietZoneValue) {
+        quietZoneValue.textContent = quietZoneSlider.value;
+        quietZoneSlider.addEventListener('input', function() {
+            quietZoneValue.textContent = this.value;
+            debounce(() => updateQRPreview('Quiet zone changed'), 600)();
+        });
+    }
+    
+    // Logo size slider
+    const logoSizeSlider = document.getElementById('logo_size_percentage');
+    const logoSizeValue = document.getElementById('logo-size-value');
+    
+    if (logoSizeSlider && logoSizeValue) {
+        logoSizeValue.textContent = logoSizeSlider.value;
+        logoSizeSlider.addEventListener('input', function() {
+            logoSizeValue.textContent = this.value;
+            debounce(() => updateQRPreview('Logo size changed'), 600)();
+        });
+    }
+}
+
+function setupPasswordToggle() {
+    const togglePasswordBtn = document.getElementById('toggleWifiPassword');
+    const passwordInput = document.getElementById('wifi-password');
+    
+    if (togglePasswordBtn && passwordInput) {
+        togglePasswordBtn.addEventListener('click', function() {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            
+            const icon = this.querySelector('i');
+            if (type === 'password') {
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            } else {
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            }
+        });
+    }
+}
+
+function setupFormValidation() {
+    const form = document.getElementById('edit-qr-form');
+    form.classList.add('needs-validation');
+    
+    form.addEventListener('submit', function(event) {
+        const colorInputs = form.querySelectorAll('input[id$="color"]');
+        let hasColorError = false;
+        
+        colorInputs.forEach(input => {
+            if (input && input.value) {
+                let colorValue = input.value.trim();
+                if (!colorValue.startsWith('#')) {
+                    colorValue = '#' + colorValue;
+                }
+                
+                if (!/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(colorValue)) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    hasColorError = true;
+                    
+                    const label = input.labels ? input.labels[0] : null;
+                    const fieldName = label ? label.textContent.trim() : (input.name || input.id);
+                    
+                    alert(`Invalid color format for ${fieldName}. Please use a valid hex color (e.g., #000000).`);
+                    input.focus();
+                }
+                
+                input.value = colorValue;
+            }
+        });
+
+        if (hasColorError) {
+            return false;
+        }
+        
+        const hiddenFields = form.querySelectorAll('.hidden [required]');
+        hiddenFields.forEach(field => {
+            field.setAttribute('data-was-required', 'true');
+            field.removeAttribute('required');
+        });
+        
+        if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+            
+            const invalidFields = form.querySelectorAll(':invalid');
+            
+            const missingFieldsList = Array.from(invalidFields).map(field => {
+                const label = field.labels ? field.labels[0] : null;
+                const fieldName = label ? label.textContent.trim() : (field.name || field.id);
+                return fieldName.replace(' *', '');
+            });
+            
+            if (missingFieldsList.length > 0) {
+                const errorMsg = `Please fill in the following required fields: ${missingFieldsList.join(', ')}`;
+                alert(errorMsg);
+                invalidFields[0].focus();
+                invalidFields[0].scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'center' 
+                });
+            } else {
+                alert('Please fill in all required fields correctly');
+            }
+        } else {
+            const submitBtn = form.querySelector('button[type="submit"]');
+            if (submitBtn) {
+                submitBtn.innerHTML = `
+                    <div class="animate-spin -ml-1 mr-3 h-5 w-5 text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                    </div>
+                    Updating QR Code...`;
+                submitBtn.disabled = true;
+            }
+            
+            formChanged = false;
+        }
+        
+        hiddenFields.forEach(field => {
+            if (field.getAttribute('data-was-required') === 'true') {
+                field.setAttribute('required', '');
+                field.removeAttribute('data-was-required');
+            }
+        });
+        
+        form.classList.add('was-validated');
+    });
+}
+
+function initializeTabs() {
+    const tabPanes = document.querySelectorAll('.tab-pane');
+    tabPanes.forEach((pane, index) => {
+        if (pane.id === 'custom') {
+            pane.classList.add('show', 'active');
+            pane.classList.remove('hidden');
+        } else {
+            pane.classList.remove('show', 'active');
+            pane.classList.add('hidden');
+        }
+    });
+    
+    const tabButtons = document.querySelectorAll('[data-bs-toggle="pill"]');
+    tabButtons.forEach((btn) => {
+        if (btn.id === 'custom-tab') {
+            btn.classList.add('border-blue-500', 'text-blue-600', 'active');
+            btn.classList.remove('border-transparent', 'text-gray-500');
+            btn.setAttribute('aria-selected', 'true');
+        } else {
+            btn.classList.remove('border-blue-500', 'text-blue-600', 'active');
+            btn.classList.add('border-transparent', 'text-gray-500');
+            btn.setAttribute('aria-selected', 'false');
+        }
+    });
+}
+
+// Add this after setupSliders() in your DOMContentLoaded handler:
+function setupRemoveLogo() {
+    const removeLogoBtn = document.getElementById('removeLogo');
+    const logoInput = document.getElementById('logo');
+    let removeLogoInput = document.getElementById('remove_logo');
+
+    // Create hidden input if not present
+    if (!removeLogoInput) {
+        removeLogoInput = document.createElement('input');
+        removeLogoInput.type = 'hidden';
+        removeLogoInput.name = 'remove_logo';
+        removeLogoInput.id = 'remove_logo';
+        removeLogoInput.value = 'false';
+        logoInput.parentNode.appendChild(removeLogoInput);
+    }
+
+    if (removeLogoBtn && logoInput) {
+        removeLogoBtn.addEventListener('click', function() {
+            // Clear file input
+            logoInput.value = '';
+            // Set hidden input to signal removal
+            removeLogoInput.value = 'true';
+            // Optionally update preview or show a message
+            updateQRPreview('Logo removed');
+        });
+        // Reset remove_logo if user selects a new file
+        logoInput.addEventListener('change', function() {
+            if (logoInput.files.length > 0) {
+                removeLogoInput.value = 'false';
+            }
+        });
+    }
+}
+
+// Main initialization
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM loaded, initializing edit QR form...');
+    
+    setupTabSwitching();
+    setupColorPickers();
+    setupEyeCustomization();
+    setupGradientOptions();
+    setupFrameText();
+    setupPasswordToggle();
+    setupFormValidation();
+    setupFormChangeDetection();
+    setupSliders();
+    setupRemoveLogo();
+    initializeTabs();
+    
+    // Setup preview buttons
+    const refreshPreviewBtn = document.getElementById('refreshPreviewBtn');
+    if (refreshPreviewBtn) {
+        refreshPreviewBtn.addEventListener('click', function() {
+            console.log('Manual preview refresh triggered');
+            updateQRPreview('Manually refreshed preview');
+        });
+    }
+    
+    const downloadPreviewBtn = document.getElementById('downloadPreviewBtn');
+    if (downloadPreviewBtn) {
+        downloadPreviewBtn.addEventListener('click', function() {
+            const previewImage = document.getElementById('qr-preview-image');
+            if (!previewImage || previewImage.src.includes('placeholder')) {
+                alert('Please generate a QR code first');
+                return;
+            }
+            
+            const link = document.createElement('a');
+            link.href = previewImage.src;
+            link.download = `qr-preview-${new Date().getTime()}.png`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            console.log('QR code preview downloaded');
+        });
+    }
+    
+    // Track color changes made by user
+    document.querySelectorAll('input[id$="color"]').forEach(input => {
+        input.addEventListener('input', function() {
+            this.dataset.userChanged = 'true';
+        });
+        
+        input.addEventListener('change', function() {
+            this.dataset.userChanged = 'true';
+        });
+    });
+    
+    // Initial preview after delay
+    console.log('Setting up initial preview...');
+    setTimeout(() => {
+        console.log('Performing initial preview update...');
+        updateQRPreview('Initial preview load');
+    }, 2000);
+    
+    console.log('Edit QR form initialization complete.');
+});
+
+// Debug functions
+window.testPreview = function() {
+    console.log('Testing preview update manually...');
+    updateQRPreview('Manual test');
+};
+
+window.debugFormState = function() {
+    const form = document.getElementById('edit-qr-form');
+    console.log('=== FORM DEBUG ===');
+    console.log('Form found:', !!form);
+    console.log('isUpdatingPreview:', isUpdatingPreview);
+    console.log('formChanged:', formChanged);
+    
+    const keyElements = ['color', 'background_color', 'qr-preview-image', 'export_type'];
+    keyElements.forEach(id => {
+        const element = document.getElementById(id);
+        console.log(`${id}:`, element ? 'found' : 'NOT FOUND', element?.value || element?.src || 'no value');
+    });
+    
+    const exportType = document.getElementById('export_type');
+    console.log('Export type:', exportType ? exportType.value : 'not found');
+    console.log('==================');
+};
+// ✅ Auto-trigger preview update on style changes
+document.addEventListener('DOMContentLoaded', function () {
+    const styleInputIds = [
+        'color',
+        'background_color',
+        'inner_eye_color',
+        'outer_eye_color',
+        'frame_text',
+        'gradient_start_color',
+        'gradient_end_color',
+        'module_size',
+        'quiet_zone',
+        'logo_size_percentage',
+        'inner_eye_style',
+        'outer_eye_style',
+        'error_correction',
+        'watermark_text',
+        'logo', // file input
+    ];
+
+    const styleCheckboxIds = [
+        'custom_eyes',
+        'round_logo'
+    ];
+
+    const radioGroups = [
+        'shape',
+        'frame_type',
+        'export_type'
+    ];
+
+    // Attach 'change' and 'input' listeners to inputs
+    styleInputIds.forEach(id => {
+        const input = document.getElementById(id);
+        if (input) {
+            input.addEventListener('change', () => updateQRPreview('style-change'));
+            input.addEventListener('input', () => updateQRPreview('style-change'));
+        }
+    });
+
+    // Attach listeners to checkboxes
+    styleCheckboxIds.forEach(id => {
+        const checkbox = document.getElementById(id);
+        if (checkbox) {
+            checkbox.addEventListener('change', () => updateQRPreview('style-change'));
+        }
+    });
+
+    // Attach listeners to radio buttons
+    radioGroups.forEach(name => {
+        const radios = document.querySelectorAll(`input[name="${name}"]`);
+        radios.forEach(radio => {
+            radio.addEventListener('change', () => updateQRPreview('style-change'));
+        });
+    });
+});
+
+
+</script>
+{% endblock %}

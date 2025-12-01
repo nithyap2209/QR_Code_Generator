@@ -1,0 +1,263 @@
+{% extends 'base2.html' %}
+
+{% block title %}QR Code for URL - Create Link QR Codes | QR Dada{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="bg-gradient-to-br from-primary-50 to-secondary-50 py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center">
+            <div class="inline-block p-4 bg-white rounded-full shadow-lg mb-6">
+                <i class="fas fa-link text-5xl text-secondary-600"></i>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                QR Code for URL/Links
+            </h1>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+                Transform any website URL into a scannable QR code using our smart url to qr code tools. Drive traffic, share content, and make web navigation effortless for your audience with the most reliable qr code generator for url.
+
+            </p>
+            <div class="flex gap-4 justify-center">
+                <a href="{{ url_for('create_qr') }}" class="bg-secondary-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-secondary-700 transition-colors shadow-lg">
+                    Create URL QR Code
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- What is URL QR Code Section -->
+<section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid md:grid-cols-2 gap-12 items-center mb-16">
+            <div>
+                <h2 class="text-3xl font-bold text-gray-900 mb-6">What is a URL QR Code?</h2>
+                <p class="text-lg text-gray-600 mb-4">
+                    A URL QR Code is a quick response code that redirects users to any website or web page when scanned with a smartphone camera. It eliminates the need to manually type long URLs, making web navigation effortless — especially when you convert url to qr code or make qr code from url for marketing.
+
+                </p>
+                <p class="text-lg text-gray-600 mb-4">
+                    URL QR codes are the most popular type of QR codes, used by businesses worldwide to bridge the gap between offline and online marketing, drive traffic, and enhance customer engagement. Our platform also works as an advanced url to qr code generator for all industries.
+                </p>
+                <div class="bg-secondary-50 border-l-4 border-secondary-600 p-4 mt-6">
+                    <p class="text-sm text-gray-700">
+                        <i class="fas fa-lightbulb text-secondary-600 mr-2"></i>
+                        <strong>Pro Tip:</strong> Use shortened URLs or dynamic QR codes for better scanability and the ability to track analytics.
+                    </p>
+                </div>
+            </div>
+            <div class="bg-gray-100 rounded-lg p-8 text-center">
+                <img src="{{ url_for('static', filename='images/qr_url.png') }}"
+                     alt="URL QR Code Example"
+                     class="mx-auto mb-4 w-64 h-64 object-contain">
+                <p class="text-sm text-gray-600">Example: URL QR Code</p>
+            </div>
+        </div>
+
+        <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Perfect For</h2>
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+                <div class="w-12 h-12 bg-secondary-100 rounded-lg flex items-center justify-center mb-4">
+                    <i class="fas fa-store text-secondary-600 text-xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-3">Business Marketing</h3>
+                <p class="text-gray-600">
+                    Link to your website, landing pages, online store, or promotional campaigns directly from print materials using a professional qr code for url.
+
+                </p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+                <div class="w-12 h-12 bg-secondary-100 rounded-lg flex items-center justify-center mb-4">
+                    <i class="fas fa-share-alt text-secondary-600 text-xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-3">Social Media</h3>
+                <p class="text-gray-600">
+                    Share your Instagram, Facebook, LinkedIn, or any social media profile with a simple scan.
+                </p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+                <div class="w-12 h-12 bg-secondary-100 rounded-lg flex items-center justify-center mb-4">
+                    <i class="fas fa-video text-secondary-600 text-xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-3">Content Sharing</h3>
+                <p class="text-gray-600">
+                    Direct users to YouTube videos, blog posts, PDF documents, or any online content instantly, especially when you generate qr code for url for easy access.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">How to Create a URL QR Code</h2>
+        <div class="grid md:grid-cols-4 gap-8">
+            <div class="text-center">
+                <div class="w-16 h-16 bg-secondary-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                    1
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Enter Your URL</h3>
+                <p class="text-gray-600">Paste the website link or URL you want to share. Perfect for those wanting to generate qr code from url instantly.</p>
+            </div>
+
+            <div class="text-center">
+                <div class="w-16 h-16 bg-secondary-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                    2
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Customize Design</h3>
+                <p class="text-gray-600">Add your brand colors, logo, and customize the appearance.</p>
+            </div>
+
+            <div class="text-center">
+                <div class="w-16 h-16 bg-secondary-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                    3
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Generate QR Code</h3>
+                <p class="text-gray-600">Click generate to create your custom URL QR code using our smooth qr code to url conversion engine.</p>
+            </div>
+
+            <div class="text-center">
+                <div class="w-16 h-16 bg-secondary-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                    4
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Download & Share</h3>
+                <p class="text-gray-600">Download in high quality and use it on any marketing material.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Benefits Section -->
+<section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Benefits of URL QR Codes</h2>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <div class="w-10 h-10 bg-secondary-600 text-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-mouse-pointer"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Instant Access</h3>
+                    <p class="text-gray-600">Users reach your website in seconds without typing, just generate qr code for url and share.</p>
+                </div>
+            </div>
+
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <div class="w-10 h-10 bg-secondary-600 text-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Track Performance</h3>
+                    <p class="text-gray-600">Monitor scans, locations, and user engagement with dynamic QR codes.</p>
+                </div>
+            </div>
+
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <div class="w-10 h-10 bg-secondary-600 text-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Mobile Friendly</h3>
+                    <p class="text-gray-600">Works perfectly on all smartphones and QR scanners.</p>
+                </div>
+            </div>
+
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <div class="w-10 h-10 bg-secondary-600 text-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-edit"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Editable Content</h3>
+                    <p class="text-gray-600">Update destination URL anytime with dynamic QR codes.</p>
+                </div>
+            </div>
+
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <div class="w-10 h-10 bg-secondary-600 text-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-print"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Print Ready</h3>
+                    <p class="text-gray-600">High-resolution output perfect for any print material.</p>
+                </div>
+            </div>
+
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <div class="w-10 h-10 bg-secondary-600 text-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Fully Customizable</h3>
+                    <p class="text-gray-600">Match your brand with colors, logos, and design options.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="py-16 bg-gray-50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Frequently Asked Questions</h2>
+        <div class="space-y-4">
+            <div class="bg-white rounded-lg p-6 shadow-sm">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Can I change the URL after creating the QR code?</h3>
+                <p class="text-gray-600">
+                    Yes, with dynamic QR codes, you can update the destination URL anytime. Static QR codes cannot be edited once created, even if you convert url to qr code earlier.
+                </p>
+            </div>
+
+            <div class="bg-white rounded-lg p-6 shadow-sm">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Do URL QR codes expire?</h3>
+                <p class="text-gray-600">
+                    Static URL QR codes never expire. Dynamic QR codes remain active as long as your subscription is valid.
+                </p>
+            </div>
+
+            <div class="bg-white rounded-lg p-6 shadow-sm">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Can I track how many people scanned my QR code?</h3>
+                <p class="text-gray-600">
+                    Yes! Dynamic QR codes come with built-in analytics showing scan counts, locations, devices, and timestamps.
+                </p>
+            </div>
+
+            <div class="bg-white rounded-lg p-6 shadow-sm">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">What's the best size for printing URL QR codes?</h3>
+                <p class="text-gray-600">
+                    Minimum 2 x 2 cm (0.8 x 0.8 inches) for close-range scanning. For posters and billboards, scale proportionally based on viewing distance.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-16 bg-gradient-to-br from-secondary-600 to-primary-600 text-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl font-bold mb-6">Create Your URL QR Code Today</h2>
+        <p class="text-xl mb-8 text-white/90">
+            Make your links accessible with a simple scan using our intuitive qr code generator for url dashboard. Perfect for marketing, business cards, and more!
+
+        </p>
+        <a href="{{ url_for('create_qr') }}" class="bg-white text-secondary-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors shadow-lg inline-block">
+            Get Started Now
+        </a>
+    </div>
+</section>
+
+{% endblock %}

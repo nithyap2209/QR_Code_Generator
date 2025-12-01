@@ -1,0 +1,443 @@
+{% extends "base2.html" %}
+
+{% block title %}{% if selected_category %}{{ selected_category.name }} - {% endif %}Blog - QR Dada{% endblock %}
+
+{% block extra_head %}
+    <meta name="description" content="{% if selected_category %}Explore our blog posts about {{ selected_category.name }}.{% else %}Explore our latest blog posts about QR codes, digital marketing, and technology insights.{% endif %}">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="{{ request.url }}">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ request.url }}">
+    <meta property="og:title" content="{% if selected_category %}{{ selected_category.name }} - {% endif %}Blog - QR Dada">
+    <meta property="og:description" content="{% if selected_category %}Explore our blog posts about {{ selected_category.name }}.{% else %}Explore our latest blog posts about QR codes, digital marketing, and technology insights.{% endif %}">
+    <meta property="og:site_name" content="QR Dada">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:url" content="{{ request.url }}">
+    <meta name="twitter:title" content="{% if selected_category %}{{ selected_category.name }} - {% endif %}Blog - QR Dada">
+    <meta name="twitter:description" content="{% if selected_category %}Explore our blog posts about {{ selected_category.name }}.{% else %}Explore our latest blog posts about QR codes, digital marketing, and technology insights.{% endif %}">
+
+    <!-- Schema.org structured data for Blog List -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Blog",
+      "name": "QR Dada Blog",
+      "description": "{% if selected_category %}{{ selected_category.name }} articles and insights{% else %}QR codes, digital marketing, and technology insights{% endif %}",
+      "url": "{{ request.url }}",
+      "publisher": {
+        "@type": "Organization",
+        "name": "QR Dada",
+        "url": "{{ url_for('index', _external=True) }}"
+      }
+      {% if blogs %}
+      ,
+      "blogPost": [
+        {% for blog in blogs %}
+        {
+          "@type": "BlogPosting",
+          "headline": "{{ blog.title }}",
+          "url": "{{ url_for('blog_detail', slug=blog.slug, _external=True) }}",
+          "datePublished": "{{ blog.created_at.isoformat() }}",
+          "dateModified": "{{ blog.updated_at.isoformat() if blog.updated_at else blog.created_at.isoformat() }}",
+          {% if blog.image %}
+          "image": "{{ url_for('static', filename='uploads/blogs/' + blog.image, _external=True) }}",
+          {% endif %}
+          "author": {
+            "@type": "Organization",
+            "name": "QR Dada"
+          },
+          "description": "{{ (blog.description|striptags)[:160] }}"
+        }{% if not loop.last %},{% endif %}
+        {% endfor %}
+      ]
+      {% endif %}
+    }
+    </script>
+
+    <style>
+        /* Main content */
+        .main-container {
+            padding: 2rem;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Page Header - Gradient Background */
+        .page-header {
+            color: white;
+            padding: 4rem 2rem;
+            border-radius: 0.75rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 15px -3px rgba(124, 58, 237, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            transform: translate(30%, -30%);
+        }
+
+        .page-header-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .page-header p {
+            opacity: 0.95;
+            margin: 0;
+            font-size: 1.1rem;
+        }
+
+        /* Category Filter */
+        .category-filter {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .category-btn {
+            display: inline-block;
+            padding: 0.5rem 1.25rem;
+            margin: 0.25rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 25px;
+            color: #1e293b;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .category-btn:hover,
+        .category-btn.active {
+            background: linear-gradient(-45deg, #0ea5e9, #8b5cf6);
+            border-color: transparent;
+            color: white;
+        }
+
+        /* Blogs Grid */
+        .blogs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .blog-card {
+            background: white;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            position: relative;
+            cursor: pointer;
+        }
+
+        .blog-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(-45deg, #0ea5e9, #8b5cf6);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(124, 58, 237, 0.15);
+        }
+
+        .blog-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .blog-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            background: linear-gradient(-45deg, #0ea5e9, #8b5cf6);
+            transition: transform 0.4s ease;
+        }
+
+        .blog-card:hover .blog-image {
+            transform: scale(1.05);
+        }
+
+        .blog-card-body {
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .blog-category {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: rgba(124, 58, 237, 0.1);
+            color: #7c3aed;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            width: fit-content;
+        }
+
+        .blog-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.75rem;
+            line-height: 1.4;
+        }
+
+        .blog-title a {
+            color: #1e293b;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .blog-title a:hover {
+            color: #7c3aed;
+        }
+
+        .blog-excerpt {
+            color: #64748b;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 1.25rem;
+            flex: 1;
+        }
+
+        .blog-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: #64748b;
+            padding-top: 1rem;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .read-more {
+            color: #7c3aed;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .read-more:hover {
+            color: #6d28d9;
+        }
+
+        /* Pagination */
+        .pagination-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-top: 3rem;
+        }
+
+        .pagination {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            gap: 0.5rem;
+        }
+
+        .page-link {
+            padding: 0.5rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            color: #1e293b;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .page-link:hover,
+        .page-item.active .page-link {
+            background: linear-gradient(-45deg, #0ea5e9, #8b5cf6);
+            border-color: transparent;
+            color: white;
+        }
+
+        .no-blogs {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #64748b;
+        }
+
+        .no-blogs i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+            color: #8b5cf6;
+        }
+
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 2rem;
+            }
+            .page-header {
+                padding: 3rem 1.5rem;
+            }
+            .main-container {
+                padding: 1rem;
+            }
+            .blogs-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="main-container">
+        <!-- Page Header with Gradient Background -->
+        <div class="page-header gradient-bg">
+            <div class="page-header-content">
+                <h1><i class="fas fa-blog mr-2"></i>Our Blog</h1>
+                <p>Discover insights, tips, and expert knowledge about QR codes and digital marketing</p>
+            </div>
+        </div>
+
+        <!-- Category Filter -->
+        <div class="category-filter">
+            <h5 class="font-semibold text-gray-800 mb-3"><i class="fas fa-filter mr-2"></i>Filter by Category</h5>
+            <div>
+                <a href="{{ url_for('public_blogs') }}"
+                   class="category-btn {% if not selected_category %}active{% endif %}">
+                    <i class="fas fa-th mr-1"></i>Show All
+                </a>
+                {% for category in categories %}
+                <a href="{{ url_for('public_blogs', category=category.id) }}"
+                   class="category-btn {% if selected_category == category.id %}active{% endif %}">
+                    {{ category.name }}
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Blog Grid -->
+        {% if blogs %}
+        <div class="blogs-grid">
+            {% for blog in blogs %}
+            <div class="blog-card" onclick="window.location.href='{{ url_for('blog_detail', slug=blog.slug) }}'">
+                {% if blog.image %}
+                <img src="{{ url_for('static', filename='uploads/blogs/' + blog.image) }}"
+                     alt="{{ blog.title }}"
+                     class="blog-image">
+                {% else %}
+                <div class="blog-image flex items-center justify-center">
+                    <i class="fas fa-blog text-4xl text-white" style="opacity: 0.3;"></i>
+                </div>
+                {% endif %}
+
+                <div class="blog-card-body">
+                    {% if blog.category %}
+                    <span class="blog-category">{{ blog.category.name }}</span>
+                    {% endif %}
+
+                    <h3 class="blog-title">
+                        <a href="{{ url_for('blog_detail', slug=blog.slug) }}">
+                            {{ blog.title }}
+                        </a>
+                    </h3>
+
+                    <div class="blog-excerpt">
+                        {% if blog.meta_description %}
+                            {{ blog.meta_description }}
+                        {% elif blog.description %}
+                            {{ blog.description|striptags|truncate(150, True, '...') }}
+                        {% endif %}
+                    </div>
+
+                    <div class="blog-meta">
+                        <span>
+                            <i class="far fa-calendar mr-1"></i>
+                            {{ blog.created_at.strftime('%B %d, %Y') }}
+                        </span>
+                        <a href="{{ url_for('blog_detail', slug=blog.slug) }}" class="read-more">
+                            Read More <i class="fas fa-arrow-right ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if pagination.pages > 1 %}
+        <div class="pagination-wrapper">
+            <nav aria-label="Blog pagination">
+                <ul class="pagination">
+                    {% if pagination.has_prev %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('public_blogs', page=pagination.prev_num, category=selected_category if selected_category else '') }}">
+                            <i class="fas fa-chevron-left"></i> Previous
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    {% for page_num in pagination.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+                        {% if page_num %}
+                            <li class="page-item {% if page_num == pagination.page %}active{% endif %}">
+                                <a class="page-link" href="{{ url_for('public_blogs', page=page_num, category=selected_category if selected_category else '') }}">
+                                    {{ page_num }}
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="page-item">
+                                <span class="page-link">...</span>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if pagination.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('public_blogs', page=pagination.next_num, category=selected_category if selected_category else '') }}">
+                            Next <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+        {% endif %}
+        {% else %}
+        <div class="no-blogs">
+            <i class="fas fa-blog"></i>
+            <h3>No Blog Posts Yet</h3>
+            <p>Check back soon for exciting blog posts!</p>
+        </div>
+        {% endif %}
+    </div>
+{% endblock %}

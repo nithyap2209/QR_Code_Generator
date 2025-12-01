@@ -1,0 +1,240 @@
+{% extends 'base2.html' %}
+{% block title %}QR Code for Call - One-Tap Phone Calls | QR Dada{% endblock %}
+{% block content %}
+<section class="bg-gradient-to-br from-primary-50 to-secondary-50 py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div class="inline-block p-4 bg-white rounded-full shadow-lg mb-6">
+            <i class="fas fa-phone text-5xl text-secondary-600"></i>
+        </div>
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">QR Code for Phone Calls</h1>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+            Enable instant phone calls with a simple scan. Perfect for customer service, sales, and emergency contacts.
+        </p>
+        <a href="{{ url_for('create_qr') }}" class="bg-secondary-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-secondary-700 transition-colors shadow-lg inline-block">
+            Create Call QR Code
+        </a>
+    </div>
+</section>
+
+<!-- What is Call QR Code Section -->
+<section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid md:grid-cols-2 gap-12 items-center mb-16">
+            <div>
+                <h2 class="text-3xl font-bold text-gray-900 mb-6">What is a Call QR Code?</h2>
+                <p class="text-lg text-gray-600 mb-4">
+                    A Call QR Code (also known as Phone QR Code) contains a phone number that, when scanned, automatically initiates a phone call. Users simply scan and tap to dial — no manual number entry required. This also works as a simple form of a QR Code for Call, making communication even faster.
+
+                </p>
+                <p class="text-lg text-gray-600 mb-4">
+                    Call QR codes streamline customer communication, reduce dialing errors, and make it incredibly easy for people to reach you. Perfect for businesses that rely on phone support and sales.
+
+                </p>
+                <div class="bg-secondary-50 border-l-4 border-secondary-600 p-4 mt-6">
+                    <p class="text-sm text-gray-700">
+                        <i class="fas fa-lightbulb text-secondary-600 mr-2"></i>
+                        <strong>Pro Tip:</strong> Include country codes in phone numbers for international compatibility.
+                    </p>
+                </div>
+            </div>
+            <div class="bg-gray-100 rounded-lg p-8 text-center">
+                <img src="{{ url_for('static', filename='images/qr_call.png') }}"
+                     alt="Call QR Code Example"
+                     class="mx-auto mb-4 w-64 h-64 object-contain">
+                <p class="text-sm text-gray-600">Example: Call QR Code</p>
+            </div>
+        </div>
+
+        <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Perfect For</h2>
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="bg-gray-50 p-6 rounded-lg hover:shadow-lg transition-shadow">
+                <i class="fas fa-user-tie text-3xl text-secondary-600 mb-4"></i>
+                <h3 class="text-xl font-semibold mb-2">Business Cards</h3>
+                <p class="text-gray-600">Make it easy for contacts to call you with one scan using a scan-to-call QR code. Perfect for networking and sales.</p>
+            </div>
+            <div class="bg-gray-50 p-6 rounded-lg hover:shadow-lg transition-shadow">
+                <i class="fas fa-ambulance text-3xl text-secondary-600 mb-4"></i>
+                <h3 class="text-xl font-semibold mb-2">Emergency Services</h3>
+                <p class="text-gray-600"> Provide quick access to emergency hotlines and support numbers in critical situations. Services can even generate them using a direct call QR code generator for instant setup.</p>
+            </div>
+            <div class="bg-gray-50 p-6 rounded-lg hover:shadow-lg transition-shadow">
+                <i class="fas fa-headset text-3xl text-secondary-600 mb-4"></i>
+                <h3 class="text-xl font-semibold mb-2">Customer Support</h3>
+                <p class="text-gray-600">Connect customers to your support team instantly from packaging, receipts, or signage. This is where a QR code generator for calls becomes especially useful.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">How to Create a Call QR Code</h2>
+        <div class="grid md:grid-cols-4 gap-8">
+            <div class="text-center">
+                <div class="w-16 h-16 bg-secondary-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                    1
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Enter Phone Number</h3>
+                <p class="text-gray-600">Provide the phone number you want people to call. This becomes the core of your call QR code.</p>
+            </div>
+
+            <div class="text-center">
+                <div class="w-16 h-16 bg-secondary-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                    2
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Customize Design</h3>
+                <p class="text-gray-600">Add your branding, colors, and logo to match your style.</p>
+            </div>
+
+            <div class="text-center">
+                <div class="w-16 h-16 bg-secondary-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                    3
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Generate QR Code</h3>
+                <p class="text-gray-600">Create your call QR code in seconds with any direct call QR code generator.</p>
+            </div>
+
+            <div class="text-center">
+                <div class="w-16 h-16 bg-secondary-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                    4
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Display & Share</h3>
+                <p class="text-gray-600">Add to business cards, flyers, or any marketing material.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Benefits Section -->
+<section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Benefits of Call QR Codes</h2>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <div class="w-10 h-10 bg-secondary-600 text-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Instant Connection</h3>
+                    <p class="text-gray-600">Connect calls with one tap, no dialing required. A Call QR Code makes the process quick and convenient.</p>
+                </div>
+            </div>
+
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <div class="w-10 h-10 bg-secondary-600 text-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Error-Free</h3>
+                    <p class="text-gray-600">Eliminate misdialed numbers and connection failures.</p>
+                </div>
+            </div>
+
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <div class="w-10 h-10 bg-secondary-600 text-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Higher Response Rate</h3>
+                    <p class="text-gray-600">Convenience leads to more customer calls and inquiries — especially when you use a QR Code for Call to simplify the process.</p>
+                </div>
+            </div>
+
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <div class="w-10 h-10 bg-secondary-600 text-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Mobile Optimized</h3>
+                    <p class="text-gray-600">Works perfectly on all smartphones and devices.</p>
+                </div>
+            </div>
+
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <div class="w-10 h-10 bg-secondary-600 text-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-print"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Print Anywhere</h3>
+                    <p class="text-gray-600">Add to business cards, posters, packaging, and more.</p>
+                </div>
+            </div>
+
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <div class="w-10 h-10 bg-secondary-600 text-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">International Ready</h3>
+                    <p class="text-gray-600">Support international numbers with country codes.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="py-16 bg-gray-50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Frequently Asked Questions</h2>
+        <div class="space-y-4">
+            <div class="bg-white rounded-lg p-6 shadow-sm">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Will the call be initiated automatically?</h3>
+                <p class="text-gray-600">
+                     No, for security reasons, the phone app opens with the number pre-filled. Users need to tap the call button to actually place the call.
+
+                </p>
+            </div>
+
+            <div class="bg-white rounded-lg p-6 shadow-sm">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Can I track how many people scanned to call?</h3>
+                <p class="text-gray-600">
+                    You'll know when people call you. For detailed scan analytics (without requiring calls), use our dynamic QR codes with tracking.
+
+                </p>
+            </div>
+
+            <div class="bg-white rounded-lg p-6 shadow-sm">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Do call QR codes work on tablets without phone capability?</h3>
+                <p class="text-gray-600">
+                    Yes! On devices without phone capability, it may open VoIP apps like Skype, FaceTime, or prompt to use calling apps.
+
+                </p>
+            </div>
+
+            <div class="bg-white rounded-lg p-6 shadow-sm">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Should I include country codes?</h3>
+                <p class="text-gray-600">
+                    Yes, always include country codes (e.g., +1 for USA, +44 for UK) to ensure the QR code works for international scanners.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-16 bg-gradient-to-br from-secondary-600 to-primary-600 text-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl font-bold mb-6">Make Calling You Effortless</h2>
+        <p class="text-xl mb-8 text-white/90">
+            Create call QR codes and make it easy for customers to reach you instantly!
+        </p>
+        <a href="{{ url_for('create_qr') }}" class="bg-white text-secondary-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors shadow-lg inline-block">
+            Create Call QR Code Now
+        </a>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,242 @@
+{% extends 'base2.html' %}
+{% block title %}QR Code for WiFi - Instant WiFi Connection | QR Dada{% endblock %}
+{% block content %}
+<section class="bg-gradient-to-br from-primary-50 to-secondary-50 py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div class="inline-block p-4 bg-white rounded-full shadow-lg mb-6">
+            <i class="fas fa-wifi text-5xl text-secondary-600"></i>
+        </div>
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">QR Code for WiFi</h1>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+            Share WiFi credentials instantly. Guests can connect to your network with a simple scan, no typing required! Our platform works seamlessly as a powerful Wi-Fi QR code generator for homes and businesses.</p>
+        <a href="{{ url_for('create_qr') }}" class="bg-secondary-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-secondary-700 transition-colors shadow-lg inline-block">
+            Create WiFi QR Code
+        </a>
+    </div>
+</section>
+
+<!-- What is WiFi QR Code Section -->
+<section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid md:grid-cols-2 gap-12 items-center mb-16">
+            <div>
+                <h2 class="text-3xl font-bold text-gray-900 mb-6">What is a WiFi QR Code?</h2>
+                <p class="text-lg text-gray-600 mb-4">
+                    A WiFi QR Code contains your network's SSID (name), password, and security type. When scanned, it automatically connects users to your WiFi network without manually entering credentials, powered by an advanced QR code generator for wifi setup.
+
+                </p>
+                <p class="text-lg text-gray-600 mb-4">
+                    WiFi QR codes eliminate the hassle of sharing complex passwords, reduce connection errors, and provide a seamless guest experience for businesses and homes alike. QR Dada doubles as a QR code generator for wifi passwords and a Wi-Fi QR code generator with logo for branded environments.
+
+                </p>
+                <div class="bg-secondary-50 border-l-4 border-secondary-600 p-4 mt-6">
+                    <p class="text-sm text-gray-700">
+                        <i class="fas fa-lightbulb text-secondary-600 mr-2"></i>
+                        <strong>Pro Tip:</strong> Print and display your WiFi QR code in common areas for easy guest access.
+                    </p>
+                </div>
+            </div>
+            <div class="bg-gray-100 rounded-lg p-8 text-center">
+                <img src="{{ url_for('static', filename='images/qr_wifi.png') }}"
+                     alt="WiFi QR Code Example"
+                     class="mx-auto mb-4 w-64 h-64 object-contain">
+                <p class="text-sm text-gray-600">Example: WiFi QR Code<br>Convenient for anyone using a connected Wi-Fi QR code generator or looking for a simple QR code wifi generator solution.
+</p>
+            </div>
+        </div>
+
+        <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Perfect For</h2>
+        <div class="grid md:grid-cols-4 gap-6">
+            <div class="text-center p-6 bg-gray-50 rounded-lg hover:shadow-lg transition-shadow">
+                <i class="fas fa-hotel text-4xl text-secondary-600 mb-3"></i>
+                <h3 class="font-semibold text-lg">Hotels & Resorts</h3>
+                <p class="text-sm text-gray-600 mt-2">Provide instant WiFi access to guests in rooms and common areas.</p>
+            </div>
+            <div class="text-center p-6 bg-gray-50 rounded-lg hover:shadow-lg transition-shadow">
+                <i class="fas fa-coffee text-4xl text-secondary-600 mb-3"></i>
+                <h3 class="font-semibold text-lg">Cafes & Restaurants</h3>
+                <p class="text-sm text-gray-600 mt-2">Allow customers to connect quickly while dining or working using a friendly QR code generator wifi tool.</p>
+            </div>
+            <div class="text-center p-6 bg-gray-50 rounded-lg hover:shadow-lg transition-shadow">
+                <i class="fas fa-building text-4xl text-secondary-600 mb-3"></i>
+                <h3 class="font-semibold text-lg">Offices</h3>
+                <p class="text-sm text-gray-600 mt-2">Give visitors and employees easy access to guest networks.</p>
+            </div>
+            <div class="text-center p-6 bg-gray-50 rounded-lg hover:shadow-lg transition-shadow">
+                <i class="fas fa-home text-4xl text-secondary-600 mb-3"></i>
+                <h3 class="font-semibold text-lg">Home Networks</h3>
+                <p class="text-sm text-gray-600 mt-2">Share WiFi with guests without revealing your password, great for wifi password QR code generator use cases.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">How to Create a WiFi QR Code</h2>
+        <div class="grid md:grid-cols-4 gap-8">
+            <div class="text-center">
+                <div class="w-16 h-16 bg-secondary-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                    1
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Enter WiFi Details</h3>
+                <p class="text-gray-600">Provide network name (SSID), password, and security type. You can even create a Wi-Fi QR code generator without a password for open networks.</p>
+            </div>
+
+            <div class="text-center">
+                <div class="w-16 h-16 bg-secondary-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                    2
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Customize Design</h3>
+                <p class="text-gray-600">Add your brand colors, logo, or custom styling, supported by our Wi-Fi QR code generator with logo capability.</p>
+            </div>
+
+            <div class="text-center">
+                <div class="w-16 h-16 bg-secondary-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                    3
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Generate QR Code</h3>
+                <p class="text-gray-600">Create your WiFi QR code instantly with one click using a reliable qr code wifi generator.</p>
+            </div>
+
+            <div class="text-center">
+                <div class="w-16 h-16 bg-secondary-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                    4
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Print & Display</h3>
+                <p class="text-gray-600">Download and display in visible locations for easy access, perfect when using a Wi-Fi QR code generator, local option for offline environments.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Benefits Section -->
+<section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Benefits of WiFi QR Codes</h2>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <div class="w-10 h-10 bg-secondary-600 text-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Time Saving</h3>
+                    <p class="text-gray-600">Connect to WiFi in seconds without typing passwords.</p>
+                </div>
+            </div>
+
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <div class="w-10 h-10 bg-secondary-600 text-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Secure</h3>
+                    <p class="text-gray-600">Share access without verbally disclosing your password.</p>
+                </div>
+            </div>
+
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <div class="w-10 h-10 bg-secondary-600 text-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Error-Free</h3>
+                    <p class="text-gray-600">No typos or connection failures from wrong passwords.</p>
+                </div>
+            </div>
+
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <div class="w-10 h-10 bg-secondary-600 text-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-smile"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Guest Friendly</h3>
+                    <p class="text-gray-600">Provides excellent user experience for visitors.</p>
+                </div>
+            </div>
+
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <div class="w-10 h-10 bg-secondary-600 text-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Universal Support</h3>
+                    <p class="text-gray-600">Works on iOS, Android, and modern smartphones.</p>
+                </div>
+            </div>
+
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <div class="w-10 h-10 bg-secondary-600 text-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-sync-alt"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Easy Updates</h3>
+                    <p class="text-gray-600">Generate new QR code when you change your password.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="py-16 bg-gray-50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Frequently Asked Questions</h2>
+        <div class="space-y-4">
+            <div class="bg-white rounded-lg p-6 shadow-sm">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Do WiFi QR codes work on all phones?</h3>
+                <p class="text-gray-600">
+                    Yes! WiFi QR codes work on iOS 11+, Android 10+, and most modern smartphones with built-in QR scanners.
+                </p>
+            </div>
+
+            <div class="bg-white rounded-lg p-6 shadow-sm">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Is it safe to share WiFi via QR code?</h3>
+                <p class="text-gray-600">
+                    Yes, it's safer than writing passwords down or sharing them verbally. However, only share with trusted guests. For businesses, consider using a separate guest network.
+                </p>
+            </div>
+
+            <div class="bg-white rounded-lg p-6 shadow-sm">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">What if I change my WiFi password?</h3>
+                <p class="text-gray-600">
+                    Simply generate a new WiFi QR code with the updated password and replace the old one. The process takes just seconds.
+                </p>
+            </div>
+
+            <div class="bg-white rounded-lg p-6 shadow-sm">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Can I create QR codes for hidden networks?</h3>
+                <p class="text-gray-600">
+                    Yes, our WiFi QR code generator supports both visible and hidden networks. Just enable the "Hidden Network" option when creating.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-16 bg-gradient-to-br from-secondary-600 to-primary-600 text-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl font-bold mb-6">Simplify WiFi Access Today</h2>
+        <p class="text-xl mb-8 text-white/90">
+            Create your WiFi QR code and provide seamless internet access to your guests!
+        </p>
+        <a href="{{ url_for('create_qr') }}" class="bg-white text-secondary-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors shadow-lg inline-block">
+            Create WiFi QR Code Now
+        </a>
+    </div>
+</section>
+{% endblock %}

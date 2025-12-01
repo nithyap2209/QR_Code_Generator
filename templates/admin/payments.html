@@ -1,0 +1,2028 @@
+{% extends "admin/base.html" %}
+{% block title %}Payment Management{% endblock %}
+{% block page_title %}
+<div class="d-flex justify-content-between align-items-center">
+    <h1 class="h3 mb-0">
+        Payment Management
+    </h1>
+</div>
+{% endblock %}
+{% block content %}
+<div class="container-fluid px-0">
+    <!-- Summary Cards - Row 1 -->
+    <div class="row mb-4 g-3">
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex align-items-center p-3">
+                    <div class="icon-wrapper bg-primary-subtle rounded p-2 p-md-3 me-2 me-md-3">
+                        <i class="fas fa-file-invoice fa-lg fa-md-2x text-primary"></i>
+                    </div>
+                    <div class="flex-grow-1 min-width-0">
+                        <h6 class="text-muted mb-1 small">Total Transactions</h6>
+                        <h4 class="mb-0 h5 h-md-3">{{ "{:,}".format(stats.total_payments|default(0)) }}</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex align-items-center p-3">
+                    <div class="icon-wrapper bg-success-subtle rounded p-2 p-md-3 me-2 me-md-3">
+                        <i class="fas fa-rupee-sign fa-lg fa-md-2x text-success"></i>
+                    </div>
+                    <div class="flex-grow-1 min-width-0">
+                        <h6 class="text-muted mb-1 small">Total Revenue</h6>
+                        <h4 class="mb-0 h5 h-md-3">₹{{ "{:,.2f}".format(stats.total_revenue|default(0)) }}</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex align-items-center p-3">
+                    <div class="icon-wrapper bg-info-subtle rounded p-2 p-md-3 me-2 me-md-3">
+                        <i class="fas fa-check-circle fa-lg fa-md-2x text-info"></i>
+                    </div>
+                    <div class="flex-grow-1 min-width-0">
+                        <h6 class="text-muted mb-1 small">Completed</h6>
+                        <h4 class="mb-0 h5 h-md-3">{{ "{:,}".format(stats.completed_payments|default(0)) }}</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex align-items-center p-3">
+                    <div class="icon-wrapper bg-warning-subtle rounded p-2 p-md-3 me-2 me-md-3">
+                        <i class="fas fa-chart-pie fa-lg fa-md-2x text-warning"></i>
+                    </div>
+                    <div class="flex-grow-1 min-width-0">
+                        <h6 class="text-muted mb-1 small">Conversion Rate</h6>
+                        <h4 class="mb-0 h5 h-md-3">{{ ((stats.completed_payments / stats.total_payments * 100) if stats.total_payments > 0 else 0)|round(1) }}%</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filter Payments & Revenue Trends - Row 2 (Desktop Only) -->
+    <div class="row mb-4 g-3 desktop-row-2">
+        <!-- Filter Payments - First Half -->
+        <div class="col-lg-6 col-md-12">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-transparent border-0 py-2 py-md-3">
+                    <h6 class="card-title mb-0 d-flex align-items-center">
+                        <i class="fas fa-filter me-2"></i>Filter Payments
+                    </h6>
+                </div>
+                <div class="card-body p-3">
+                    <form method="get" action="{{ url_for('admin.admin_payments') }}" id="payment-filter-form">
+                        <div class="mb-3">
+                            <label class="form-label text-muted small">Payment Status</label>
+                            <div class="d-flex flex-wrap gap-1">
+                                <input type="radio" class="btn-check filter-status" name="status" id="status-all" value="all" 
+                                       {% if filters.status == 'all' %}checked{% endif %} autocomplete="off">
+                                <label class="btn btn-outline-secondary btn-sm" for="status-all">All</label>
+                                
+                                <input type="radio" class="btn-check filter-status" name="status" id="status-completed" value="completed" 
+                                       {% if filters.status == 'completed' %}checked{% endif %} autocomplete="off">
+                                <label class="btn btn-outline-success btn-sm" for="status-completed">Completed</label>
+                                
+                                <input type="radio" class="btn-check filter-status" name="status" id="status-pending" value="created" 
+                                       {% if filters.status == 'created' %}checked{% endif %} autocomplete="off">
+                                <label class="btn btn-outline-warning btn-sm" for="status-pending">Pending</label>
+                                
+                                <input type="radio" class="btn-check filter-status" name="status" id="status-failed" value="failed" 
+                                       {% if filters.status == 'failed' %}checked{% endif %} autocomplete="off">
+                                <label class="btn btn-outline-danger btn-sm" for="status-failed">Failed</label>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label text-muted small">Time Period</label>
+                            <select name="date_range" class="form-select form-select-sm filter-date">
+                                <option value="all" {% if filters.date_range == 'all' %}selected{% endif %}>All Time</option>
+                                <option value="7" {% if filters.date_range == '7' %}selected{% endif %}>Last 7 Days</option>
+                                <option value="30" {% if filters.date_range == '30' %}selected{% endif %}>Last 30 Days</option>
+                                <option value="90" {% if filters.date_range == '90' %}selected{% endif %}>Last 3 Months</option>
+                                <option value="180" {% if filters.date_range == '180' %}selected{% endif %}>Last 6 Months</option>
+                                <option value="365" {% if filters.date_range == '365' %}selected{% endif %}>Last Year</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label text-muted small">Search</label>
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text bg-transparent">
+                                    <i class="fas fa-search"></i>
+                                </span>
+                                <input type="text" name="search" class="form-control" 
+                                       placeholder="Invoice #, Name, Email..." 
+                                       value="{{ filters.search }}">
+                            </div>
+                            <div class="form-text small">Search by customer name, email, invoice number, or order ID</div>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-sm">
+                                <i class="fas fa-filter me-1"></i> Apply Filters
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Revenue Trends - Second Half -->
+        <div class="col-lg-6 col-md-12">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-transparent border-0 d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2 py-2">
+                    <h6 class="card-title mb-0 d-flex align-items-center">
+                        <i class="fas fa-chart-line me-2"></i>Revenue Trends
+                        <span id="chart-period-label" class="badge bg-secondary ms-2 small">2025</span>
+                    </h6>
+                    <div class="btn-group btn-group-sm" role="group" id="chart-period-selector">
+                        <button type="button" class="btn btn-outline-secondary" data-period="week" title="52 weeks of current year">Week</button>
+                        <button type="button" class="btn btn-outline-secondary active" data-period="month" title="12 months of current year">Month</button>
+                        <button type="button" class="btn btn-outline-secondary" data-period="year" title="Last 5 years">Year</button>
+                    </div>
+                </div>
+                <div class="card-body p-3">
+                    <div class="chart-container-revenue">
+                        <canvas id="revenueTrendChart"></canvas>
+                    </div>
+                    <!-- Loading indicator -->
+                    <div id="chart-loading" class="d-none text-center py-4">
+                        <div class="spinner-border spinner-border-sm text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <div class="small text-muted mt-2">Loading chart data...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Layout for Filter & Charts (Preserve Original) -->
+    <div class="row mb-4 g-3 mobile-layout">
+        <!-- First Half - Filter Payments -->
+        <div class="col-lg-6 col-md-12">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-transparent border-0 py-2 py-md-3">
+                    <h6 class="card-title mb-0 d-flex align-items-center">
+                        <i class="fas fa-filter me-2"></i>Filter Payments
+                    </h6>
+                </div>
+                <div class="card-body p-3">
+                    <form method="get" action="{{ url_for('admin.admin_payments') }}" id="payment-filter-form-mobile">
+                        <div class="mb-3">
+                            <label class="form-label text-muted small">Payment Status</label>
+                            <div class="d-flex flex-wrap gap-1">
+                                <input type="radio" class="btn-check filter-status-mobile" name="status" id="status-all-mobile" value="all" 
+                                       {% if filters.status == 'all' %}checked{% endif %} autocomplete="off">
+                                <label class="btn btn-outline-secondary btn-sm" for="status-all-mobile">All</label>
+                                
+                                <input type="radio" class="btn-check filter-status-mobile" name="status" id="status-completed-mobile" value="completed" 
+                                       {% if filters.status == 'completed' %}checked{% endif %} autocomplete="off">
+                                <label class="btn btn-outline-success btn-sm" for="status-completed-mobile">Completed</label>
+                                
+                                <input type="radio" class="btn-check filter-status-mobile" name="status" id="status-pending-mobile" value="created" 
+                                       {% if filters.status == 'created' %}checked{% endif %} autocomplete="off">
+                                <label class="btn btn-outline-warning btn-sm" for="status-pending-mobile">Pending</label>
+                                
+                                <input type="radio" class="btn-check filter-status-mobile" name="status" id="status-failed-mobile" value="failed" 
+                                       {% if filters.status == 'failed' %}checked{% endif %} autocomplete="off">
+                                <label class="btn btn-outline-danger btn-sm" for="status-failed-mobile">Failed</label>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label text-muted small">Time Period</label>
+                            <select name="date_range" class="form-select form-select-sm filter-date-mobile">
+                                <option value="all" {% if filters.date_range == 'all' %}selected{% endif %}>All Time</option>
+                                <option value="7" {% if filters.date_range == '7' %}selected{% endif %}>Last 7 Days</option>
+                                <option value="30" {% if filters.date_range == '30' %}selected{% endif %}>Last 30 Days</option>
+                                <option value="90" {% if filters.date_range == '90' %}selected{% endif %}>Last 3 Months</option>
+                                <option value="180" {% if filters.date_range == '180' %}selected{% endif %}>Last 6 Months</option>
+                                <option value="365" {% if filters.date_range == '365' %}selected{% endif %}>Last Year</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label text-muted small">Search</label>
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text bg-transparent">
+                                    <i class="fas fa-search"></i>
+                                </span>
+                                <input type="text" name="search" class="form-control" 
+                                       placeholder="Invoice #, Name, Email..." 
+                                       value="{{ filters.search }}">
+                            </div>
+                            <div class="form-text small">Search by customer name, email, invoice number, or order ID</div>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-sm">
+                                <i class="fas fa-filter me-1"></i> Apply Filters
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Second Half - Charts Section (Mobile) -->
+        <div class="col-lg-6 col-md-12">
+            <div class="charts-container h-100">
+                <!-- Revenue Chart Card -->
+                <div class="card border-0 shadow-sm mb-3 revenue-chart-card">
+                    <div class="card-header bg-transparent border-0 d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2 py-2">
+                        <h6 class="card-title mb-0 d-flex align-items-center">
+                            <i class="fas fa-chart-line me-2"></i>Revenue Trends
+                            <span id="chart-period-label-mobile" class="badge bg-secondary ms-2 small">2025</span>
+                        </h6>
+                        <div class="btn-group btn-group-sm" role="group" id="chart-period-selector-mobile">
+                            <button type="button" class="btn btn-outline-secondary" data-period="week" title="52 weeks">Week</button>
+                            <button type="button" class="btn btn-outline-secondary active" data-period="month" title="12 months">Month</button>
+                            <button type="button" class="btn btn-outline-secondary" data-period="year" title="5 years">Year</button>
+                        </div>
+                    </div>
+                    <div class="card-body p-2">
+                        <div class="chart-container-medium">
+                            <canvas id="revenueTrendChartMobile"></canvas>
+                        </div>
+                        <!-- Loading indicator for mobile -->
+                        <div id="chart-loading-mobile" class="d-none text-center py-3">
+                            <div class="spinner-border spinner-border-sm text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <div class="small text-muted mt-2">Loading chart data...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Distribution Card (Mobile) -->
+                <div class="card border-0 shadow-sm distribution-chart-card">
+                    <div class="card-header bg-transparent border-0 py-2">
+                        <h6 class="card-title mb-0 d-flex align-items-center">
+                            <i class="fas fa-chart-pie me-2"></i>Payment Distribution
+                        </h6>
+                    </div>
+                    <div class="card-body p-2">
+                        <div class="row g-2 h-100">
+                            <div class="col-6">
+                                <h6 class="text-center mb-2 small">Payment Types</h6>
+                                <div class="chart-container-mini">
+                                    <canvas id="paymentTypeChartMobile"></canvas>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <h6 class="text-center mb-2 small">Payment Status</h6>
+                                <div class="chart-container-mini">
+                                    <canvas id="paymentStatusChartMobile"></canvas>
+                                </div>
+                                <!-- Loading indicator for status chart -->
+                                <div id="status-chart-loading-mobile" class="d-none text-center py-2">
+                                    <div class="spinner-border spinner-border-sm text-primary" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Distribution - Row 3 (Desktop Only) -->
+    <div class="row mb-4 g-3 desktop-row-3">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-transparent border-0 py-2 py-md-3">
+                    <h6 class="card-title mb-0 d-flex align-items-center">
+                        <i class="fas fa-chart-pie me-2"></i>Payment Distribution
+                    </h6>
+                </div>
+                <div class="card-body p-3">
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <h6 class="text-center mb-3">Payment Types</h6>
+                            <div class="chart-container-distribution">
+                                <canvas id="paymentTypeChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-center mb-3">Payment Status</h6>
+                            <div class="chart-container-distribution">
+                                <canvas id="paymentStatusChart"></canvas>
+                            </div>
+                            <!-- Loading indicator for status chart -->
+                            <div id="status-chart-loading" class="d-none text-center py-3">
+                                <div class="spinner-border spinner-border-sm text-primary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <div class="small text-muted mt-2">Loading status data...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Transactions Table Card - Row 4 -->
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-transparent border-0 d-flex flex-column flex-lg-row justify-content-between align-items-start align-items-lg-center gap-3">
+            <h6 class="card-title mb-0 d-flex align-items-center">
+                <i class="fas fa-list-alt me-2"></i>Payment Transactions
+                {% if filters.search or filters.status != 'all' or filters.payment_type != 'all' %}
+                <span class="badge bg-primary ms-2">Filtered</span>
+                {% endif %}
+            </h6>
+            <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+                <span class="text-muted small">{{ "{:,}".format(payments.total if payments.items else 0) }} total payments</span>
+                <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#columnSettingsModal">
+                    <i class="fas fa-columns me-1"></i> <span class="d-none d-sm-inline">Columns</span>
+                </button>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <!-- Desktop Table View -->
+            <div class="d-none d-lg-block">
+                <div class="table-scrollable-container">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light sticky-top">
+                            <tr>
+                                <th class="small">
+                                    <div class="d-flex align-items-center">
+                                        Invoice #
+                                        <a href="#" class="ms-1 text-muted sort-btn" data-sort="invoice">
+                                            <i class="fas fa-sort"></i>
+                                        </a>
+                                    </div>
+                                </th>
+                                <th class="small">
+                                    <div class="d-flex align-items-center">
+                                        Customer
+                                        <a href="#" class="ms-1 text-muted sort-btn" data-sort="customer">
+                                            <i class="fas fa-sort"></i>
+                                        </a>
+                                    </div>
+                                </th>
+                                <th class="small">
+                                    <div class="d-flex align-items-center">
+                                        Plan
+                                        <a href="#" class="ms-1 text-muted sort-btn" data-sort="plan">
+                                            <i class="fas fa-sort"></i>
+                                        </a>
+                                    </div>
+                                </th>
+                                <th class="small">Plan Type</th>
+                                <th class="small">
+                                    <div class="d-flex align-items-center">
+                                        Amount
+                                        <a href="#" class="ms-1 text-muted sort-btn" data-sort="amount">
+                                            <i class="fas fa-sort"></i>
+                                        </a>
+                                    </div>
+                                </th>
+                                <th class="small">Status</th>
+                                <th class="small">
+                                    <div class="d-flex align-items-center">
+                                        Date
+                                        <a href="#" class="ms-1 text-muted sort-btn" data-sort="date">
+                                            <i class="fas fa-sort"></i>
+                                        </a>
+                                    </div>
+                                </th>
+                                <th class="text-end small">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for payment in payments.items %}
+                            <tr>
+                                <td>
+                                    <span class="fw-medium small">{{ payment.Payment.invoice_number }}</span>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-circle bg-primary-subtle text-primary me-2">
+                                            {{ payment.User.name[:1]|upper }}
+                                        </div>
+                                        <div>
+                                            <div class="fw-medium small">{{ payment.User.name }}</div>
+                                            <div class="small text-muted">{{ payment.User.company_email }}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="badge bg-light text-dark border small">{{ payment.Subscription.plan }}</span>
+                                </td>
+                                <td>
+                                    {% set plan_type = payment.Subscription.plan_type|default('Normal') %}
+                                    {% set plan_type_lower = plan_type|lower %}
+                                    {% if plan_type_lower == 'normal' %}
+                                        <span class="badge bg-info text-white">
+                                            <i class="fas fa-user me-1"></i>{{ plan_type }}
+                                        </span>
+                                    {% elif plan_type_lower == 'premium' %}
+                                        <span class="badge bg-warning text-dark">
+                                            <i class="fas fa-star me-1"></i>{{ plan_type }}
+                                        </span>
+                                    {% elif plan_type_lower == 'pro' %}
+                                        <span class="badge bg-primary text-white">
+                                            <i class="fas fa-rocket me-1"></i>{{ plan_type }}
+                                        </span>
+                                    {% elif plan_type_lower == 'enterprise' %}
+                                        <span class="badge bg-dark text-white">
+                                            <i class="fas fa-building me-1"></i>{{ plan_type }}
+                                        </span>
+                                    {% elif plan_type_lower == 'vip' %}
+                                        <span class="badge bg-danger text-white">
+                                            <i class="fas fa-crown me-1"></i>{{ plan_type }}
+                                        </span>
+                                    {% else %}
+                                        <span class="badge bg-info text-white">
+                                            <i class="fas fa-tag me-1"></i>{{ plan_type }}
+                                        </span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <div class="fw-bold small">₹{{ "{:,.2f}".format(payment.Payment.total_amount) }}</div>
+                                    <div class="small text-muted">
+                                        Base: ₹{{ "{:,.2f}".format(payment.Payment.base_amount) }}
+                                    </div>
+                                </td>
+                                <td>
+                                    {% if payment.Payment.status == 'completed' %}
+                                    <span class="badge bg-success">
+                                        <i class="fas fa-check-circle me-1"></i>Completed
+                                    </span>
+                                    {% elif payment.Payment.status == 'created' %}
+                                    <span class="badge bg-warning text-dark">
+                                        <i class="fas fa-clock me-1"></i>Pending
+                                    </span>
+                                    {% elif payment.Payment.status == 'failed' %}
+                                    <span class="badge bg-danger">
+                                        <i class="fas fa-times-circle me-1"></i>Failed
+                                    </span>
+                                    {% else %}
+                                    <span class="badge bg-secondary">
+                                        <i class="fas fa-ban me-1"></i>{{ payment.Payment.status|capitalize }}
+                                    </span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <div class="small">{{ payment.Payment.created_at.strftime('%d %b %Y') }}</div>
+                                    <div class="small text-muted">{{ payment.Payment.created_at.strftime('%I:%M %p') }}</div>
+                                </td>
+                                <td class="text-end">
+                                    <div class="table-dropdown-wrapper">
+                                        <button class="btn btn-sm btn-icon btn-outline-secondary rounded-circle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li>
+                                                <a class="dropdown-item" href="{{ url_for('admin.admin_payment_details', order_id=payment.Payment.invoice_number) }}">
+                                                    <i class="fas fa-eye me-2 text-primary"></i> View Details
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" href="{{ url_for('admin.admin_payment_invoice', order_id=payment.Payment.razorpay_order_id) }}" target="_blank">
+                                                    <i class="fas fa-file-pdf me-2 text-danger"></i> Download Invoice
+                                                </a>
+                                            </li>
+                                            {% if payment.Payment.status == 'created' %}
+                                            <li>
+                                                <a class="dropdown-item complete-payment" href="#" data-payment-id="{{ payment.Payment.invoice_number }}">
+                                                    <i class="fas fa-check-circle me-2 text-success"></i> Mark as Completed
+                                                </a>
+                                            </li>
+                                            {% endif %}
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li>
+                                                <a class="dropdown-item" href="{{ url_for('admin.admin_users', user_id=payment.User.id) }}">
+                                                    <i class="fas fa-user me-2 text-info"></i> View Customer
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="8" class="text-center py-4">
+                                    <div class="py-5">
+                                        <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                                        <h5>No payments found</h5>
+                                        <p class="text-muted">Try adjusting your search or filter criteria</p>
+                                        <a href="{{ url_for('admin.admin_payments') }}" class="btn btn-outline-primary">
+                                            <i class="fas fa-redo me-1"></i> Reset Filters
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Mobile Card View - Fixed Dropdown -->
+            <div class="d-lg-none">
+                {% for payment in payments.items %}
+                <div class="mobile-payment-card border-bottom p-3">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar-circle bg-primary-subtle text-primary me-2">
+                                {{ payment.User.name[:1]|upper }}
+                            </div>
+                            <div>
+                                <div class="fw-medium small">{{ payment.User.name }}</div>
+                                <div class="small text-muted">{{ payment.Payment.invoice_number }}</div>
+                            </div>
+                        </div>
+                        <div class="text-end">
+                            <div class="fw-bold small">₹{{ "{:,.2f}".format(payment.Payment.total_amount) }}</div>
+                            {% if payment.Payment.status == 'completed' %}
+                            <span class="badge bg-success small">
+                                <i class="fas fa-check-circle me-1"></i>Completed
+                            </span>
+                            {% elif payment.Payment.status == 'created' %}
+                            <span class="badge bg-warning text-dark small">
+                                <i class="fas fa-clock me-1"></i>Pending
+                            </span>
+                            {% elif payment.Payment.status == 'failed' %}
+                            <span class="badge bg-danger small">
+                                <i class="fas fa-times-circle me-1"></i>Failed
+                            </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="row g-2 mb-2">
+                        <div class="col-6">
+                            <div class="small text-muted">Plan</div>
+                            <span class="badge bg-light text-dark border small">{{ payment.Subscription.plan }}</span>
+                        </div>
+                        <div class="col-6">
+                            <div class="small text-muted">Plan Type</div>
+                            {% set plan_type = payment.Subscription.plan_type|default('Normal') %}
+                            {% set plan_type_lower = plan_type|lower %}
+                            {% if plan_type_lower == 'normal' %}
+                                <span class="badge bg-info text-white small">
+                                    <i class="fas fa-user me-1"></i>{{ plan_type }}
+                                </span>
+                            {% elif plan_type_lower == 'premium' %}
+                                <span class="badge bg-warning text-dark small">
+                                    <i class="fas fa-star me-1"></i>{{ plan_type }}
+                                </span>
+                            {% elif plan_type_lower == 'pro' %}
+                                <span class="badge bg-primary text-white small">
+                                    <i class="fas fa-rocket me-1"></i>{{ plan_type }}
+                                </span>
+                            {% elif plan_type_lower == 'enterprise' %}
+                                <span class="badge bg-dark text-white small">
+                                    <i class="fas fa-building me-1"></i>{{ plan_type }}
+                                </span>
+                            {% elif plan_type_lower == 'vip' %}
+                                <span class="badge bg-danger text-white small">
+                                    <i class="fas fa-crown me-1"></i>{{ plan_type }}
+                                </span>
+                            {% else %}
+                                <span class="badge bg-info text-white small">
+                                    <i class="fas fa-tag me-1"></i>{{ plan_type }}
+                                </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="small text-muted">
+                            <i class="fas fa-calendar me-1"></i>{{ payment.Payment.created_at.strftime('%d %b %Y, %I:%M %p') }}
+                        </div>
+                        <div class="dropdown position-relative">
+                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end mobile-payment-dropdown">
+                                <li>
+                                    <a class="dropdown-item" href="{{ url_for('admin.admin_payment_details', order_id=payment.Payment.invoice_number) }}">
+                                        <i class="fas fa-eye me-2 text-primary"></i> View Details
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ url_for('admin.admin_payment_invoice', order_id=payment.Payment.razorpay_order_id) }}" target="_blank">
+                                        <i class="fas fa-file-pdf me-2 text-danger"></i> Download Invoice
+                                    </a>
+                                </li>
+                                {% if payment.Payment.status == 'created' %}
+                                <li>
+                                    <a class="dropdown-item complete-payment" href="#" data-payment-id="{{ payment.Payment.invoice_number }}">
+                                        <i class="fas fa-check-circle me-2 text-success"></i> Mark as Completed
+                                    </a>
+                                </li>
+                                {% endif %}
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ url_for('admin.admin_users', user_id=payment.User.id) }}">
+                                        <i class="fas fa-user me-2 text-info"></i> View Customer
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="text-center py-5">
+                    <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                    <h5>No payments found</h5>
+                    <p class="text-muted">Try adjusting your search or filter criteria</p>
+                    <a href="{{ url_for('admin.admin_payments') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-redo me-1"></i> Reset Filters
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Column Settings Modal -->
+<div class="modal fade" id="columnSettingsModal" tabindex="-1" aria-labelledby="columnSettingsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="columnSettingsModalLabel">Customize Table Columns</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-check form-switch mb-2">
+                    <input class="form-check-input" type="checkbox" id="col-invoice" checked>
+                    <label class="form-check-label" for="col-invoice">Invoice Number</label>
+                </div>
+                <div class="form-check form-switch mb-2">
+                    <input class="form-check-input" type="checkbox" id="col-customer" checked>
+                    <label class="form-check-label" for="col-customer">Customer</label>
+                </div>
+                <div class="form-check form-switch mb-2">
+                    <input class="form-check-input" type="checkbox" id="col-plan" checked>
+                    <label class="form-check-label" for="col-plan">Subscription Plan</label>
+                </div>
+                <div class="form-check form-switch mb-2">
+                    <input class="form-check-input" type="checkbox" id="col-plan-type" checked>
+                    <label class="form-check-label" for="col-plan-type">Plan Type</label>
+                </div>
+                <div class="form-check form-switch mb-2">
+                    <input class="form-check-input" type="checkbox" id="col-amount" checked>
+                    <label class="form-check-label" for="col-amount">Amount</label>
+                </div>
+                <div class="form-check form-switch mb-2">
+                    <input class="form-check-input" type="checkbox" id="col-status" checked>
+                    <label class="form-check-label" for="col-status">Status</label>
+                </div>
+                <div class="form-check form-switch mb-2">
+                    <input class="form-check-input" type="checkbox" id="col-date" checked>
+                    <label class="form-check-label" for="col-date">Date</label>
+                </div>
+                <div class="form-check form-switch mb-2">
+                    <input class="form-check-input" type="checkbox" id="col-payment-id">
+                    <label class="form-check-label" for="col-payment-id">Payment ID</label>
+                </div>
+                <div class="form-check form-switch mb-2">
+                    <input class="form-check-input" type="checkbox" id="col-gst">
+                    <label class="form-check-label" for="col-gst">GST Info</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="save-column-settings">Apply Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<!-- Chart.js Library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+<style>
+/* Desktop-specific layout styles */
+@media (min-width: 992px) {
+    /* Hide mobile layout on desktop */
+    .mobile-layout {
+        display: none !important;
+    }
+    
+    /* Show desktop rows */
+    .desktop-row-2,
+    .desktop-row-3 {
+        display: flex !important;
+    }
+    
+    /* Ensure equal height for filter and revenue trends */
+    .desktop-row-2 .card {
+        min-height: 400px;
+    }
+    
+    /* Chart container for revenue trends in desktop */
+    .chart-container-revenue {
+        position: relative;
+        height: 280px;
+    }
+    
+    /* Chart container for payment distribution in desktop */
+    .chart-container-distribution {
+        position: relative;
+        height: 250px;
+    }
+}
+
+/* Mobile-specific layout styles */
+@media (max-width: 991.98px) {
+    /* Hide desktop-specific rows on mobile */
+    .desktop-row-2,
+    .desktop-row-3 {
+        display: none !important;
+    }
+    
+    /* Show mobile layout */
+    .mobile-layout {
+        display: flex !important;
+    }
+}
+
+/* Updated Chart Container Classes for New Layout */
+.chart-container-medium {
+    position: relative;
+    height: 180px;
+}
+
+.chart-container-mini {
+    position: relative;
+    height: 120px;
+}
+
+/* Chart Container Improvements */
+.chart-container {
+    position: relative;
+    height: 280px;
+}
+
+.chart-container-small {
+    position: relative;
+    height: 200px;
+}
+
+/* Ensure proper height distribution for charts section */
+.charts-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.charts-container .revenue-chart-card {
+    flex: 1;
+    min-height: 220px;
+    margin-bottom: 0.75rem !important;
+}
+
+.charts-container .distribution-chart-card {
+    flex: 1;
+    min-height: 180px;
+}
+
+/* Compact layout adjustments */
+.charts-container .card-body.p-2 {
+    padding: 0.5rem !important;
+}
+
+.charts-container .card-header.py-2 {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+}
+
+/* Icon Wrapper Responsive */
+.icon-wrapper {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+@media (min-width: 768px) {
+    .icon-wrapper {
+        width: 60px;
+        height: 60px;
+    }
+}
+
+/* Card Hover Effects */
+.card {
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Avatar Circle */
+.avatar-circle {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+@media (min-width: 768px) {
+    .avatar-circle {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+    }
+}
+
+/* Button Icon */
+.btn-icon {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Scrollable table container styles */
+.table-scrollable-container {
+    max-height: 600px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative;
+}
+
+.table-scrollable-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.table-scrollable-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.table-scrollable-container::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+.table-scrollable-container::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* Ensure sticky header works properly */
+.table thead th {
+    background-color: var(--bs-gray-100) !important;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    border-bottom: 2px solid var(--bs-border-color);
+}
+
+/* Add some padding to prevent content from being cut off */
+.table-scrollable-container .table {
+    margin-bottom: 0;
+}
+
+/* Smooth scrolling */
+.table-scrollable-container {
+    scroll-behavior: smooth;
+}
+
+/* Mobile Payment Cards */
+.mobile-payment-card {
+    background: white;
+    transition: background-color 0.2s ease;
+}
+
+.mobile-payment-card:hover {
+    background-color: rgba(0, 123, 255, 0.05);
+}
+
+.mobile-payment-card:last-child {
+    border-bottom: none !important;
+}
+
+/* Fixed Mobile Dropdown Positioning */
+.mobile-payment-dropdown {
+    min-width: 200px;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    background-color: white;
+    z-index: 1050;
+    margin-top: 0.25rem;
+    right: 0 !important;
+    left: auto !important;
+    transform: none !important;
+    position: absolute !important;
+}
+
+.mobile-payment-dropdown .dropdown-item {
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    color: #495057;
+    text-decoration: none;
+    transition: background-color 0.15s ease-in-out;
+    white-space: nowrap;
+}
+
+.mobile-payment-dropdown .dropdown-item:hover,
+.mobile-payment-dropdown .dropdown-item:focus {
+    background-color: #f8f9fa;
+    color: #495057;
+}
+
+.mobile-payment-dropdown .dropdown-item i {
+    width: 16px;
+    text-align: center;
+}
+
+/* Chart Period Selector */
+#chart-period-selector .btn,
+#chart-period-selector-mobile .btn {
+    border-radius: 0;
+}
+
+#chart-period-selector .btn:first-child,
+#chart-period-selector-mobile .btn:first-child {
+    border-top-left-radius: 0.375rem;
+    border-bottom-left-radius: 0.375rem;
+}
+
+#chart-period-selector .btn:last-child,
+#chart-period-selector-mobile .btn:last-child {
+    border-top-right-radius: 0.375rem;
+    border-bottom-right-radius: 0.375rem;
+}
+
+/* Responsive Utility Classes */
+.min-width-0 {
+    min-width: 0;
+}
+
+/* Mobile Specific Styles */
+@media (max-width: 991.98px) {
+    .card-body {
+        padding: 1rem;
+    }
+    
+    .card-header {
+        padding: 0.75rem 1rem;
+    }
+    
+    .table-responsive {
+        font-size: 0.875rem;
+    }
+    
+    .chart-container-medium {
+        height: 200px;
+    }
+    
+    .chart-container-mini {
+        height: 140px;
+    }
+    
+    .btn-group-sm .btn {
+        font-size: 0.75rem;
+        padding: 0.25rem 0.5rem;
+    }
+    
+    /* Reset charts container height on mobile */
+    .charts-container .revenue-chart-card,
+    .charts-container .distribution-chart-card {
+        height: auto;
+        min-height: auto;
+        flex: none;
+    }
+    
+    .charts-container .revenue-chart-card {
+        min-height: 250px;
+        margin-bottom: 1rem !important;
+    }
+    
+    .charts-container .distribution-chart-card {
+        min-height: 200px;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .icon-wrapper {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .avatar-circle {
+        width: 24px;
+        height: 24px;
+        font-size: 11px;
+    }
+    
+    .badge {
+        font-size: 0.7rem;
+        padding: 0.25rem 0.5rem;
+    }
+    
+    .chart-container-medium {
+        height: 180px;
+    }
+    
+    .chart-container-mini {
+        height: 120px;
+    }
+    
+    .card-header h6 {
+        font-size: 0.9rem;
+    }
+    
+    .mobile-payment-card {
+        padding: 0.75rem !important;
+    }
+    
+    .dropdown-menu {
+        font-size: 0.875rem;
+        z-index: 1055 !important;
+        position: absolute !important;
+    }
+    
+    /* Fix table dropdown positioning */
+    .table-dropdown-wrapper {
+        position: relative;
+    }
+
+    .table-dropdown-wrapper .dropdown-menu {
+        position: absolute !important;
+        top: 100% !important;
+        right: 0 !important;
+        left: auto !important;
+        transform: none !important;
+        z-index: 1055 !important;
+    }
+
+    /* Ensure parent containers don't clip dropdowns */
+    .card-body,
+    .mobile-payment-card {
+        overflow: visible !important;
+    }
+
+    /* Enhanced mobile dropdown positioning */
+    .mobile-payment-dropdown {
+        position: fixed !important;
+        z-index: 1055 !important;
+        min-width: 200px;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    }
+    
+    .form-control,
+    .form-select {
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+    
+    /* Compact filter layout on mobile */
+    .btn-group .btn {
+        padding: 0.25rem 0.4rem;
+        font-size: 0.75rem;
+    }
+    
+    .form-select-sm,
+    .input-group-sm .form-control {
+        font-size: 0.875rem;
+    }
+    
+    /* Fix mobile dropdown positioning */
+    .mobile-payment-dropdown {
+        width: 180px;
+        min-width: 180px;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .container-fluid {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+    
+    .card {
+        margin-bottom: 1rem;
+    }
+    
+    .row.g-3 {
+        --bs-gutter-x: 0.75rem;
+        --bs-gutter-y: 0.75rem;
+    }
+    
+    .btn-group .btn {
+        padding: 0.2rem 0.3rem;
+        font-size: 0.7rem;
+    }
+    
+    .form-text {
+        font-size: 0.7rem;
+    }
+    
+    /* Mobile dropdown improvements for small screens */
+    .mobile-payment-dropdown {
+        width: 160px;
+        min-width: 160px;
+        font-size: 0.8rem;
+    }
+    
+    .mobile-payment-dropdown .dropdown-item {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.8rem;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .card {
+        box-shadow: none !important;
+        border: 1px solid #dee2e6 !important;
+    }
+    
+    .btn,
+    .dropdown,
+    .chart-container,
+    .chart-container-small,
+    .chart-container-medium,
+    .chart-container-mini,
+    .chart-container-revenue,
+    .chart-container-distribution {
+        display: none !important;
+    }
+    
+    .table {
+        font-size: 0.8rem;
+    }
+}
+
+/* Loading States */
+.btn.loading {
+    pointer-events: none;
+    opacity: 0.65;
+}
+
+/* Animation Classes */
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+    .card {
+        border: 2px solid #000;
+    }
+    
+    .badge {
+        border: 1px solid #000;
+    }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+    .card,
+    .btn,
+    .mobile-payment-card {
+        transition: none;
+    }
+    
+    .fade-in {
+        animation: none;
+    }
+}
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Check if Chart.js is loaded
+    if (typeof Chart === 'undefined') {
+        console.error('Chart.js is not loaded');
+        return;
+    }
+    
+    // Global chart variables
+    let revenueChart = null;
+    let paymentTypeChart = null;
+    let paymentStatusChart = null;
+    let currentPeriod = 'month'; // Default to month (12 months of current year)
+    const currentYear = new Date().getFullYear();
+    
+    // Get current filter values from the page
+    const currentFilters = {
+        status: '{{ filters.status }}',
+        date_range: '{{ filters.date_range }}'
+    };
+    
+    // Function to show/hide loading indicator
+    function showChartLoading(isDesktop = true) {
+        const loadingElement = document.getElementById(isDesktop ? 'chart-loading' : 'chart-loading-mobile');
+        const chartElement = document.getElementById(isDesktop ? 'revenueTrendChart' : 'revenueTrendChartMobile');
+        
+        if (loadingElement && chartElement) {
+            loadingElement.classList.remove('d-none');
+            chartElement.style.opacity = '0.5';
+        }
+    }
+    
+    function hideChartLoading(isDesktop = true) {
+        const loadingElement = document.getElementById(isDesktop ? 'chart-loading' : 'chart-loading-mobile');
+        const chartElement = document.getElementById(isDesktop ? 'revenueTrendChart' : 'revenueTrendChartMobile');
+        
+        if (loadingElement && chartElement) {
+            loadingElement.classList.add('d-none');
+            chartElement.style.opacity = '1';
+        }
+    }
+    
+    // Function to show/hide status chart loading
+    function showStatusChartLoading(isDesktop = true) {
+        const loadingElement = document.getElementById(isDesktop ? 'status-chart-loading' : 'status-chart-loading-mobile');
+        if (loadingElement) {
+            loadingElement.classList.remove('d-none');
+        }
+    }
+    
+    function hideStatusChartLoading(isDesktop = true) {
+        const loadingElement = document.getElementById(isDesktop ? 'status-chart-loading' : 'status-chart-loading-mobile');
+        if (loadingElement) {
+            loadingElement.classList.add('d-none');
+        }
+    }
+    
+    // Function to update period label
+    function updatePeriodLabel(period) {
+        const labelElement = document.getElementById('chart-period-label');
+        const labelElementMobile = document.getElementById('chart-period-label-mobile');
+        
+        let labelText = '';
+        switch(period) {
+            case 'week':
+                labelText = `${currentYear} (52 weeks)`;
+                break;
+            case 'month':
+                labelText = `${currentYear} (12 months)`;
+                break;
+            case 'year':
+                labelText = 'Last 5 years';
+                break;
+            default:
+                labelText = currentYear;
+        }
+        
+        if (labelElement) labelElement.textContent = labelText;
+        if (labelElementMobile) labelElementMobile.textContent = labelText;
+    }
+    
+    // Function to fetch revenue trend data from API
+    async function fetchRevenueTrendData(period) {
+        try {
+            const response = await fetch(`{{ url_for('admin.admin_payments_revenue_trend', period='') }}${period}`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Error fetching revenue trend data:', error);
+            return null;
+        }
+    }
+    
+    // Function to fetch payment status breakdown
+    async function fetchPaymentStatusData() {
+        try {
+            const params = new URLSearchParams({
+                status: currentFilters.status,
+                date_range: currentFilters.date_range
+            });
+            
+            const response = await fetch(`{{ url_for('admin.admin_payments_status_breakdown') }}?${params}`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Error fetching payment status data:', error);
+            return null;
+        }
+    }
+    
+    // Function to update revenue chart with new data
+    async function updateRevenueChart(period, isDesktop = true) {
+        const chart = isDesktop ? revenueChart : (window.innerWidth >= 992 ? null : revenueChart);
+        if (!chart) return;
+        
+        showChartLoading(isDesktop);
+        
+        try {
+            const data = await fetchRevenueTrendData(period);
+            if (data) {
+                chart.data.labels = data.labels;
+                chart.data.datasets[0].data = data.data;
+                
+                // Update chart title based on period
+                let title = '';
+                switch(period) {
+                    case 'week':
+                        title = 'Weekly Revenue (52 weeks)';
+                        break;
+                    case 'month':
+                        title = 'Monthly Revenue (12 months)';
+                        break;
+                    case 'year':
+                        title = 'Yearly Revenue (5 years)';
+                        break;
+                }
+                chart.data.datasets[0].label = title;
+                
+                chart.update('active');
+                currentPeriod = period;
+                updatePeriodLabel(period);
+            }
+        } catch (error) {
+            console.error('Error updating chart:', error);
+        } finally {
+            hideChartLoading(isDesktop);
+        }
+    }
+    
+    // Function to update payment status chart
+    async function updatePaymentStatusChart() {
+        const chart = window.innerWidth >= 992 ? paymentStatusChart : paymentStatusChart;
+        if (!chart) return;
+        
+        const isDesktop = window.innerWidth >= 992;
+        showStatusChartLoading(isDesktop);
+        
+        try {
+            const data = await fetchPaymentStatusData();
+            if (data) {
+                chart.data.labels = data.labels;
+                chart.data.datasets[0].data = data.data;
+                
+                // Update colors based on current filter
+                const colors = ['#10b981', '#f59e0b', '#ef4444']; // Green, Orange, Red
+                chart.data.datasets[0].backgroundColor = colors;
+                
+                chart.update('active');
+            }
+        } catch (error) {
+            console.error('Error updating status chart:', error);
+        } finally {
+            hideStatusChartLoading(isDesktop);
+        }
+    }
+    
+    // Function to create revenue chart
+    function createRevenueChart(canvasId) {
+        const chartElement = document.getElementById(canvasId);
+        if (!chartElement) return null;
+        
+        const ctx = chartElement.getContext('2d');
+        
+        // Initial data from server (month period - 12 months)
+        let revenueLabels = [];
+        let revenueData = [];
+        
+        try {
+            {% if revenue_trend %}
+                {% for trend in revenue_trend %}
+                    revenueLabels.push("{{ trend.label if trend.label else 'N/A' }}");
+                    revenueData.push({{ trend.total_revenue or 0 }});
+                {% endfor %}
+            {% endif %}
+        } catch (e) {
+            console.error('Error processing revenue trend data:', e);
+        }
+        
+        // If no data, create sample data for 12 months
+        if (revenueLabels.length === 0) {
+            const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            revenueLabels = monthNames;
+            revenueData = new Array(12).fill(0);
+        }
+
+        const revenueChartData = {
+            labels: revenueLabels,
+            datasets: [{
+                label: 'Monthly Revenue (12 months)',
+                data: revenueData,
+                borderColor: '#3b82f6',
+                backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                borderWidth: 3,
+                fill: true,
+                tension: 0.4,
+                pointRadius: 4,
+                pointBackgroundColor: '#3b82f6',
+                pointBorderColor: '#fff',
+                pointBorderWidth: 2,
+                pointHoverRadius: 6
+            }]
+        };
+
+        return new Chart(ctx, {
+            type: 'line',
+            data: revenueChartData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        titleColor: '#fff',
+                        bodyColor: '#fff',
+                        cornerRadius: 8,
+                        callbacks: {
+                            label: function(context) {
+                                return 'Revenue: ₹' + Number(context.raw).toLocaleString();
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                if (value >= 100000) {
+                                    return '₹' + (value / 100000) + 'L';
+                                } else if (value >= 1000) {
+                                    return '₹' + (value / 1000) + 'K';
+                                }
+                                return '₹' + value;
+                            }
+                        },
+                        grid: {
+                            drawBorder: false,
+                            color: 'rgba(0, 0, 0, 0.1)'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    }
+    
+    // Function to create payment type chart
+    function createPaymentTypeChart(canvasId) {
+        const chartElement = document.getElementById(canvasId);
+        if (!chartElement) return null;
+        
+        const ctx = chartElement.getContext('2d');
+        
+        // Safely extract payment type data
+        let paymentTypeLabels = [];
+        let paymentTypeValues = [];
+        
+        try {
+            const paymentTypeData = {{ stats.payment_type_breakdown|tojson|safe }};
+            
+            if (paymentTypeData && typeof paymentTypeData === 'object') {
+                paymentTypeLabels = Object.keys(paymentTypeData).map(key => {
+                    // Capitalize and format labels
+                    switch(key) {
+                        case 'new': return 'New Subscriptions';
+                        case 'renewal': return 'Renewals';
+                        case 'upgrade': return 'Upgrades';
+                        case 'manual': return 'Manual';
+                        default: return key.charAt(0).toUpperCase() + key.slice(1);
+                    }
+                });
+                paymentTypeValues = Object.values(paymentTypeData);
+            }
+        } catch (e) {
+            console.error('Error processing payment type data:', e);
+        }
+        
+        // Fallback data if no payment types
+        if (paymentTypeLabels.length === 0) {
+            paymentTypeLabels = ['No Data'];
+            paymentTypeValues = [1];
+        }
+        
+        return new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: paymentTypeLabels,
+                datasets: [{
+                    data: paymentTypeValues,
+                    backgroundColor: [
+                        '#3b82f6', // Blue
+                        '#10b981', // Green
+                        '#f59e0b', // Amber
+                        '#6366f1', // Indigo
+                        '#ef4444', // Red
+                        '#8b5cf6'  // Purple
+                    ],
+                    borderWidth: 0,
+                    hoverBorderWidth: 2,
+                    hoverBorderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 6,
+                            usePointStyle: true,
+                            font: {
+                                size: 10
+                            }
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        titleColor: '#fff',
+                        bodyColor: '#fff',
+                        cornerRadius: 8,
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = context.raw;
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
+                                return `${label}: ${value} (${percentage}%)`;
+                            }
+                        }
+                    }
+                },
+                cutout: '60%'
+            }
+        });
+    }
+    
+// Function to create payment status chart - ALWAYS SHOWS 3 COLORS WITH PROPER LABELS
+function createPaymentStatusChart(canvasId) {
+    const chartElement = document.getElementById(canvasId);
+    if (!chartElement) return null;
+    
+    const ctx = chartElement.getContext('2d');
+    
+    // ALWAYS initialize with all 3 status types, even if zero
+    let statusData = [0, 0, 0]; // Default: [completed, pending, failed]
+    let actualData = [0, 0, 0]; // Store actual values for tooltips
+    
+    try {
+        const statusBreakdown = {{ stats.payment_status_breakdown|tojson|safe }};
+        if (statusBreakdown && typeof statusBreakdown === 'object') {
+            statusData = [
+                statusBreakdown.completed || 0,
+                statusBreakdown.pending || 0, 
+                statusBreakdown.failed || 0
+            ];
+            actualData = [...statusData]; // Copy for tooltips
+        }
+    } catch (e) {
+        console.error('Error processing payment status data:', e);
+    }
+    
+    // If all values are zero, show equal placeholder segments for visibility
+    const hasAnyData = statusData.some(value => value > 0);
+    const displayData = hasAnyData ? statusData : [1, 1, 1];
+    
+    return new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Completed', 'Pending', 'Failed'],
+            datasets: [{
+                data: displayData,
+                backgroundColor: [
+                    '#10b981', // Green for Completed
+                    '#f59e0b', // Orange for Pending
+                    '#ef4444'  // Red for Failed
+                ],
+                borderWidth: 0,
+                hoverBorderWidth: 2,
+                hoverBorderColor: '#fff'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        padding: 6,
+                        usePointStyle: true,
+                        font: {
+                            size: 10
+                        },
+                        generateLabels: function(chart) {
+                            const data = chart.data;
+                            if (data.labels.length && data.datasets.length) {
+                                return data.labels.map((label, index) => {
+                                    const value = actualData[index] || 0;
+                                    return {
+                                        text: value === 0 ? `${label} (0)` : label,
+                                        fillStyle: data.datasets[0].backgroundColor[index],
+                                        strokeStyle: data.datasets[0].backgroundColor[index],
+                                        lineWidth: 0,
+                                        pointStyle: 'circle',
+                                        hidden: false,
+                                        fontColor: value === 0 ? '#999' : '#333',
+                                        index: index
+                                    };
+                                });
+                            }
+                            return [];
+                        }
+                    }
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    titleColor: '#fff',
+                    bodyColor: '#fff',
+                    cornerRadius: 8,
+                    callbacks: {
+                        label: function(context) {
+                            const label = context.label || '';
+                            const value = actualData[context.dataIndex] || 0;
+                            const total = actualData.reduce((a, b) => a + b, 0);
+                            const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
+                            
+                            if (value === 0) {
+                                return `${label}: 0 payments (0%)`;
+                            }
+                            return `${label}: ${value} payments (${percentage}%)`;
+                        }
+                    }
+                }
+            },
+            cutout: '60%'
+        }
+    });
+}
+    // Create charts based on screen size
+    function initializeCharts() {
+        if (window.innerWidth >= 992) {
+            // Desktop: separate charts
+            revenueChart = createRevenueChart('revenueTrendChart');
+            paymentTypeChart = createPaymentTypeChart('paymentTypeChart');
+            paymentStatusChart = createPaymentStatusChart('paymentStatusChart');
+        } else {
+            // Mobile: combined charts
+            revenueChart = createRevenueChart('revenueTrendChartMobile');
+            paymentTypeChart = createPaymentTypeChart('paymentTypeChartMobile');
+            paymentStatusChart = createPaymentStatusChart('paymentStatusChartMobile');
+        }
+        
+        // Set initial period label
+        updatePeriodLabel(currentPeriod);
+    }
+    
+    // Initialize charts
+    initializeCharts();
+    
+    // Reinitialize charts on window resize
+    let resizeTimeout;
+    window.addEventListener('resize', function() {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(function() {
+            // Destroy existing charts
+            if (revenueChart) revenueChart.destroy();
+            if (paymentTypeChart) paymentTypeChart.destroy();
+            if (paymentStatusChart) paymentStatusChart.destroy();
+            
+            // Reinitialize charts
+            initializeCharts();
+        }, 250);
+    });
+    
+    // Chart period selector functionality
+    const periodButtons = document.querySelectorAll('#chart-period-selector button, #chart-period-selector-mobile button');
+    if (periodButtons.length > 0) {
+        periodButtons.forEach(btn => {
+            btn.addEventListener('click', async function() {
+                // Find the parent selector
+                const parentSelector = this.closest('[id*="chart-period-selector"]');
+                const buttonsInGroup = parentSelector.querySelectorAll('button');
+                
+                // Remove active class from all buttons in this group
+                buttonsInGroup.forEach(b => {
+                    b.classList.remove('active');
+                    b.disabled = false;
+                });
+                
+                // Add active class to clicked button and disable it temporarily
+                this.classList.add('active');
+                this.disabled = true;
+                
+                // Update chart data based on selected period
+                const period = this.dataset.period;
+                const isDesktop = window.innerWidth >= 992;
+                
+                try {
+                    await updateRevenueChart(period, isDesktop);
+                } catch (error) {
+                    console.error('Error updating chart:', error);
+                } finally {
+                    // Re-enable button
+                    this.disabled = false;
+                }
+            });
+        });
+    }
+    
+    // DYNAMIC FILTER FUNCTIONALITY FOR PAYMENT STATUS CHART
+    const statusFilters = document.querySelectorAll('.filter-status, .filter-status-mobile');
+    const dateFilters = document.querySelectorAll('.filter-date, .filter-date-mobile');
+    
+    // Update filters when status buttons are clicked
+    statusFilters.forEach(filter => {
+        filter.addEventListener('change', function() {
+            currentFilters.status = this.value;
+            updatePaymentStatusChart();
+        });
+    });
+    
+    // Update filters when date range is changed
+    dateFilters.forEach(filter => {
+        filter.addEventListener('change', function() {
+            currentFilters.date_range = this.value;
+            updatePaymentStatusChart();
+        });
+    });
+    
+    // Auto-submit form when radio buttons or selects change (but prevent double submission)
+    const filterForm = document.getElementById('payment-filter-form');
+    const filterFormMobile = document.getElementById('payment-filter-form-mobile');
+    
+    if (filterForm) {
+        const statusRadios = filterForm.querySelectorAll('input[name="status"]');
+        const selectElements = filterForm.querySelectorAll('select[name="date_range"], select[name="payment_type"]');
+        
+        statusRadios.forEach(radio => {
+            radio.addEventListener('change', () => {
+                // Small delay to allow chart update first
+                setTimeout(() => filterForm.submit(), 100);
+            });
+        });
+        
+        selectElements.forEach(select => {
+            select.addEventListener('change', () => {
+                setTimeout(() => filterForm.submit(), 100);
+            });
+        });
+    }
+    
+    if (filterFormMobile) {
+        const statusRadiosMobile = filterFormMobile.querySelectorAll('input[name="status"]');
+        const selectElementsMobile = filterFormMobile.querySelectorAll('select[name="date_range"], select[name="payment_type"]');
+        
+        statusRadiosMobile.forEach(radio => {
+            radio.addEventListener('change', () => {
+                setTimeout(() => filterFormMobile.submit(), 100);
+            });
+        });
+        
+        selectElementsMobile.forEach(select => {
+            select.addEventListener('change', () => {
+                setTimeout(() => filterFormMobile.submit(), 100);
+            });
+        });
+    }
+    
+    // Auto-adjust dropdown position to prevent clipping
+    document.addEventListener('shown.bs.dropdown', function (e) {
+        const dropdown = e.target.nextElementSibling;
+        if (!dropdown) return;
+        
+        const rect = dropdown.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+        const viewportWidth = window.innerWidth;
+        
+        // If dropdown extends beyond bottom viewport, flip it upward
+        if (rect.bottom > viewportHeight - 10) {
+            dropdown.style.top = 'auto';
+            dropdown.style.bottom = '100%';
+            dropdown.style.marginBottom = '0.25rem';
+            dropdown.style.marginTop = '0';
+        }
+        
+        // If dropdown extends beyond right viewport, align to left
+        if (rect.right > viewportWidth - 10) {
+            dropdown.style.right = '0';
+            dropdown.style.left = 'auto';
+        }
+    });
+
+    // Reset dropdown position when hidden
+    document.addEventListener('hidden.bs.dropdown', function (e) {
+        const dropdown = e.target.nextElementSibling;
+        if (!dropdown) return;
+        
+        dropdown.style.top = '';
+        dropdown.style.bottom = '';
+        dropdown.style.marginBottom = '';
+        dropdown.style.marginTop = '';
+        dropdown.style.right = '';
+        dropdown.style.left = '';
+    });
+    
+    // Mark as completed functionality
+    const completeButtons = document.querySelectorAll('.complete-payment');
+    completeButtons.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const paymentId = this.dataset.paymentId;
+            
+            if (confirm('Are you sure you want to mark this payment as completed?')) {
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = `{{ url_for('admin.admin_update_payment', order_id='') }}${paymentId}`;
+                
+                const statusInput = document.createElement('input');
+                statusInput.type = 'hidden';
+                statusInput.name = 'status';
+                statusInput.value = 'completed';
+                
+                form.appendChild(statusInput);
+                document.body.appendChild(form);
+                form.submit();
+            }
+        });
+    });
+    
+    // Column visibility toggle functionality
+    const saveColumnSettings = document.getElementById('save-column-settings');
+    if (saveColumnSettings) {
+        saveColumnSettings.addEventListener('click', function() {
+            const columns = {
+                'col-invoice': 0,
+                'col-customer': 1,
+                'col-plan': 2,
+                'col-plan-type': 3,
+                'col-amount': 4,
+                'col-status': 5,
+                'col-date': 6,
+                'col-payment-id': -1, // Not shown by default
+                'col-gst': -1 // Not shown by default
+            };
+            
+            // Get all table rows
+            const table = document.querySelector('table');
+            if (!table) return;
+            
+            const headerRow = table.querySelector('thead tr');
+            const bodyRows = table.querySelectorAll('tbody tr');
+            
+            // Toggle column visibility based on checkbox state
+            Object.keys(columns).forEach(colId => {
+                const checkbox = document.getElementById(colId);
+                const colIndex = columns[colId];
+                
+                if (checkbox && colIndex >= 0) { // Only toggle existing columns
+                    const isVisible = checkbox.checked;
+                    
+                    // Toggle header cell
+                    if (headerRow && headerRow.cells[colIndex]) {
+                        headerRow.cells[colIndex].style.display = isVisible ? '' : 'none';
+                    }
+                    
+                    // Toggle body cells
+                    bodyRows.forEach(row => {
+                        if (row.cells[colIndex]) {
+                            row.cells[colIndex].style.display = isVisible ? '' : 'none';
+                        }
+                    });
+                }
+            });
+            
+            // Close the modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('columnSettingsModal'));
+            if (modal) modal.hide();
+        });
+    }
+    
+    // Initialize tooltips if Bootstrap is available
+    if (typeof bootstrap !== 'undefined') {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    }
+    
+    // Table sorting functionality
+    document.querySelectorAll('.sort-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const sortBy = this.dataset.sort;
+            
+            // Add sort parameter to current URL and refresh
+            const url = new URL(window.location);
+            url.searchParams.set('sort_by', sortBy);
+            
+            // Toggle sort direction if already sorting by this column
+            if (url.searchParams.get('sort_dir') === 'asc' && 
+                url.searchParams.get('sort_by') === sortBy) {
+                url.searchParams.set('sort_dir', 'desc');
+            } else {
+                url.searchParams.set('sort_dir', 'asc');
+            }
+            
+            window.location = url;
+        });
+    });
+    
+    // Add loading animation
+    setTimeout(() => {
+        document.querySelectorAll('.card, .mobile-payment-card').forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            
+            setTimeout(() => {
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+                card.classList.add('fade-in');
+            }, 100 + (index * 50));
+        });
+    }, 100);
+    
+    // Mobile swipe gestures for payment cards (optional enhancement)
+    if (window.innerWidth <= 991) {
+        let startX, startY, distX, distY;
+        const threshold = 100;
+        
+        document.querySelectorAll('.mobile-payment-card').forEach(card => {
+            card.addEventListener('touchstart', function(e) {
+                const touch = e.changedTouches[0];
+                startX = touch.pageX;
+                startY = touch.pageY;
+            });
+            
+            card.addEventListener('touchmove', function(e) {
+                e.preventDefault();
+            });
+            
+            card.addEventListener('touchend', function(e) {
+                const touch = e.changedTouches[0];
+                distX = touch.pageX - startX;
+                distY = touch.pageY - startY;
+                
+                if (Math.abs(distX) > Math.abs(distY) && Math.abs(distX) > threshold) {
+                    if (distX > 0) {
+                        // Swipe right - could trigger some action
+                        this.style.transform = 'translateX(10px)';
+                        setTimeout(() => {
+                            this.style.transform = '';
+                        }, 200);
+                    } else {
+                        // Swipe left - could trigger some action
+                        this.style.transform = 'translateX(-10px)';
+                        setTimeout(() => {
+                            this.style.transform = '';
+                        }, 200);
+                    }
+                }
+            });
+        });
+    }
+});
+</script>
+{% endblock %}
